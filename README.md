@@ -1,7 +1,7 @@
-# Advanced Programming With Python - 2023Python-ICT-Team17
+# Advanced Programming With Python - Group Project
 ## Topic 28. Book Store Information Management System (e.g. Tien Phong bookstore)
 
-# Members List
+# Members List of Team 17
 |Student ID| Name | Major | Email address|
 |:---|:---:|:---:|:---|
 |`BI12-271`|**Nguyễn Quang Minh**|ICT|minhnq.bi12-271@st.usth.edu.vn|
