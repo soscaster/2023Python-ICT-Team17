@@ -3,7 +3,7 @@
 
 # Members List of Team 17
 |Student ID| Name | Major | Email address|
-|:---|:---:|:---:|:---|
+|:---:|:---:|:---:|:---|
 |`BI12-271`|**Nguyễn Quang Minh**|ICT|minhnq.bi12-271@st.usth.edu.vn|
 |`BI12-273`|Trịnh Tiến Minh|ICT|minhtt.bi12-273@st.usth.edu.vn|
 |`BI12-286`|Nguyễn Nhật Minh|ICT|minhnn.bi12-286@st.usth.edu.vn|
