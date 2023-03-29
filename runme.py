@@ -1,4 +1,5 @@
 import tkinter as tk
+import subprocess
 from tkinter import messagebox, font as tkfont
 
 login = tk.Tk()
@@ -40,7 +41,7 @@ def runme(t: tk.Tk):
     if input_usr == "admin" and input_pwd == "admin":
         messagebox.showinfo(title="Success", message="Login successful as admin")
         t.destroy()
-        # subprocess.call(["python", "admin.py"])
+        subprocess.call(["python", "admin.py"])
     elif input_usr == "staff" and input_pwd == "staff":
         messagebox.showinfo(title="Success", message="Login successful as staff")
         t.destroy()

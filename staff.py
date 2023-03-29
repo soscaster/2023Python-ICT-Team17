@@ -1,0 +1,2 @@
+# Add book - Modify book - Delete book - View book - Search book by ID, name, author, year - View all sales report - View sales report by date - View sales report by book - View sales report by staff - View sales report by category
+# Book detail: book_ID, book_title, book_genre, book_author, book_year, book_rated, book_price, book_quantity

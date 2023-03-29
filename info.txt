@@ -6,20 +6,21 @@ nhánh:
 	+ Tên cửa hàng
 	+ Địa chỉ cửa hàng
 	+ Số điện thoại cửa hàng
+	+ Email cửa hàng
 - Thông tin nhân viên:
 	+ ID nhân viên
 	+ Tên nhân viên
 	+ DOB nhân viên
 	+ Address nhân viên
 	+ SĐT nhân viên
-	+ Cấp bậc nhân viên (Thực tập - Chính thức - Quản lý - Chủ)
+	+ Email nhân viên
 - Thông tin khách hàng
 	+ ID Khách hàng
 	+ Tên khách hàng
 	+ DOB khách hàng
 	+ Address khách hàng
 	+ SĐT khách hàng
-	+ Cấp bậc khách hàng (Thường - Đồng - Bạc - Vàng - Kim cương)
+	+ Email khách hàng
 - Thông tin sách:
 	+ ID / ISBN sách
 	+ Title sách
@@ -27,29 +28,14 @@ nhánh:
 	+ Năm xuất bản sách
 	+ Tác giả sách
 	+ Đối tượng đọc
-	+ D/M/Y sách nhập kho
 	+ Giá tiền sách
-	+ Khuyến mãi sách (% giảm cho từng đối tượng)
+	+ D/M/Y sách nhập kho
+	+ Số lượng sách
 
 Main tree (No GUI):
 
-book_store
-|__ data_init
-|_____ store.py
-|_____ employee.py
-|_____ customer.py
-|_____ book.py
-|input.py
-|functions.py
-|output.py
-|main.py
 
-Chức năng của từng file:
-store.py: init store_id; store_name; store_add; store_phone
-employee.py: init em_id; em_name; em_dob; em_add; em_phone; em_level
-customer.py: init cus_id; cus_name; cus_dob; cus_add; cus_phone; cus_level
-book.py: init book_id; book_title; book_genre; book_year; book_author; book_rated; book_datein; book_price; book_discount
-input.py: input store, employee, customer, book
-functions.py: modify store, employee, customer, book
-output.py: output store, employee, customer, book, functions
-main.py: coordinate all files
+# Store detail: store_id, store_name, store_address, store_phone, store_email
+# Staff detail: st_ID, st_name, st_dob, st_address, st_phone, st_email
+# Customer detail: cus_ID, cus_name, cus_dob, cus_address, cus_phone, cus_email
+# Book detail: book_ID, book_title, book_genre, book_author, book_year, book_rated, book_price, book_quantity
