@@ -33,9 +33,4 @@ nhánh:
 	+ Số lượng sách
 
 Main tree (No GUI):
-
-
-# Store detail: store_id, store_name, store_address, store_phone, store_email
-# Staff detail: st_ID, st_name, st_dob, st_address, st_phone, st_email
-# Customer detail: cus_ID, cus_name, cus_dob, cus_address, cus_phone, cus_email
 # Book detail: book_ID, book_title, book_genre, book_author, book_year, book_rated, book_price, book_quantity

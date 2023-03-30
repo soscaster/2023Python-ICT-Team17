@@ -1,5 +1,6 @@
 import tkinter as tk
 import subprocess
+import func
 from tkinter import messagebox, font as tkfont
 
 login = tk.Tk()
@@ -45,12 +46,15 @@ def runme(t: tk.Tk):
     elif input_usr == "staff" and input_pwd == "staff":
         messagebox.showinfo(title="Success", message="Login successful as staff")
         t.destroy()
-        # subprocess.call(["python3", "staff.py"])
+        subprocess.call(["python3", "staff.py"])
     elif input_usr == "vuminh" and input_pwd == "npc":
         messagebox.showerror(title="STOP", message="dm vu minh! What are you doing here?")
-        t.destroy()
-        # subprocess.call(["python3", "vuminh.py"])
+        exit()
     else:
         messagebox.showerror(title="Error", message="Invalid username or password\nPlease try again.")
+
+
+func.create_connection()
+func.create_store_if_not_exist()
 
 login.mainloop()
