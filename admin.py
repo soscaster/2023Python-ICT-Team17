@@ -10,7 +10,7 @@ import func
 # Staff detail: st_ID, st_name, st_dob, st_address, st_phone, st_email
 # Customer detail: cus_ID, cus_name, cus_dob, cus_address, cus_phone, cus_email
 
-# Create a new window for modifying store info
+# Create a new window for modifying store info [DONE]
 def modify_store():
     # Create a new window
     store = tk.Toplevel(admin)
@@ -29,14 +29,28 @@ def modify_store():
     lbl_store_email = tk.Label(store_frame, text="Store Email", font=("Arial", 15))
 
     # Create entry boxes
-    ent_store_id = tk.Entry(store_frame, width=30)
-    ent_store_name = tk.Entry(store_frame, width=30)
-    ent_store_address = tk.Entry(store_frame, width=30)
-    ent_store_phone = tk.Entry(store_frame, width=30)
-    ent_store_email = tk.Entry(store_frame, width=30)
+    global store_id, store_name, store_address, store_phone, store_email
+    store_id = tk.StringVar()
+    store_name = tk.StringVar()
+    store_address = tk.StringVar()
+    store_phone = tk.StringVar()
+    store_email = tk.StringVar()
+
+    # Get values from database with function get_store_info
+    store_id.set(func.get_store_info()[0])
+    store_name.set(func.get_store_info()[1])
+    store_address.set(func.get_store_info()[2])
+    store_phone.set(func.get_store_info()[3])
+    store_email.set(func.get_store_info()[4])
+
+    ent_store_id = tk.Entry(store_frame, width=30, textvariable=store_id)
+    ent_store_name = tk.Entry(store_frame, width=30, textvariable= store_name)
+    ent_store_address = tk.Entry(store_frame, width=30, textvariable= store_address)
+    ent_store_phone = tk.Entry(store_frame, width=30, textvariable= store_phone)
+    ent_store_email = tk.Entry(store_frame, width=30, textvariable= store_email)
 
     # Create buttons
-    btn_save = tk.Button(store_frame, text="Save", width=21, bg='#0052cc', fg='#ffffff')
+    btn_save = tk.Button(store_frame, text="Save", width=21, bg='#0052cc', fg='#ffffff', command = modify_store_func)
     btn_save['font'] = btn_font
     btn_exit = tk.Button(store_frame, text="Exit", width=21, command=store.destroy, bg='#fc0303', fg='#ffffff')
     btn_exit['font'] = btn_font
@@ -60,18 +74,28 @@ def modify_store():
     # Prevent resizing
     store.resizable(False, False)
 
-# Create a new window for creating staff info
+def modify_store_func():
+    func.modify_store(store_id.get(), store_name.get(), store_address.get(), store_phone.get(), store_email.get())
+    # If function modify_store returns False, show error message
+    if func.modify_store(store_id.get(), store_name.get(), store_address.get(), store_phone.get(), store_email.get()) == False:
+        messagebox.showerror("Error", "Store info is not modified!")
+    elif func.modify_store(store_id.get(), store_name.get(), store_address.get(), store_phone.get(), store_email.get()) == True:
+    # Verify if the staff info is saved
+        messagebox.showinfo("Success", "Store info modified successfully!")    
+
+
+# Create a new window for creating staff info [DONE]
 def add_staff():
     # Create a new window
     staff = tk.Toplevel(admin)
-    staff.title("Modify Staff Info")
+    staff.title("Add New Staff Info")
     staff_frame = tk.Frame(staff)
 
     # Create widgets
     btn_font = tkfont.Font(family="Arial", size=15)
 
     # Create labels
-    lbl_staff = tk.Label(staff_frame, text="Modify Staff Info", font=("Arial", 20, 'bold'), justify="center")
+    lbl_staff = tk.Label(staff_frame, text="Add New Staff Info", font=("Arial", 20, 'bold'), justify="center")
     lbl_staff_id = tk.Label(staff_frame, text="Staff ID", font=("Arial", 15))
     lbl_staff_name = tk.Label(staff_frame, text="Staff Name", font=("Arial", 15))
     lbl_staff_dob = tk.Label(staff_frame, text="Staff DOB", font=("Arial", 15))
@@ -96,7 +120,7 @@ def add_staff():
     ent_staff_email = tk.Entry(staff_frame, width=30, textvariable=st_email)
 
     # Create buttons
-    btn_save = tk.Button(staff_frame, text="Save", width=21, bg='#0052cc', fg='#ffffff', command=add_staff_func)
+    btn_save = tk.Button(staff_frame, text="Save", width=21, bg='#0052cc', fg='#ffffff', command=lambda: add_staff_func(st_ID.get(), st_name.get(), st_dob.get(), st_address.get(), st_phone.get(), st_email.get()))
     btn_save['font'] = btn_font
     btn_exit = tk.Button(staff_frame, text="Exit", width=21, command=staff.destroy, bg='#fc0303', fg='#ffffff')
     btn_exit['font'] = btn_font
@@ -116,19 +140,26 @@ def add_staff():
     ent_staff_address.grid(row=4, column=1, padx= 15, pady=5, sticky="nsew")
     ent_staff_phone.grid(row=5, column=1, padx= 15, pady=5, sticky="nsew")
     ent_staff_email.grid(row=6, column=1, padx= 15, pady=5, sticky="nsew")
-    btn_save.grid(row=7, column=0, padx= 15, pady=5, sticky="nsew")
-    btn_exit.grid(row=7, column=1, padx= 15, pady=5, sticky="nsew")
-
+    btn_exit.grid(row=7, column=0, padx= 15, pady=5, sticky="nsew")
+    btn_save.grid(row=7, column=1, padx= 15, pady=5, sticky="nsew")
+    
     # Prevent resizing
     staff.resizable(False, False)
 
-# Define a function for saving staff info
-def add_staff_func():
-    func.add_staff(st_ID.get(), st_name.get(), st_dob.get(), st_address.get(), st_phone.get(), st_email.get())
-    # Verify if the staff info is saved
-    messagebox.showinfo("Success", "Staff info saved successfully!")
+    # Define a function for saving staff info
+    def add_staff_func(st_ID, st_name, st_dob, st_address, st_phone, st_email):
+        if func.check_staff(st_ID, st_phone, st_email) == True:
+            messagebox.showerror("Error", "One of the input info is already exists!\nPlease try again!")
+        else:
+            if func.add_staff(st_ID, st_name, st_dob, st_address, st_phone, st_email) == True:
+                messagebox.showinfo("Success", "Staff info saved successfully!\nPress 'OK' to continue")
+                # Close the window
+                staff.destroy()
+            elif func.add_staff(st_ID, st_name, st_dob, st_address, st_phone, st_email) == False:
+                messagebox.showerror("Error", "Staff info failed to save!\nPlease check again!")
+        
 
-# Create a new window for modifying staff info
+# Create a new window for modifying staff info [PENDING]
 def modify_staff():
     # Create a new window
     staff = tk.Toplevel(admin)
@@ -147,34 +178,35 @@ def modify_staff():
     lbl_staff_phone = tk.Label(staff_frame, text="Staff Phone", font=("Arial", 15))
     lbl_staff_email = tk.Label(staff_frame, text="Staff Email", font=("Arial", 15))
 
-    # Get staff list from database and create a drop down menu
-    staff_list = func.get_staff_list()
-    staff_id_select = ttk.Combobox(staff_frame, values=staff_list, width=27)
-    staff_id_select.current(0)
-
-    # Create entry boxes, get the value from the drop down menu (st_ID, st_name, st_dob, st_address, st_phone, st_email)
-    global st_ID, st_name, st_dob, st_address, st_phone, st_email 
+    # Create dropdown menu to select staff and set all entry boxes to the selected staff's info
+    staff_list = func.get_staff_info()
+    staff_list = [i[0] for i in staff_list]
     st_ID = tk.StringVar()
+    st_ID.set(staff_list[0])
+    staff_menu = tk.OptionMenu(staff_frame, st_ID, *staff_list)
+    staff_menu.config(font=("Arial", 12), width=30)
+
+    # Create entry boxes
     st_name = tk.StringVar()
     st_dob = tk.StringVar()
     st_address = tk.StringVar()
     st_phone = tk.StringVar()
     st_email = tk.StringVar()
-    
-    lbl_staff_id_var = tk.Label(staff_frame, textvariable=st_ID, font=("Arial", 15))
-    ent_staff_name = tk.Entry(staff_frame, width=30, textvariable=st_name)
-    ent_staff_dob = tk.Entry(staff_frame, width=30, textvariable=st_dob)
-    ent_staff_address = tk.Entry(staff_frame, width=30, textvariable=st_address)
-    ent_staff_phone = tk.Entry(staff_frame, width=30, textvariable=st_phone)
-    ent_staff_email = tk.Entry(staff_frame, width=30, textvariable=st_email)
+
+    ent_staff_name = tk.Entry(staff_frame, textvariable=st_name, width=30, font=("Arial", 15))
+    ent_staff_dob = tk.Entry(staff_frame, textvariable=st_dob, width=30, font=("Arial", 15))
+    ent_staff_address = tk.Entry(staff_frame, textvariable=st_address, width=30, font=("Arial", 15))
+    ent_staff_phone = tk.Entry(staff_frame, textvariable=st_phone, width=30, font=("Arial", 15))
+    ent_staff_email = tk.Entry(staff_frame, textvariable=st_email, width=30, font=("Arial", 15))
 
     # Create buttons
     btn_save = tk.Button(staff_frame, text="Save", width=21, bg='#0052cc', fg='#ffffff', command=modify_staff_func)
     btn_save['font'] = btn_font
-    btn_exit = tk.Button(staff_frame, text="Exit", width=21, command=staff.destroy, bg='#fc0303', fg='#ffffff')
+    btn_exit = tk.Button(staff_frame, text="Exit", width=21, bg='#fc0303', fg='#ffffff', command=staff.destroy)
     btn_exit['font'] = btn_font
 
-    # Style labels, entry boxes and buttons
+    # Create a grid layout
+    staff_frame.grid(row=0, column=0, sticky="nsew")
     lbl_staff.grid(row=0, column=0, columnspan=2, padx= 15, pady=5, sticky="nsew")
     lbl_staff_id.grid(row=1, column=0, padx= 15, pady=5, sticky="nsew")
     lbl_staff_name.grid(row=2, column=0, padx= 15, pady=5, sticky="nsew")
@@ -182,17 +214,16 @@ def modify_staff():
     lbl_staff_address.grid(row=4, column=0, padx= 15, pady=5, sticky="nsew")
     lbl_staff_phone.grid(row=5, column=0, padx= 15, pady=5, sticky="nsew")
     lbl_staff_email.grid(row=6, column=0, padx= 15, pady=5, sticky="nsew")
-    staff_id_select.grid(row=1, column=1, padx= 15, pady=5, sticky="nsew")
-    lbl_staff_id_var.grid(row=1, column=1, padx= 15, pady=5, sticky="nsew")
+    staff_menu.grid(row=1, column=1, padx= 15, pady=5, sticky="nsew")
     ent_staff_name.grid(row=2, column=1, padx= 15, pady=5, sticky="nsew")
     ent_staff_dob.grid(row=3, column=1, padx= 15, pady=5, sticky="nsew")
     ent_staff_address.grid(row=4, column=1, padx= 15, pady=5, sticky="nsew")
     ent_staff_phone.grid(row=5, column=1, padx= 15, pady=5, sticky="nsew")
     ent_staff_email.grid(row=6, column=1, padx= 15, pady=5, sticky="nsew")
-    btn_save.grid(row=7, column=0, padx= 15, pady=5, sticky="nsew")
-    btn_exit.grid(row=7, column=1, padx= 15, pady=5, sticky="nsew")
+    btn_exit.grid(row=7, column=0, padx= 15, pady=5, sticky="nsew")
+    btn_save.grid(row=7, column=1, padx= 15, pady=5, sticky="nsew")
     
-    # Prevent resizing
+    # Prevent the user from resizing the window
     staff.resizable(False, False)
 
 # Define a function for saving staff info
@@ -305,6 +336,7 @@ def modify_customer():
 # First window
 
 func.create_connection()
+func.add_store_default()
 admin = tk.Tk()
 admin.title("Book Store Management System - Loged in as admin")
 frame = tk.Frame(admin)
