@@ -1,3 +1,5 @@
+import sys
+sys.dont_write_bytecode = True
 import tkinter as tk
 import subprocess
 import func
@@ -7,16 +9,16 @@ login = tk.Tk()
 login.title("Book Store Management System")
 
 # Create widgets
-btn_font = tkfont.Font(family="Arial", size=10)
+btn_font = tkfont.Font(family="Arial", size=15)
 
 # Create labels
-lb_title = tk.Label(login, text="Login to\nBook Store Management System", font=("Arial", 20, 'bold'), justify="center")
-lb_usr = tk.Label(login, text="Username", font=("Arial", 13))
-lb_pwd = tk.Label(login, text="Password", font=("Arial", 13))
+lb_title = tk.Label(login, text="Login to\nBook Store Management System", font=("Arial", 25, 'bold'), justify="center")
+lb_usr = tk.Label(login, text="Username", font=("Arial", 15))
+lb_pwd = tk.Label(login, text="Password", font=("Arial", 15))
 
 # Create entry boxes
-box_usr = tk.Entry(login, width=40, font=("Arial", 12), justify="center")
-box_pwd = tk.Entry(login, width=40, font=("Arial", 12), justify="center", show="*")
+box_usr = tk.Entry(login, width=40, font=("Arial", 15), justify="center")
+box_pwd = tk.Entry(login, width=40, font=("Arial", 15), justify="center", show="*")
 
 # Create buttons
 button_frame = tk.Frame(login)

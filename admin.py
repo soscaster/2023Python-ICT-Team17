@@ -488,7 +488,7 @@ frame = tk.Frame(admin)
 btn_font = tkfont.Font(family="Arial", size=15)
 
 # Create labels
-lbl_welcome = tk.Label(frame, text="Welcome to\nBook Store Management System", font=("Arial", 20, 'bold'), justify="center")
+lbl_welcome = tk.Label(frame, text="Welcome to\nBook Store Management System", font=("Arial", 25, 'bold'), justify="center")
 lbl_hihi = tk.Label(frame, text=" ", font=("Arial", 13))
 
 # Create buttons
