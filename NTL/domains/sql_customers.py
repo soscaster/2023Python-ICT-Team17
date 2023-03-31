@@ -14,8 +14,11 @@ class Database:
         self.dbCursor.execute("UPDATE customers SET name = ?, dob = ?, address = ?, phone = ?, email = ? WHERE id = ?", (name, dob, address, phone, email, id))
         self.dbConnection.commit()
 
-    def Validate(self, id, phone, email):
-        self.dbCursor.execute("SELECT * FROM customers WHERE id = ? OR phone = ? OR email = ?", (id, phone, email))
+    def Validate(self, id, phone, email ,mode):
+        if (mode == 1):
+            self.dbCursor.execute("SELECT * FROM customers WHERE id = ? OR phone = ? OR email = ?", (id, phone, email))
+        else:
+            self.dbCursor.execute("SELECT * FROM customers WHERE id != ? AND (phone = ? OR email = ?)", (id, phone, email))
         searchResults = self.dbCursor.fetchall()
         if (len(searchResults)==0):
             return False

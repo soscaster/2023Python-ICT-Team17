@@ -164,7 +164,7 @@ def add_staff():
 
     # Define a function for saving staff info
     def add_staff_func(st_ID, st_pwd, st_name, st_dob, st_address, st_phone, st_email):
-        if sql_staff.Database().Validate(st_ID, st_phone, st_email) == True:
+        if sql_staff.Database().Validate(st_ID, st_phone, st_email, 1) == True:
             messagebox.showerror("Error", "One of the input info is already exists!\nPlease try again!")
         else:
             if fu.add_staff(st_ID, st_pwd, st_name, st_dob, st_address, st_phone, st_email) == True:
@@ -282,8 +282,11 @@ def modify_staff():
 
     # Define a function for saving staff info
     def modify_staff_func():
-        sql_staff.Database().Update(st_pwd.get(), st_name.get(), st_dob.get(), st_address.get(), st_phone.get(), st_email.get(), 0, st_ID.get())
-        messagebox.showinfo("Success", "Staff info saved!\nPlease refresh the page to see the changes!")
+        if sql_staff.Database().Validate(st_ID.get(), st_phone.get(), st_email.get(), 2) == True:
+            messagebox.showerror("Error", "One of the input info is already exists!\nPlease try again!")
+        else:
+            sql_staff.Database().Update(st_pwd.get(), st_name.get(), st_dob.get(), st_address.get(), st_phone.get(), st_email.get(), 0, st_ID.get())
+            messagebox.showinfo("Success", "Staff info saved!\nPlease refresh the page to see the changes!")
 
     def delete_staff_func():
         if fu.remove_staff(st_ID.get()) == True:
@@ -364,7 +367,7 @@ def add_customer():
 
     # Define a function for saving customer info
     def add_customer_func(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email):
-        if sql_customers.Database().Validate(cu_ID, cu_phone, cu_email) == True:
+        if sql_customers.Database().Validate(cu_ID, cu_phone, cu_email, 1) == True:
             messagebox.showerror("Error", "One of the input info is already exists!\nPlease try again!")
         else:
             if fu.add_customer(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email) == True:
@@ -476,8 +479,11 @@ def modify_customer():
 
     # Define a function for saving customer info
     def modify_customer_func():
-        sql_customers.Database().Update(cu_name.get(), cu_dob.get(), cu_address.get(), cu_phone.get(), cu_email.get(), cu_ID.get())
-        messagebox.showinfo("Success", "Customer info saved!\nPlease refresh the page to see the changes!")
+        if sql_customers.Database().Validate(cu_ID.get(), cu_phone.get(), cu_email.get(), 2) == True:
+            messagebox.showerror("Error", "One of the input info is already exists!\nPlease try again!")
+        else:
+            sql_customers.Database().Update(cu_name.get(), cu_dob.get(), cu_address.get(), cu_phone.get(), cu_email.get(), cu_ID.get())
+            messagebox.showinfo("Success", "Customer info saved!\nPlease refresh the page to see the changes!")
 
     def delete_customer_func():
         if fu.remove_customer(cu_ID.get()) == True:

@@ -11,15 +11,18 @@ class Database:
         self.dbConnection.commit()
 
     def Update(self, pwd, name, dob, address, phone, email, salary, id):
-        self.dbCursor.execute("UPDATE staff SET name = ?, password = ?, dob = ?, address = ?, phone = ?, email = ?, salary = ? WHERE id = ?", (name, pwd, dob, address, phone, salary, email, id))
+        self.dbCursor.execute("UPDATE staff SET password = ?, name=?, dob = ?, address = ?, phone = ?, email = ?, salary = ? WHERE id = ?", (pwd, name, dob, address, phone, email, salary, id))
         self.dbConnection.commit()
 
     def Update_salary(self,salary,id):
         self.dbCursor.execute("UPDATE staff SET salary = ? WHERE id = ?", (salary, id))
         self.dbConnection.commit()
 
-    def Validate(self, id, phone, email):
-        self.dbCursor.execute("SELECT * FROM staff WHERE id = ? OR phone = ? OR email = ?", (id, phone, email))
+    def Validate(self, id, phone, email ,mode):
+        if (mode == 1):
+            self.dbCursor.execute("SELECT * FROM staff WHERE id = ? OR phone = ? OR email = ?", (id, phone, email))
+        else:
+            self.dbCursor.execute("SELECT * FROM staff WHERE id != ? AND (phone = ? OR email = ?)", (id, phone, email))
         searchResults = self.dbCursor.fetchall()
         if (len(searchResults)==0):
             return False
