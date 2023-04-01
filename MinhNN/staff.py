@@ -272,6 +272,12 @@ def add_book():
     ent_book_quantity.grid(row = 8, column = 1, padx = 15, pady = 5, sticky = "nsew")
     btn_save.grid(row = 9, column = 1, padx = 15, pady = 5, sticky = "nsew")
     btn_exit.grid(row = 9, column = 0, padx = 15, pady = 5, sticky = "nsew")
+    book.rowconfigure(0, weight=1, minsize=50)
+    book.columnconfigure(0, weight=1, minsize=75)
+    for i in range(10):
+        frm_book.rowconfigure(i, weight=1, minsize=50)
+    for i in range(2):  
+        frm_book.columnconfigure(i, weight=1, minsize=75) 
     
 
 #Function to modify book info
@@ -366,6 +372,12 @@ def mod_book():
     ent_book_quantity.grid(row = 8, column = 1, padx = 15, pady = 5, sticky = "nsew")
     btn_save.grid(row = 9, column = 1, padx = 15, pady = 5, sticky = "nsew")
     btn_exit.grid(row = 9, column = 0, padx = 15, pady = 5, sticky = "nsew")
+    book.rowconfigure(0, weight=1, minsize=50)
+    book.columnconfigure(0, weight=1, minsize=75)
+    for i in range(10):
+        frm_book.rowconfigure(i, weight=1, minsize=50)
+    for i in range(2):  
+        frm_book.columnconfigure(i, weight=1, minsize=75)      
     
     
     
@@ -389,6 +401,19 @@ btn_mod_book.grid(row = 1, column = 1, padx = 10, pady = 5, sticky = "nsew")
 btn_add_customer.grid(row = 2, column = 0, padx = 10, pady = 5, sticky = "nsew")
 btn_mod_customer.grid(row = 2, column = 1, padx = 10, pady = 5, sticky = "nsew")
 btn_cut.grid(row = 3, column = 0, columnspan = 2, padx = 10, pady = 5, sticky = "nsew")
+
+frm.rowconfigure(0, weight=1, minsize=50)
+frm.rowconfigure(1, weight=1, minsize=50)
+frm.rowconfigure(2, weight=1, minsize=50)
+frm.rowconfigure(3, weight=1, minsize=50)
+frm.columnconfigure(0, weight=1, minsize=75)
+frm.columnconfigure(1, weight=1, minsize=75)
+window.columnconfigure(0, weight=1, minsize=75)
+window.rowconfigure(0, weight=1, minsize=50)
+
+
+
+
 
 window.mainloop()
 
