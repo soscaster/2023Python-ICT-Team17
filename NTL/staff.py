@@ -70,12 +70,12 @@ def add_customer():
 
     # Define a function for saving customer info
     def add_customer_func(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email):
-        if sql_customers.Database().Validate(cu_ID, cu_phone, cu_email, 1) == True:
-            messagebox.showerror("Error", "ID or Phone or Email info is already exists!\nPlease try again!")
-        elif func.check_phone(cu_phone) == False:
+        if func.check_phone(cu_phone) == False:
             messagebox.showerror("Error", "Invalid phone number!\nPlease try again!")
         elif func.check_email(cu_email) == False:
             messagebox.showerror("Error", "Invalid email type!\nPlease try again!")
+        elif sql_customers.Database().Validate(cu_ID, cu_phone, cu_email, 1) == True:
+            messagebox.showerror("Error", "ID or Phone or Email info is already exists!\nPlease try again!")
         else:
             if func.add_customer(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email) == True:
                 messagebox.showinfo("Success", "Customer info saved successfully!\nPress 'OK' to continue")
@@ -185,12 +185,12 @@ def modify_customer():
 
     # Define a function for saving customer info
     def modify_customer_func():
-        if sql_customers.Database().Validate(cu_ID.get(), cu_phone.get(), cu_email.get(), 2) == True:
-            messagebox.showerror("Error", "Phone or Email info is already exists!\nPlease try again!")
-        elif func.check_phone(cu_phone.get()) == False:
+        if func.check_phone(cu_phone.get()) == False:
             messagebox.showerror("Error", "Invalid phone number!\nPlease try again!")
         elif func.check_email(cu_email.get()) == False:
             messagebox.showerror("Error", "Invalid email type!\nPlease try again!")
+        elif sql_customers.Database().Validate(cu_ID.get(), cu_phone.get(), cu_email.get(), 2) == True:
+            messagebox.showerror("Error", "Phone or Email info is already exists!\nPlease try again!")
         else:
             sql_customers.Database().Update(cu_name.get(), cu_dob.get(), cu_address.get(), cu_phone.get(), cu_email.get(), cu_ID.get())
             messagebox.showinfo("Success", "Customer info saved!\nPlease refresh the page to see the changes!")
