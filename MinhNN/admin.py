@@ -504,7 +504,7 @@ def modify_customer():
 
     # Define a function for saving customer info
     def modify_customer_func():
-        if check_dob(cu_dob) == True and check_phone(cu_phone) == True and check_email(cu_email) == True:
+        if check_dob(cu_dob.get()) == True and check_phone(cu_phone.get()) == True and check_email(cu_email.get()) == True:
             customerfunc.modify_customer(cu_ID.get(), cu_name.get(), cu_dob.get(), cu_address.get(), cu_phone.get(), cu_email.get())
             messagebox.showinfo("Success", "Customer info saved!\nPlease refresh the page to see the changes!")
             customer.destroy()
