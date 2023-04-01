@@ -65,7 +65,7 @@ def get_book_list():
 def get_book_info(id):
     sql_conn = sqlite3.connect("bookstore.db")
     cur = sql_conn.cursor()
-    cur.execute("SELECT * FROM book WHERE book_id = ?", (id))
+    cur.execute("SELECT * FROM book WHERE book_id = ?", (id,))
     book = cur.fetchall()
     sql_conn.close()
     return book[0]
