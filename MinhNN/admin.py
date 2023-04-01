@@ -7,7 +7,36 @@ import stafffunc
 import customerfunc
 import os
 clear = lambda: os.system('clear')
+import re
+ 
+#Validity functions
+def check_email(email):
+    pattern = '[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+    if re.search(pattern, email):
+        print("Valid")
+        return True
+    else:
+        print("Invalid")
+        return False
+    
+def check_phone(phone):
+    pattern = '0\d{9}$'
+    if re.search(pattern, phone):
+        print("Valid")
+        return True
+    else:
+        print("Invalid")
+        return False
 
+def check_dob(dob):
+    pattern = '^[0-9]{1,2}\\/[0-9]{1,2}\\/[0-9]{4}$'
+    if re.search(pattern, dob):
+        print("Valid")
+        return True
+    else:
+        print("Invalid")
+        return False
+    
 # Create a new window for modifying store info [DONE]
 def modify_store():
     clear()
@@ -99,9 +128,9 @@ def add_staff():
     lbl_staff_id = tk.Label(staff_frame, text="Staff ID", font=("Arial", 15))
     lbl_staff_pwd = tk.Label(staff_frame, text = "Staff Login Password", font=("Arial", 15))
     lbl_staff_name = tk.Label(staff_frame, text="Staff Name", font=("Arial", 15))
-    lbl_staff_dob = tk.Label(staff_frame, text="Staff DOB", font=("Arial", 15))
+    lbl_staff_dob = tk.Label(staff_frame, text="Staff DOB (dd/mm/yyyy)", font=("Arial", 15))
     lbl_staff_address = tk.Label(staff_frame, text="Staff Address", font=("Arial", 15))
-    lbl_staff_phone = tk.Label(staff_frame, text="Staff Phone", font=("Arial", 15))
+    lbl_staff_phone = tk.Label(staff_frame, text="Staff Phone (10 didgits)", font=("Arial", 15))
     lbl_staff_email = tk.Label(staff_frame, text="Staff Email", font=("Arial", 15))
 
     # Create entry boxes   
@@ -153,20 +182,22 @@ def add_staff():
 
     # Define a function for saving staff info
     def add_staff_func(st_ID, st_pwd, st_name, st_dob, st_address, st_phone, st_email):
-        if stafffunc.check_staff(st_ID, st_phone, st_email) == True:
-            messagebox.showerror("Error", "One of the input info is already exists!\nPlease try again!")
+        if check_dob(st_dob) == True and check_phone(st_phone) == True and check_email(st_email) == True:
+            if stafffunc.check_staff(st_ID, st_phone, st_email) == True:
+                messagebox.showerror("Error", "One of the input info is already exists!\nPlease try again!")
+            else:
+                if stafffunc.add_staff(st_ID, st_pwd, st_name, st_dob, st_address, st_phone, st_email) == True:
+                    messagebox.showinfo("Success", "Staff info saved successfully!\nPress 'OK' to continue")
+                    # Close the window
+                    if stafffunc.check_staff_table() == False:
+                        btn_staff['state'] = 'disabled'
+                    else:
+                        btn_staff['state'] = 'normal'
+                    staff.destroy()
+                elif stafffunc.add_staff(st_ID, st_pwd, st_name, st_dob, st_address, st_phone, st_email) == False:
+                    messagebox.showerror("Error", "Staff info failed to save!\nPlease check again!")
         else:
-            if stafffunc.add_staff(st_ID, st_pwd, st_name, st_dob, st_address, st_phone, st_email) == True:
-                messagebox.showinfo("Success", "Staff info saved successfully!\nPress 'OK' to continue")
-                # Close the window
-                if stafffunc.check_staff_table() == False:
-                    btn_staff['state'] = 'disabled'
-                else:
-                    btn_staff['state'] = 'normal'
-                staff.destroy()
-            elif stafffunc.add_staff(st_ID, st_pwd, st_name, st_dob, st_address, st_phone, st_email) == False:
-                messagebox.showerror("Error", "Staff info failed to save!\nPlease check again!")
-        
+            messagebox.showerror("Error", "Invalid input")
 
 # Create a new window for modifying staff info [DONE]
 def modify_staff():
@@ -184,9 +215,9 @@ def modify_staff():
     lbl_staff_id = tk.Label(staff_frame, text="Staff ID", font=("Arial", 15))
     lbl_staff_pwd = tk.Label(staff_frame, text="Staff Login Password", font=("Arial", 15))
     lbl_staff_name = tk.Label(staff_frame, text="Staff Name", font=("Arial", 15))
-    lbl_staff_dob = tk.Label(staff_frame, text="Staff DOB", font=("Arial", 15))
+    lbl_staff_dob = tk.Label(staff_frame, text="Staff DOB (dd/mm/yyyy)", font=("Arial", 15))
     lbl_staff_address = tk.Label(staff_frame, text="Staff Address", font=("Arial", 15))
-    lbl_staff_phone = tk.Label(staff_frame, text="Staff Phone", font=("Arial", 15))
+    lbl_staff_phone = tk.Label(staff_frame, text="Staff Phone (10 digits)", font=("Arial", 15))
     lbl_staff_email = tk.Label(staff_frame, text="Staff Email", font=("Arial", 15))
 
     # Create entry boxes
@@ -241,6 +272,7 @@ def modify_staff():
         cf = tk.messagebox.askyesno("Delete", "Are you sure you want to delete this staff?")
         if cf == True:
             delete_staff_func()
+            staff.destroy()
     btn_delete = tk.Button(staff_frame, text="Delete", width=21, bg='#fc7303', fg='#ffffff', command=lambda: del_cf())
     btn_delete['font'] = btn_font
     
@@ -271,8 +303,12 @@ def modify_staff():
 
     # Define a function for saving staff info
     def modify_staff_func():
-        stafffunc.modify_staff(st_ID.get(), st_pwd.get(), st_name.get(), st_dob.get(), st_address.get(), st_phone.get(), st_email.get())
-        messagebox.showinfo("Success", "Staff info saved!\nPlease refresh the page to see the changes!")
+        if check_dob(st_dob.get()) == True and check_phone(st_phone.get()) == True and check_email(st_email.get()) == True:
+            stafffunc.modify_staff(st_ID.get(), st_pwd.get(), st_name.get(), st_dob.get(), st_address.get(), st_phone.get(), st_email.get())
+            messagebox.showinfo("Success", "Staff info saved!\nPlease refresh the page to see the changes!")
+            staff.destroy()
+        else:
+            messagebox.showerror("Error", "Invalid input")
 
     def delete_staff_func():
         if stafffunc.delete_staff(st_ID.get()) == True:
@@ -303,9 +339,9 @@ def add_customer():
     lbl_customer = tk.Label(customer_frame, text="Add New Customer Info", font=("Arial", 20, 'bold'), justify="center")
     lbl_customer_id = tk.Label(customer_frame, text="Customer ID", font=("Arial", 15))
     lbl_customer_name = tk.Label(customer_frame, text="Customer Name", font=("Arial", 15))
-    lbl_customer_dob = tk.Label(customer_frame, text="Customer DOB", font=("Arial", 15))
+    lbl_customer_dob = tk.Label(customer_frame, text="Customer DOB (dd/mm/yyyy)", font=("Arial", 15))
     lbl_customer_address = tk.Label(customer_frame, text="Customer Address", font=("Arial", 15))
-    lbl_customer_phone = tk.Label(customer_frame, text="Customer Phone", font=("Arial", 15))
+    lbl_customer_phone = tk.Label(customer_frame, text="Customer Phone (10 digits)", font=("Arial", 15))
     lbl_customer_email = tk.Label(customer_frame, text="Customer Email", font=("Arial", 15))
 
     # Create entry boxes   
@@ -353,20 +389,22 @@ def add_customer():
 
     # Define a function for saving customer info
     def add_customer_func(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email):
-        if customerfunc.check_cu(cu_ID, cu_phone, cu_email) == True:
-            messagebox.showerror("Error", "One of the input info is already exists!\nPlease try again!")
+        if check_dob(cu_dob) == True and check_phone(cu_phone) == True and check_email(cu_email) == True:
+            if customerfunc.check_cu(cu_ID, cu_phone, cu_email) == True:
+                messagebox.showerror("Error", "One of the input info is already exists!\nPlease try again!")
+            else:
+                if customerfunc.add_customer(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email) == True:
+                    messagebox.showinfo("Success", "Customer info saved successfully!\nPress 'OK' to continue")
+                    # Close the window
+                    if customerfunc.check_customer_table() == False:
+                        btn_customer['state'] = 'disabled'
+                    else:
+                        btn_customer['state'] = 'normal'
+                    customer.destroy()
+                elif customerfunc.add_customer(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email) == False:
+                    messagebox.showerror("Error", "Customer info failed to save!\nPlease check again!")
         else:
-            if customerfunc.add_customer(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email) == True:
-                messagebox.showinfo("Success", "Customer info saved successfully!\nPress 'OK' to continue")
-                # Close the window
-                if customerfunc.check_customer_table() == False:
-                    btn_customer['state'] = 'disabled'
-                else:
-                    btn_customer['state'] = 'normal'
-                customer.destroy()
-            elif customerfunc.add_customer(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email) == False:
-                messagebox.showerror("Error", "Customer info failed to save!\nPlease check again!")
-        
+            messagebox.showerror("Error", "Invalid input")
 
 # Create a new window for modifying customer info [DONE]
 def modify_customer():
@@ -383,9 +421,9 @@ def modify_customer():
     lbl_customer = tk.Label(customer_frame, text="Modify Customer Info", font=("Arial", 20, 'bold'), justify="center")
     lbl_customer_id = tk.Label(customer_frame, text="Customer ID", font=("Arial", 15))
     lbl_customer_name = tk.Label(customer_frame, text="Customer Name", font=("Arial", 15))
-    lbl_customer_dob = tk.Label(customer_frame, text="Customer DOB", font=("Arial", 15))
+    lbl_customer_dob = tk.Label(customer_frame, text="Customer DOB (dd/mm/yyyy)", font=("Arial", 15))
     lbl_customer_address = tk.Label(customer_frame, text="Customer Address", font=("Arial", 15))
-    lbl_customer_phone = tk.Label(customer_frame, text="Customer Phone", font=("Arial", 15))
+    lbl_customer_phone = tk.Label(customer_frame, text="Customer Phone (10 digits)", font=("Arial", 15))
     lbl_customer_email = tk.Label(customer_frame, text="Customer Email", font=("Arial", 15))
 
     # Create entry boxes
@@ -437,6 +475,7 @@ def modify_customer():
         cf = tk.messagebox.askyesno("Delete", "Are you sure you want to delete this customer?")
         if cf == True:
             delete_customer_func()
+            customer.destroy()
     btn_delete = tk.Button(customer_frame, text="Delete", width=21, bg='#fc7303', fg='#ffffff', command=lambda: del_cf())
     btn_delete['font'] = btn_font
     
@@ -465,9 +504,13 @@ def modify_customer():
 
     # Define a function for saving customer info
     def modify_customer_func():
-        customerfunc.modify_customer(cu_ID.get(), cu_name.get(), cu_dob.get(), cu_address.get(), cu_phone.get(), cu_email.get())
-        messagebox.showinfo("Success", "Customer info saved!\nPlease refresh the page to see the changes!")
-
+        if check_dob(cu_dob) == True and check_phone(cu_phone) == True and check_email(cu_email) == True:
+            customerfunc.modify_customer(cu_ID.get(), cu_name.get(), cu_dob.get(), cu_address.get(), cu_phone.get(), cu_email.get())
+            messagebox.showinfo("Success", "Customer info saved!\nPlease refresh the page to see the changes!")
+            customer.destroy()
+        else:
+            messagebox.showerror("Error", "Invalid input")
+    
     def delete_customer_func():
         if customerfunc.delete_customer(cu_ID.get()) == True:
             # Verify if the customer info is saved
@@ -530,3 +573,4 @@ admin.resizable(False, False)
 admin.mainloop()
 
 #Close modidy windows after save
+
