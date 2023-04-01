@@ -4,18 +4,21 @@ class Database:
     def __init__(self):
         self.dbConnection = sqlite3.connect("bookstore.db")
         self.dbCursor = self.dbConnection.cursor()
-        self.dbCursor.execute("CREATE TABLE IF NOT EXISTS books (id PRIMARYKEY text, title text, genre text, author text, year text, quantity int, target_audience text, price float)")
+        self.dbCursor.execute("CREATE TABLE IF NOT EXISTS books (id PRIMARYKEY text, title text, genre text, author text, target text, publisher text, price int, quantity int)")
 
-    def Insert(self, id, title, genre, author, year, quantity, target_audience, price):
-        self.dbCursor.execute("INSERT INTO books VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (id, title, genre, author, year, quantity, target_audience, price))
+    def Insert(self, id, title, genre, author, target, publisher, price, quantity):
+        self.dbCursor.execute("INSERT INTO books VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (id, title, genre, author, target, publisher, price, quantity))
         self.dbConnection.commit()
 
-    def Update(self, title, genre, author, year, quantity, target_audience, price, id):
-        self.dbCursor.execute("UPDATE books SET title = ?, genre = ?, author = ?, year = ?, quantity = ?, target_audience = ?, price = ? WHERE id = ?", (title, genre, author, year, quantity, target_audience, price, id))
+    def Update(self, title, genre, author, target, publisher, price, quantity, id):
+        self.dbCursor.execute("UPDATE books SET title = ?, genre = ?, author = ?, target = ?, publisher = ?, price = ?, quantity = ? WHERE id = ?", (title, genre, author, target, publisher, price, quantity, id))
         self.dbConnection.commit()
     
-    def Validate(self, id):
-        self.dbCursor.execute("SELECT * FROM books WHERE id = ?", (id, ))
+    def Validate(self, id, title, mode):
+        if (mode==1):
+            self.dbCursor.execute("SELECT * FROM books WHERE id = ? or title = ?", (id, title))
+        else:
+            self.dbCursor.execute("SELECT * FROM books WHERE id != ? and title = ?", (id, title))
         searchResults = self.dbCursor.fetchall()
         if (len(searchResults)==0):
             return False

@@ -4,12 +4,10 @@ import tkinter as tk
 from tkinter import messagebox, ttk, font as tkfont
 import os
 clear = lambda: os.system('clear')
-from domains import sql_admin
 from domains import sql_staff
-from domains import sql_books
 from domains import sql_store
 from domains import sql_customers
-import Functions as fu
+import process_checker as fu
 
 # Create a new window for modifying store info [DONE]
 def modify_store():
@@ -164,8 +162,12 @@ def add_staff():
 
     # Define a function for saving staff info
     def add_staff_func(st_ID, st_pwd, st_name, st_dob, st_address, st_phone, st_email):
-        if sql_staff.Database().Validate(st_ID, st_phone, st_email, 1) == True:
-            messagebox.showerror("Error", "One of the input info is already exists!\nPlease try again!")
+        if fu.check_phone(st_phone) == False:
+            messagebox.showerror("Error", "Invalid phone number!\nPlease try again!")
+        elif fu.check_email(st_email) == False:
+            messagebox.showerror("Error", "Invalid email type!\nPlease try again!")
+        elif sql_staff.Database().Validate(st_ID, st_phone, st_email, 1) == True:
+            messagebox.showerror("Error", "ID or Phone or Email is already exists!\nPlease try again!")
         else:
             if fu.add_staff(st_ID, st_pwd, st_name, st_dob, st_address, st_phone, st_email) == True:
                 messagebox.showinfo("Success", "Staff info saved successfully!\nPress 'OK' to continue")
@@ -282,8 +284,12 @@ def modify_staff():
 
     # Define a function for saving staff info
     def modify_staff_func():
-        if sql_staff.Database().Validate(st_ID.get(), st_phone.get(), st_email.get(), 2) == True:
-            messagebox.showerror("Error", "One of the input info is already exists!\nPlease try again!")
+        if fu.check_phone(st_phone.get()) == False:
+            messagebox.showerror("Error", "Invalid phone number!\nPlease try again!")
+        elif fu.check_email(st_email.get()) == False:
+            messagebox.showerror("Error", "Invalid email type!\nPlease try again!")
+        elif sql_staff.Database().Validate(st_ID.get(), st_phone.get(), st_email.get(), 2) == True:
+            messagebox.showerror("Error", "Phone or Email info is already exists!\nPlease try again!")
         else:
             sql_staff.Database().Update(st_pwd.get(), st_name.get(), st_dob.get(), st_address.get(), st_phone.get(), st_email.get(), 0, st_ID.get())
             messagebox.showinfo("Success", "Staff info saved!\nPlease refresh the page to see the changes!")
@@ -367,8 +373,12 @@ def add_customer():
 
     # Define a function for saving customer info
     def add_customer_func(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email):
-        if sql_customers.Database().Validate(cu_ID, cu_phone, cu_email, 1) == True:
-            messagebox.showerror("Error", "One of the input info is already exists!\nPlease try again!")
+        if fu.check_phone(cu_phone) == False:
+            messagebox.showerror("Error", "Invalid phone number!\nPlease try again!")
+        elif fu.check_email(cu_email) == False:
+            messagebox.showerror("Error", "Invalid email type!\nPlease try again!")
+        elif sql_customers.Database().Validate(cu_ID, cu_phone, cu_email, 1) == True:
+            messagebox.showerror("Error", "ID or Phone or Email info is already exists!\nPlease try again!")
         else:
             if fu.add_customer(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email) == True:
                 messagebox.showinfo("Success", "Customer info saved successfully!\nPress 'OK' to continue")
@@ -479,8 +489,12 @@ def modify_customer():
 
     # Define a function for saving customer info
     def modify_customer_func():
-        if sql_customers.Database().Validate(cu_ID.get(), cu_phone.get(), cu_email.get(), 2) == True:
-            messagebox.showerror("Error", "One of the input info is already exists!\nPlease try again!")
+        if fu.check_phone(cu_phone.get()) == False:
+            messagebox.showerror("Error", "Invalid phone number!\nPlease try again!")
+        elif fu.check_email(cu_email.get()) == False:
+            messagebox.showerror("Error", "Invalid email type!\nPlease try again!")
+        elif sql_customers.Database().Validate(cu_ID.get(), cu_phone.get(), cu_email.get(), 2) == True:
+            messagebox.showerror("Error", "Phone or Email info is already exists!\nPlease try again!")
         else:
             sql_customers.Database().Update(cu_name.get(), cu_dob.get(), cu_address.get(), cu_phone.get(), cu_email.get(), cu_ID.get())
             messagebox.showinfo("Success", "Customer info saved!\nPlease refresh the page to see the changes!")
