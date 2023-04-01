@@ -92,6 +92,7 @@ def modify_customer(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email):
     # Modify customer
     cur.execute("UPDATE customer SET cu_name = ?, cu_dob = ?, cu_address = ?, cu_phone = ?, cu_email = ? WHERE cu_ID = ?", (cu_name, cu_dob, cu_address, cu_phone, cu_email, cu_ID))
     sql_conn.commit()
+    sql_conn.close()
     print("customer modified successfully!")
     
 # Delete customer
