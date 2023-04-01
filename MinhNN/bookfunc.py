@@ -34,7 +34,7 @@ def add_book(id, title, genre, author, target, publisher, price, quantity):
     cur = sql_conn.cursor()
     cur.execute("INSERT INTO book VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (id, title, genre, author, target, publisher, price, quantity))
     sql_conn.commit()
-    cur.execute("SELECT * FROM book WHERE book_ID = ?", (id))
+    cur.execute("SELECT * FROM book WHERE book_ID = ?", (id,))
     customer = cur.fetchall()
     if customer:
         print("Book added!")
