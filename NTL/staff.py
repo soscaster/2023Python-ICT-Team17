@@ -70,7 +70,9 @@ def add_customer():
 
     # Define a function for saving customer info
     def add_customer_func(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email):
-        if func.check_phone(cu_phone) == False:
+        if func.check_dob(cu_dob) == False:
+            messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!")
+        elif func.check_phone(cu_phone) == False:
             messagebox.showerror("Error", "Invalid phone number!\nPlease try again!")
         elif func.check_email(cu_email) == False:
             messagebox.showerror("Error", "Invalid email type!\nPlease try again!")
@@ -185,7 +187,9 @@ def modify_customer():
 
     # Define a function for saving customer info
     def modify_customer_func():
-        if func.check_phone(cu_phone.get()) == False:
+        if func.check_dob(cu_dob.get()) == False:
+            messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!") 
+        elif func.check_phone(cu_phone.get()) == False:
             messagebox.showerror("Error", "Invalid phone number!\nPlease try again!")
         elif func.check_email(cu_email.get()) == False:
             messagebox.showerror("Error", "Invalid email type!\nPlease try again!")
@@ -366,7 +370,6 @@ def mod_book():
         cf = tk.messagebox.askyesno("Save", "Update this book info?")
         if cf == True:
             mod_book_func()
-            book.destroy()
             
     #Buttons        
     btn_save = tk.Button(frm_book, text="Save", font = ("Arial", 15), width=21, command=lambda: save_book())

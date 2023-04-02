@@ -2,7 +2,7 @@ import sys
 sys.dont_write_bytecode = True
 import tkinter as tk
 import subprocess
-import func
+from domains import sql_store
 from tkinter import messagebox, font as tkfont
 
 login = tk.Tk()
@@ -45,10 +45,12 @@ def runme(t: tk.Tk):
         messagebox.showinfo(title="Success", message="Login successful as admin")
         t.destroy()
         subprocess.call(["python3", "admin.py"])
+        exit
     elif input_usr == "staff" and input_pwd == "staff":
         messagebox.showinfo(title="Success", message="Login successful as staff")
         t.destroy()
         subprocess.call(["python3", "staff.py"])
+        exit()
     elif input_usr == "vuminh" and input_pwd == "npc":
         messagebox.showerror(title="STOP", message="dm vu minh! What are you doing here?")
         exit()
@@ -56,7 +58,6 @@ def runme(t: tk.Tk):
         messagebox.showerror(title="Error", message="Invalid username or password\nPlease try again.")
 
 
-func.create_connection()
-func.create_store_if_not_exist()
+sql_store.Database()
 
 login.mainloop()

@@ -6,9 +6,6 @@ from domains import sql_customers
 
 import re
 
-pattern = '^[a-z0-9]+[\.]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
-validate_phone_number_pattern = "^\\+?[0-9][0-9]{2,14}$"
-
 def add_admin(id, name, dob, phone, email):
     try:
         sql_staff.Database().Insert(id, name, dob, phone, email)
@@ -111,15 +108,22 @@ def remove_admin(id):
         return False
 
 def check_email(email):
+    pattern = '^[a-z0-9]+[\.]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
     if (re.search(pattern,email)):
         return True
     else:
         return False
 
 def check_phone(phone):
+    validate_phone_number_pattern = "^\\+?[0-9][0-9]{2,14}$"
     if (re.match(validate_phone_number_pattern,phone)):
         return True
     else:
         return False
 
-    
+def check_dob(dob):
+    pattern = '^[0-9]{1,2}\\/[0-9]{1,2}\\/[0-9]{4}$'
+    if re.search(pattern, dob):
+        return True
+    else:
+        return False

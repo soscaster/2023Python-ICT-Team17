@@ -85,7 +85,11 @@ def modify_store():
 
 def modify_store_func():
     # If function modify_store returns False, show error message
-    if fu.input_store_info(store_id.get(), store_name.get(), store_address.get(), store_phone.get(), store_email.get()) == False:
+    if fu.check_phone(store_phone.get()) == False:
+        messagebox.showerror("Error", "Invalid phone number!\nPlease try again!")
+    elif fu.check_email(store_email.get()) == False:
+        messagebox.showerror("Error", "Invalid email type!\nPlease try again!")
+    elif fu.input_store_info(store_id.get(), store_name.get(), store_address.get(), store_phone.get(), store_email.get()) == False:
         messagebox.showerror("Error", "Store info is not modified!")
     elif fu.input_store_info(store_id.get(), store_name.get(), store_address.get(), store_phone.get(), store_email.get()) == True:
     # Verify if the staff info is saved
@@ -162,7 +166,9 @@ def add_staff():
 
     # Define a function for saving staff info
     def add_staff_func(st_ID, st_pwd, st_name, st_dob, st_address, st_phone, st_email):
-        if fu.check_phone(st_phone) == False:
+        if fu.check_dob(st_dob) == False:
+            messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!")        
+        elif fu.check_phone(st_phone) == False:
             messagebox.showerror("Error", "Invalid phone number!\nPlease try again!")
         elif fu.check_email(st_email) == False:
             messagebox.showerror("Error", "Invalid email type!\nPlease try again!")
@@ -284,7 +290,9 @@ def modify_staff():
 
     # Define a function for saving staff info
     def modify_staff_func():
-        if fu.check_phone(st_phone.get()) == False:
+        if fu.check_dob(st_dob.get()) == False:
+            messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!")
+        elif fu.check_phone(st_phone.get()) == False:
             messagebox.showerror("Error", "Invalid phone number!\nPlease try again!")
         elif fu.check_email(st_email.get()) == False:
             messagebox.showerror("Error", "Invalid email type!\nPlease try again!")
@@ -373,7 +381,9 @@ def add_customer():
 
     # Define a function for saving customer info
     def add_customer_func(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email):
-        if fu.check_phone(cu_phone) == False:
+        if fu.check_dob(cu_dob) == False:
+            messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!")
+        elif fu.check_phone(cu_phone) == False:
             messagebox.showerror("Error", "Invalid phone number!\nPlease try again!")
         elif fu.check_email(cu_email) == False:
             messagebox.showerror("Error", "Invalid email type!\nPlease try again!")
@@ -489,7 +499,9 @@ def modify_customer():
 
     # Define a function for saving customer info
     def modify_customer_func():
-        if fu.check_phone(cu_phone.get()) == False:
+        if fu.check_dob(cu_dob.get()) == False:
+            messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!")
+        elif fu.check_phone(cu_phone.get()) == False:
             messagebox.showerror("Error", "Invalid phone number!\nPlease try again!")
         elif fu.check_email(cu_email.get()) == False:
             messagebox.showerror("Error", "Invalid email type!\nPlease try again!")
