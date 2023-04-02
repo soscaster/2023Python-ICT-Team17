@@ -33,6 +33,11 @@ class Database:
         self.dbCursor.execute("SELECT * FROM staff WHERE id = ?", (id, ))
         searchResults = self.dbCursor.fetchall()
         return searchResults
+    
+    def Searchall(self, id, name, dob, address, phone, email):
+        self.dbCursor.execute("SELECT * FROM staff WHERE id like '%%%s%%' AND name like '%%%s%%' AND dob like '%%%s%%' AND address like '%%%s%%' AND phone like '%%%s%%' AND email like '%%%s%%'" % (id, name, dob, address, phone, email))
+        searchResults = self.dbCursor.fetchall()
+        return searchResults
 
     def Delete(self, id):
         self.dbCursor.execute("DELETE FROM staff WHERE id = ?", (id, ))

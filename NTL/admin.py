@@ -522,6 +522,131 @@ def modify_customer():
         elif fu.remove_customer(cu_ID.get()) == False:
             messagebox.showerror("Error", "Customer not deleted!")
 
+#Staff_list window
+def staff_list():
+    clear()
+    list_staff = tk.Toplevel(admin)
+
+    list_staff.title("Staff")
+    frm = tk.Frame(list_staff)
+    tree = ttk.Treeview(list_staff)
+    tree['show']='headings'
+
+    list_staff.resizable(False,False)
+
+    # Define number of columns
+    tree["columns"] = ("ID", "Name", "Date of Birth", "Address", "Phone", "Email")
+    #Assign the width,minwidth and anchor to the respective columns 
+    tree.column ("ID", width=100, minwidth=50,anchor=tk.CENTER) 
+    tree.column ("Name", width=200, minwidth=100,anchor=tk.CENTER) 
+    tree.column ("Date of Birth", width=100, minwidth=100,anchor=tk.CENTER) 
+    tree.column ("Address", width=250, minwidth=150, anchor=tk .CENTER) 
+    tree.column ("Phone", width=150, minwidth=150, anchor=tk .CENTER) 
+    tree.column ("Email", width=250, minwidth=150, anchor=tk.CENTER)
+
+    #Assign the heading names to the respective columns 
+    tree.heading ("ID", text="ID", anchor=tk.CENTER) 
+    tree.heading ("Name", text="Name", anchor=tk.CENTER) 
+    tree.heading ("Date of Birth", text="Date of Birth", anchor=tk. CENTER)
+    tree.heading ("Address", text="Address", anchor=tk.CENTER) 
+    tree.heading ("Phone", text="Phone", anchor=tk.CENTER)
+    tree.heading ("Email", text="Email", anchor=tk.CENTER) 
+
+    def list_all():
+        tree.delete(*tree.get_children())
+        db = sql_staff.Database().Storage()
+        for i in range(0,len(db)):
+            tree.insert('', i, iid= None, values = (db[i][0],db[i][2],db[i][3],db[i][4],db[i][5],db[i][6]))
+    list_all()
+
+    tree.pack()
+    btn_refresh = tk.Button(list_staff, text="Refresh", width=21, command=lambda: list_all())
+    btn_search = tk.Button(list_staff, text="Search", width=21, command=lambda: Search_interface())
+    btn_delete = tk.Button(list_staff, text="Delete", width=21, command=lambda: tree.delete(tree.focus()))
+    btn_update = tk.Button(list_staff, text="Update", width=21, command=lambda: print(tree.item(tree.focus())))
+    #Delete and Update not done
+    btn_delete.config(state="disabled")
+    btn_update.config(state="disabled")
+    btn_exit = tk.Button(list_staff, text="Exit", width=21, command=list_staff.destroy)
+
+    def Search_interface():
+        search_inter = tk.Toplevel(list_staff)
+        frm = tk.Frame(search_inter)
+        # Create widgets
+        btn_font = tkfont.Font(family="Arial", size=15)
+
+        # Create labels
+        lbl_staff = tk.Label(frm, text="Search Staff", font=("Arial", 20, 'bold'), justify="center")
+        lbl_staff_id = tk.Label(frm, text="Staff ID", font=("Arial", 15))
+        lbl_staff_name = tk.Label(frm, text="Staff Name", font=("Arial", 15))
+        lbl_staff_dob = tk.Label(frm, text="Staff DOB", font=("Arial", 15))
+        lbl_staff_address = tk.Label(frm, text="Staff Address", font=("Arial", 15))
+        lbl_staff_phone = tk.Label(frm, text="Staff Phone", font=("Arial", 15))
+        lbl_staff_email = tk.Label(frm, text="Staff Email", font=("Arial", 15))
+
+        # Create entry boxes   
+        global st_ID, st_pwd, st_name, st_dob, st_address, st_phone, st_email 
+        st_ID = tk.StringVar()
+        st_name = tk.StringVar()
+        st_dob = tk.StringVar()
+        st_address = tk.StringVar()
+        st_phone = tk.StringVar()
+        st_email = tk.StringVar()
+
+        ent_staff_id = tk.Entry(frm, width=30, textvariable=st_ID, font=("Arial", 15))
+        ent_staff_name = tk.Entry(frm, width=30, textvariable=st_name, font=("Arial", 15))
+        ent_staff_dob = tk.Entry(frm, width=30, textvariable=st_dob, font=("Arial", 15))
+        ent_staff_address = tk.Entry(frm, width=30, textvariable=st_address, font=("Arial", 15))
+        ent_staff_phone = tk.Entry(frm, width=30, textvariable=st_phone, font=("Arial", 15))
+        ent_staff_email = tk.Entry(frm, width=30, textvariable=st_email, font=("Arial", 15))
+
+        # Create buttons
+        btn_search = tk.Button(frm, text="Search", width=21, bg='#0052cc', fg='#ffffff', command=lambda: [Search_staff(st_ID.get(), st_name.get(), st_dob.get(), st_address.get(), st_phone.get(), st_email.get()), search_inter.destroy()])
+        btn_search['font'] = btn_font
+        btn_exit = tk.Button(frm, text="Exit", width=21, command=search_inter.destroy, bg='#fc0303', fg='#ffffff')
+        btn_exit['font'] = btn_font
+
+        # Style labels, entry boxes and buttons
+        frm.grid(row=0, column=0, sticky="nsew")
+        lbl_staff.grid(row=0, column=0, columnspan=2, padx= 15, pady=15, sticky="nsew")
+        lbl_staff_id.grid(row=1, column=0, padx= 15, pady=5, sticky="nsew")
+        lbl_staff_name.grid(row=3, column=0, padx= 15, pady=5, sticky="nsew")
+        lbl_staff_dob.grid(row=4, column=0, padx= 15, pady=5, sticky="nsew")
+        lbl_staff_address.grid(row=5, column=0, padx= 15, pady=5, sticky="nsew")
+        lbl_staff_phone.grid(row=6, column=0, padx= 15, pady=5, sticky="nsew")
+        lbl_staff_email.grid(row=7, column=0, padx= 15, pady=5, sticky="nsew")
+        ent_staff_id.grid(row=1, column=1, padx= 15, pady=5, sticky="nsew")
+        ent_staff_name.grid(row=3, column=1, padx= 15, pady=5, sticky="nsew")
+        ent_staff_dob.grid(row=4, column=1, padx= 15, pady=5, sticky="nsew")
+        ent_staff_address.grid(row=5, column=1, padx= 15, pady=5, sticky="nsew")
+        ent_staff_phone.grid(row=6, column=1, padx= 15, pady=5, sticky="nsew")
+        ent_staff_email.grid(row=7, column=1, padx= 15, pady=5, sticky="nsew")
+        btn_exit.grid(row=8, column=0, padx= 15, pady=5, sticky="nsew")
+        btn_search.grid(row=8, column=1, padx= 15, pady=5, sticky="nsew")
+        
+        # Prevent resizing
+        search_inter.resizable(False, False)
+
+
+
+    def Search_staff(id, name, dob, address, phone, email):
+        if fu.Searchall_staff(id, name, dob, address, phone, email) == False:
+            messagebox.showerror("Error", "Something went wrong\nPlease try again!")
+        elif len(fu.Searchall_staff(id, name, dob, address, phone, email))==0:
+            messagebox.showinfo("","0 results found!")
+        else:
+            db = fu.Searchall_staff(id, name, dob, address, phone, email)
+            tree.delete(*tree.get_children())
+            for i in range(0,len(db)):
+                tree.insert('', i, iid= None, values = (db[i][0],db[i][2],db[i][3],db[i][4],db[i][5],db[i][6]))
+
+    btn_refresh.pack()
+    btn_search.pack()
+    btn_delete.pack()
+    btn_update.pack()
+    btn_exit.pack()
+
+    list_staff.mainloop()
 
 # First window
 
@@ -553,6 +678,10 @@ btn_customer['font'] = btn_font
 # Confirm if the customer data table exists or not
 if len(sql_customers.Database().Storage()) == 0:
     btn_customer.config(state="disabled")
+btn_staff_list = tk.Button(frame, text="Staff List", width=21, bg='#FFA500', fg='#ffffff', command=staff_list)
+btn_staff_list['font'] = btn_font
+btn_customer_list = tk.Button(frame, text="Customer List", width=21, bg='#FFA500', fg='#ffffff', command=print(""))
+btn_customer_list['font'] = btn_font
 btn_exit = tk.Button(frame, text="Exit", width=21, command=admin.quit, bg='#fc0303', fg='#ffffff')
 btn_exit['font'] = btn_font
 
@@ -564,8 +693,10 @@ btn_add_staff.grid(row=2, column=0, padx= 15, pady=5, sticky="nsew")
 btn_staff.grid(row=2, column=1, padx= 15, pady=5, sticky="nsew")
 btn_add_customer.grid(row=3, column=0, padx= 15, pady=5, sticky="nsew")
 btn_customer.grid(row=3, column=1, padx= 15, pady=5, sticky="nsew")
-btn_exit.grid(row=4, column=0, columnspan = 2, padx= 15, pady=5, sticky="nsew")
-lbl_hihi.grid(row=5, column=0, padx= 5, pady=5, sticky="nsew")
+btn_staff_list.grid(row=4, column=0, padx= 15, pady=5, sticky="nsew")
+btn_customer_list.grid(row=4, column=1, padx= 15, pady=5, sticky="nsew")
+btn_exit.grid(row=5, column=0, columnspan = 2, padx= 15, pady=5, sticky="nsew")
+lbl_hihi.grid(row=6, column=0, padx= 5, pady=5, sticky="nsew")
 
 # Prevent resizing
 admin.resizable(False, False)

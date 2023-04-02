@@ -79,6 +79,12 @@ def Search_admin(id):
     except:
         print("Error")
 
+def Searchall_staff(id, name, dob, address, phone, email):
+    try:
+        return sql_staff.Database().Searchall(id, name, dob, address, phone, email)
+    except:
+        return False
+
 def remove_staff(id):
     try:
         sql_staff.Database().Delete(id)
