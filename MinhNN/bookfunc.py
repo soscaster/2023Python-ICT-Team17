@@ -46,10 +46,10 @@ def add_book(id, title, genre, author, target, publisher, price, quantity):
         return False
     
     
-def mod_book(title, genre, author, target, publisher, price, quantity):
+def mod_book(id, title, genre, author, target, publisher, price, quantity):
     sql_conn = sqlite3.connect("bookstore.db")
     cur = sql_conn.cursor()
-    cur.execute("UPDATE book SET book_title = ?, book_genre = ?, book_author = ?, book_target = ?, book_publisher = ?, book_price = ?, book_quantity = ?", (title, genre, author, target, publisher, price, quantity))
+    cur.execute("UPDATE book SET book_title = ?, book_genre = ?, book_author = ?, book_target = ?, book_publisher = ?, book_price = ?, book_quantity = ?  WHERE book_id = ?", (title, genre, author, target, publisher, price, quantity, str(id),))
     sql_conn.commit()
     sql_conn.close()
     
@@ -65,7 +65,7 @@ def get_book_list():
 def get_book_info(id):
     sql_conn = sqlite3.connect("bookstore.db")
     cur = sql_conn.cursor()
-    cur.execute("SELECT * FROM book WHERE book_id = ?", (id))
+    cur.execute("SELECT * FROM book WHERE book_id = ?", (id,))
     book = cur.fetchall()
     sql_conn.close()
     return book[0]

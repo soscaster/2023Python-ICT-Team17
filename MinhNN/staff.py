@@ -3,10 +3,36 @@ from tkinter import messagebox, ttk, font as tkfont
 import dbfunc
 import customerfunc
 import bookfunc
+import re
 
+#Validity functions
+def check_email(email):
+    pattern = '[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+    if re.search(pattern, email):
+        print("Valid")
+        return True
+    else:
+        print("Invalid")
+        return False
+    
+def check_phone(phone):
+    pattern = '0\d{9}$'
+    if re.search(pattern, phone):
+        print("Valid")
+        return True
+    else:
+        print("Invalid")
+        return False
 
+def check_dob(dob):
+    pattern = '^[0-9]{1,2}\\/[0-9]{1,2}\\/[0-9]{4}$'
+    if re.search(pattern, dob):
+        print("Valid")
+        return True
+    else:
+        print("Invalid")
+        return False
 # CUSTOMER SECTION
-
 # Create a new window for creating customer info [DONE]
 def add_customer():
     # Create a new window
@@ -71,20 +97,22 @@ def add_customer():
 
     # Define a function for saving customer info
     def add_customer_func(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email):
-        if customerfunc.check_cu(cu_ID, cu_phone, cu_email) == True:
-            messagebox.showerror("Error", "One of the input info is already exists!\nPlease try again!")
+        if check_dob(cu_dob) == True and check_phone(cu_phone) == True and check_email(cu_email) == True:
+            if customerfunc.check_cu(cu_ID, cu_phone, cu_email) == True:
+                messagebox.showerror("Error", "One of the input info is already exists!\nPlease try again!")
+            else:
+                if customerfunc.add_customer(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email) == True:
+                    messagebox.showinfo("Success", "Customer info saved successfully!\nPress 'OK' to continue")
+                    # Close the window
+                    #if customerfunc.check_customer_table() == False:
+                        #btn_customer['state'] = 'disabled'
+                    #else:
+                    #        btn_customer['state'] = 'normal'
+                    customer.destroy()
+                elif customerfunc.add_customer(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email) == False:
+                    messagebox.showerror("Error", "Customer info failed to save!\nPlease check again!")
         else:
-            if customerfunc.add_customer(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email) == True:
-                messagebox.showinfo("Success", "Customer info saved successfully!\nPress 'OK' to continue")
-                # Close the window
-                #if customerfunc.check_customer_table() == False:
-                    #btn_customer['state'] = 'disabled'
-                #else:
-                #    btn_customer['state'] = 'normal'
-                customer.destroy()
-            elif customerfunc.add_customer(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email) == False:
-                messagebox.showerror("Error", "Customer info failed to save!\nPlease check again!")
-        
+            messagebox.showerror("Error", "Invalid input")
 
 # Create a new window for modifying customer info [DONE]
 def modify_customer():
@@ -154,6 +182,7 @@ def modify_customer():
         cf = tk.messagebox.askyesno("Delete", "Are you sure you want to delete this customer?")
         if cf == True:
             delete_customer_func()
+            customer.destroy()
     btn_delete = tk.Button(customer_frame, text="Delete", width=21, bg='#fc7303', fg='#ffffff', command=lambda: del_cf())
     btn_delete['font'] = btn_font
     
@@ -182,9 +211,13 @@ def modify_customer():
 
     # Define a function for saving customer info
     def modify_customer_func():
-        customerfunc.modify_customer(cu_ID.get(), cu_name.get(), cu_dob.get(), cu_address.get(), cu_phone.get(), cu_email.get())
-        messagebox.showinfo("Success", "Customer info saved!\nPlease refresh the page to see the changes!")
-
+        if check_dob(cu_dob.get()) == True and check_phone(cu_phone.get()) == True and check_email(cu_email.get()) == True:
+            customerfunc.modify_customer(cu_ID.get(), cu_name.get(), cu_dob.get(), cu_address.get(), cu_phone.get(), cu_email.get())
+            messagebox.showinfo("Success", "Customer info saved!\nPlease refresh the page to see the changes!")
+            customer.destroy()
+        else:
+            messagebox.showerror("Error", "Invalid input")
+    
     def delete_customer_func():
         if customerfunc.delete_customer(cu_ID.get()) == True:
             # Verify if the customer info is saved
@@ -211,9 +244,11 @@ def add_book():
             messagebox.showerror("Error", "Book already exist!")
             book.destroy()
         else:
-            bookfunc.add_book(book_id, book_title, book_genre, book_author, book_target, book_pub, book_price, book_quantity)
-            messagebox.showinfo("OK", "Book added successfully!")     
-            book.destroy() 
+            if bookfunc.add_book(book_id, book_title, book_genre, book_author, book_target, book_pub, book_price, book_quantity) == True:
+                messagebox.showinfo("OK", "Book added successfully!")     
+                book.destroy()
+            else:
+                messagebox.showerror("Error", "Invalid input") 
     
     #Labels
     lbl_book = tk.Label(master = frm_book, text = 'Add New Book Info', font = ("Arial", 25, "bold"), justify = "center")
@@ -233,8 +268,8 @@ def add_book():
     book_author = tk.StringVar()
     book_target = tk.StringVar()
     book_pub = tk.StringVar()
-    book_price = tk.StringVar()
-    book_quantity = tk.StringVar()
+    book_price = tk.IntVar()
+    book_quantity = tk.IntVar()
     
     #Entry boxes
     ent_book_id = tk.Entry(master = frm_book, width = 30, textvariable = book_id, font = ("Arial", 15))
@@ -288,8 +323,9 @@ def mod_book():
 
     #Mode book cmd
     def mod_book_func():
-        bookfunc.mod_book(book_title.get(), book_genre.get(),book_author.get(),book_target.get(),book_pub.get(),book_price.get(),book_quantity.get())
+        bookfunc.mod_book(book_id.get(), book_title.get(), book_genre.get(),book_author.get(),book_target.get(),book_pub.get(),book_price.get(),book_quantity.get())
         messagebox.showinfo("OK", "Book Info Modded!")
+        
 
     #Labels
     lbl_book = tk.Label(master = frm_book, text = 'Modify Book Info', font = ("Arial", 25, "bold"), justify = "center")
@@ -309,8 +345,8 @@ def mod_book():
     book_author = tk.StringVar()
     book_target = tk.StringVar()
     book_pub = tk.StringVar()
-    book_price = tk.StringVar()
-    book_quantity = tk.StringVar()
+    book_price = tk.IntVar()
+    book_quantity = tk.IntVar()
 
     def get_book_info():
         book_info = bookfunc.get_book_info(book_id.get())
@@ -417,4 +453,3 @@ window.rowconfigure(0, weight=1, minsize=50)
 
 window.mainloop()
 
-#need verify before saving to db
