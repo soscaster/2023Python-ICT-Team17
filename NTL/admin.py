@@ -639,7 +639,6 @@ def staff_list():
     btn_update.pack()
     btn_exit.pack()
 
-    list_staff.mainloop()
 
 # First window
 
