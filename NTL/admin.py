@@ -188,119 +188,6 @@ def add_staff():
         
 
 # Create a new window for modifying staff info [DONE]
-def modify_staff():
-    clear()
-    # Create a new window
-    staff = tk.Toplevel(admin)
-    staff.title("Modify Staff Info")
-    staff_frame = tk.Frame(staff)
-
-    # Create widgets
-    btn_font = tkfont.Font(family="Arial", size=15)
-
-    # Create labels
-    lbl_staff = tk.Label(staff_frame, text="Modify Staff Info", font=("Arial", 20, 'bold'), justify="center")
-    lbl_staff_id = tk.Label(staff_frame, text="Staff ID", font=("Arial", 15))
-    lbl_staff_pwd = tk.Label(staff_frame, text="Staff Login Password", font=("Arial", 15))
-    lbl_staff_name = tk.Label(staff_frame, text="Staff Name", font=("Arial", 15))
-    lbl_staff_dob = tk.Label(staff_frame, text="Staff DOB", font=("Arial", 15))
-    lbl_staff_address = tk.Label(staff_frame, text="Staff Address", font=("Arial", 15))
-    lbl_staff_phone = tk.Label(staff_frame, text="Staff Phone", font=("Arial", 15))
-    lbl_staff_email = tk.Label(staff_frame, text="Staff Email", font=("Arial", 15))
-
-    # Create entry boxes
-    global st_ID, st_pwd, st_name, st_dob, st_address, st_phone, st_email
-    st_ID = tk.StringVar()
-    st_pwd = tk.StringVar()
-    st_name = tk.StringVar()
-    st_dob = tk.StringVar()
-    st_address = tk.StringVar()
-    st_phone = tk.StringVar()
-    st_email = tk.StringVar()
-
-    # Get staff list
-    staff_list = sql_staff.Database().Storage()
-    staff_list = [i[0] for i in staff_list]
-    st_ID.set(staff_list[0])
-    staff_menu = tk.OptionMenu(staff_frame, st_ID, *staff_list)
-    # After selecting staff, get staff info and set to entry boxes
-    st_ID.trace("w", lambda *args: get_staff_info())
-    staff_menu.config(font=("Arial", 12))
-
-    # Get staff info and set to entry boxes after selecting staff
-    def get_staff_info():
-        db = sql_staff.Database().Search(st_ID.get())
-        st_ID.set(db[0][0])
-        st_pwd.set(db[0][1])
-        st_name.set(db[0][2])
-        st_dob.set(db[0][3])
-        st_address.set(db[0][4])
-        st_phone.set(db[0][5])
-        st_email.set(db[0][6])
-    
-    # Create entry boxes
-    ent_staff_pwd = tk.Entry(staff_frame, textvariable=st_pwd, width=20, font=("Arial", 15), show="*")
-    ent_staff_name = tk.Entry(staff_frame, textvariable=st_name, width=20, font=("Arial", 15))
-    ent_staff_dob = tk.Entry(staff_frame, textvariable=st_dob, width=20, font=("Arial", 15))
-    ent_staff_address = tk.Entry(staff_frame, textvariable=st_address, width=20, font=("Arial", 15))
-    ent_staff_phone = tk.Entry(staff_frame, textvariable=st_phone, width=20, font=("Arial", 15))
-    ent_staff_email = tk.Entry(staff_frame, textvariable=st_email, width=20, font=("Arial", 15))
-
-    # Create buttons
-    def save_cf():
-        cf = tk.messagebox.askyesno("Save", "Are you sure you want to overide this staff info?")
-        if cf == True:
-            modify_staff_func()
-    btn_save = tk.Button(staff_frame, text="Save", width=21, bg='#0052cc', fg='#ffffff', command=lambda: save_cf())
-    btn_save['font'] = btn_font
-
-    btn_exit = tk.Button(staff_frame, text="Exit", width=21, bg='#fc0303', fg='#ffffff', command=staff.destroy)
-    btn_exit['font'] = btn_font
-    def del_cf():
-        cf = tk.messagebox.askyesno("Delete", "Are you sure you want to delete this staff?")
-        if cf == True:
-            delete_staff_func()
-    btn_delete = tk.Button(staff_frame, text="Delete", width=21, bg='#fc7303', fg='#ffffff', command=lambda: del_cf())
-    btn_delete['font'] = btn_font
-    
-
-    # Create a grid layout
-    staff_frame.grid(row=0, column=0, sticky="nsew")
-    lbl_staff.grid(row=0, column=0, columnspan=2, padx= 15, pady=5, sticky="nsew")
-    lbl_staff_id.grid(row=1, column=0, padx= 15, pady=5, sticky="nsew")
-    lbl_staff_pwd.grid(row=2, column=0, padx= 15, pady=5, sticky="nsew")
-    lbl_staff_name.grid(row=3, column=0, padx= 15, pady=5, sticky="nsew")
-    lbl_staff_dob.grid(row=4, column=0, padx= 15, pady=5, sticky="nsew")
-    lbl_staff_address.grid(row=5, column=0, padx= 15, pady=5, sticky="nsew")
-    lbl_staff_phone.grid(row=6, column=0, padx= 15, pady=5, sticky="nsew")
-    lbl_staff_email.grid(row=7, column=0, padx= 15, pady=5, sticky="nsew")
-    staff_menu.grid(row=1, column=1, padx= 15, pady=5, sticky="nsew")
-    ent_staff_pwd.grid(row=2, column=1, padx= 15, pady=5, sticky="nsew")
-    ent_staff_name.grid(row=3, column=1, padx= 15, pady=5, sticky="nsew")
-    ent_staff_dob.grid(row=4, column=1, padx= 15, pady=5, sticky="nsew")
-    ent_staff_address.grid(row=5, column=1, padx= 15, pady=5, sticky="nsew")
-    ent_staff_phone.grid(row=6, column=1, padx= 15, pady=5, sticky="nsew")
-    ent_staff_email.grid(row=7, column=1, padx= 15, pady=5, sticky="nsew")
-    btn_exit.grid(row=8, column=0, padx= 15, pady=5, sticky="nsew")
-    btn_save.grid(row=8, column=1, padx= 15, pady=5, sticky="nsew")
-    btn_delete.grid(row=9, column=0, columnspan=2, padx= 15, pady=5, sticky="nsew")
-    
-    # Prevent the user from resizing the window
-    staff.resizable(False, False)
-
-    # Define a function for saving staff info
-    def modify_staff_func():
-        if fu.check_dob(st_dob.get()) == False:
-            messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!")
-        elif fu.check_phone(st_phone.get()) == False:
-            messagebox.showerror("Error", "Invalid phone number!\nPlease try again!")
-        elif fu.check_email(st_email.get()) == False:
-            messagebox.showerror("Error", "Invalid email type!\nPlease try again!")
-        elif sql_staff.Database().Validate(st_ID.get(), st_phone.get(), st_email.get(), 2) == True:
-            messagebox.showerror("Error", "Phone or Email info is already exists!\nPlease try again!")
-        else:
-            sql_staff.Database().Update(st_pwd.get(), st_name.get(), st_dob.get(), st_address.get(), st_phone.get(), st_email.get(), 0, st_ID.get())
-            messagebox.showinfo("Success", "Staff info saved!\nPlease refresh the page to see the changes!")
 
     def delete_staff_func():
         if fu.remove_staff(st_ID.get()) == True:
@@ -562,11 +449,8 @@ def staff_list():
     tree.pack()
     btn_refresh = tk.Button(list_staff, text="Refresh", width=21, command=lambda: list_all())
     btn_search = tk.Button(list_staff, text="Search", width=21, command=lambda: Search_interface())
-    btn_delete = tk.Button(list_staff, text="Delete", width=21, command=lambda: tree.delete(tree.focus()))
-    btn_update = tk.Button(list_staff, text="Update", width=21, command=lambda: print(tree.item(tree.focus())))
-    #Delete and Update not done
-    btn_delete.config(state="disabled")
-    btn_update.config(state="disabled")
+    btn_delete = tk.Button(list_staff, text="Delete", width=21, command=lambda: del_cf())
+    btn_update = tk.Button(list_staff, text="Update", width=21, command=lambda: modify_staff(tree.item(tree.focus())['values'][0]))
     btn_exit = tk.Button(list_staff, text="Exit", width=21, command=list_staff.destroy)
 
     def Search_interface():
@@ -640,6 +524,124 @@ def staff_list():
             for i in range(0,len(db)):
                 tree.insert('', i, iid= None, values = (db[i][0],db[i][2],db[i][3],db[i][4],db[i][5],db[i][6]))
 
+    def delete_staff_func():
+        if fu.remove_staff(tree.item(tree.focus())['values'][0]) == True:
+            # Verify if the staff info is saved
+            messagebox.showinfo("Success", "Staff deleted successfully!")
+            tree.delete(tree.focus())
+        else:
+            messagebox.showerror("Error", "Staff not deleted!")
+
+    def del_cf():
+        cf = tk.messagebox.askyesno("Delete", "Are you sure you want to delete this staff?")
+        if cf == True:
+            delete_staff_func()
+
+    def modify_staff(id):
+        clear()
+        # Create a new window
+        staff = tk.Toplevel(list_staff)
+        staff.title("Modify Staff Info")
+        staff_frame = tk.Frame(staff)
+
+        # Create widgets
+        btn_font = tkfont.Font(family="Arial", size=15)
+
+        # Create labels
+        lbl_staff = tk.Label(staff_frame, text="Modify Staff Info", font=("Arial", 20, 'bold'), justify="center")
+        lbl_staff_pwd = tk.Label(staff_frame, text="Staff Login Password", font=("Arial", 15))
+        lbl_staff_name = tk.Label(staff_frame, text="Staff Name", font=("Arial", 15))
+        lbl_staff_dob = tk.Label(staff_frame, text="Staff DOB", font=("Arial", 15))
+        lbl_staff_address = tk.Label(staff_frame, text="Staff Address", font=("Arial", 15))
+        lbl_staff_phone = tk.Label(staff_frame, text="Staff Phone", font=("Arial", 15))
+        lbl_staff_email = tk.Label(staff_frame, text="Staff Email", font=("Arial", 15))
+
+        # Create entry boxes
+        global st_ID, st_pwd, st_name, st_dob, st_address, st_phone, st_email
+        st_ID = tk.StringVar()
+        st_pwd = tk.StringVar()
+        st_name = tk.StringVar()
+        st_dob = tk.StringVar()
+        st_address = tk.StringVar()
+        st_phone = tk.StringVar()
+        st_email = tk.StringVar()
+
+        # Get staff list
+        st_ID.set(id)
+
+        # Get staff info and set to entry boxes after selecting staff
+        db = sql_staff.Database().Search(id)
+        st_ID.set(db[0][0])
+        st_pwd.set(db[0][1])
+        st_name.set(db[0][2])
+        st_dob.set(db[0][3])
+        st_address.set(db[0][4])
+        st_phone.set(db[0][5])
+        st_email.set(db[0][6])
+        
+        # Create entry boxes
+        ent_staff_pwd = tk.Entry(staff_frame, textvariable=st_pwd, width=20, font=("Arial", 15), show="*")
+        ent_staff_name = tk.Entry(staff_frame, textvariable=st_name, width=20, font=("Arial", 15))
+        ent_staff_dob = tk.Entry(staff_frame, textvariable=st_dob, width=20, font=("Arial", 15))
+        ent_staff_address = tk.Entry(staff_frame, textvariable=st_address, width=20, font=("Arial", 15))
+        ent_staff_phone = tk.Entry(staff_frame, textvariable=st_phone, width=20, font=("Arial", 15))
+        ent_staff_email = tk.Entry(staff_frame, textvariable=st_email, width=20, font=("Arial", 15))
+
+        # Create buttons
+        def save_cf():
+            cf = tk.messagebox.askyesno("Save", "Are you sure you want to overide this staff info?")
+            if cf == True:
+                modify_staff_func()
+        btn_save = tk.Button(staff_frame, text="Save", width=21, bg='#0052cc', fg='#ffffff', command=lambda: save_cf())
+        btn_save['font'] = btn_font
+
+        btn_exit = tk.Button(staff_frame, text="Exit", width=21, bg='#fc0303', fg='#ffffff', command=staff.destroy)
+        btn_exit['font'] = btn_font
+        def del_cf():
+            cf = tk.messagebox.askyesno("Delete", "Are you sure you want to delete this staff?")
+            if cf == True:
+                delete_staff_func()
+        btn_delete = tk.Button(staff_frame, text="Delete", width=21, bg='#fc7303', fg='#ffffff', command=lambda: del_cf())
+        btn_delete['font'] = btn_font
+        
+
+        # Create a grid layout
+        staff_frame.grid(row=0, column=0, sticky="nsew")
+        lbl_staff.grid(row=0, column=0, columnspan=2, padx= 15, pady=5, sticky="nsew")
+        lbl_staff_pwd.grid(row=2, column=0, padx= 15, pady=5, sticky="nsew")
+        lbl_staff_name.grid(row=3, column=0, padx= 15, pady=5, sticky="nsew")
+        lbl_staff_dob.grid(row=4, column=0, padx= 15, pady=5, sticky="nsew")
+        lbl_staff_address.grid(row=5, column=0, padx= 15, pady=5, sticky="nsew")
+        lbl_staff_phone.grid(row=6, column=0, padx= 15, pady=5, sticky="nsew")
+        lbl_staff_email.grid(row=7, column=0, padx= 15, pady=5, sticky="nsew")
+        ent_staff_pwd.grid(row=2, column=1, padx= 15, pady=5, sticky="nsew")
+        ent_staff_name.grid(row=3, column=1, padx= 15, pady=5, sticky="nsew")
+        ent_staff_dob.grid(row=4, column=1, padx= 15, pady=5, sticky="nsew")
+        ent_staff_address.grid(row=5, column=1, padx= 15, pady=5, sticky="nsew")
+        ent_staff_phone.grid(row=6, column=1, padx= 15, pady=5, sticky="nsew")
+        ent_staff_email.grid(row=7, column=1, padx= 15, pady=5, sticky="nsew")
+        btn_exit.grid(row=8, column=0, padx= 15, pady=5, sticky="nsew")
+        btn_save.grid(row=8, column=1, padx= 15, pady=5, sticky="nsew")
+        btn_delete.grid(row=9, column=0, columnspan=2, padx= 15, pady=5, sticky="nsew")
+        
+        # Prevent the user from resizing the window
+        staff.resizable(False, False)
+
+    # Define a function for saving staff info
+    def modify_staff_func():
+        if fu.check_dob(st_dob.get()) == False:
+            messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!")
+        elif fu.check_phone(st_phone.get()) == False:
+            messagebox.showerror("Error", "Invalid phone number!\nPlease try again!")
+        elif fu.check_email(st_email.get()) == False:
+            messagebox.showerror("Error", "Invalid email type!\nPlease try again!")
+        elif sql_staff.Database().Validate(st_ID.get(), st_phone.get(), st_email.get(), 2) == True:
+            messagebox.showerror("Error", "Phone or Email info is already exists!\nPlease try again!")
+        else:
+            sql_staff.Database().Update(st_pwd.get(), st_name.get(), st_dob.get(), st_address.get(), st_phone.get(), st_email.get(), 0, st_ID.get())
+            messagebox.showinfo("Success", "Staff info saved!\nPlease refresh the page to see the changes!")
+
+
     btn_refresh.pack()
     btn_search.pack()
     btn_delete.pack()
@@ -666,22 +668,18 @@ btn_store = tk.Button(frame, text="Modify Store Info", width=21, bg='#0052cc', f
 btn_store['font'] = btn_font
 btn_add_staff = tk.Button(frame, text="Add Staff", width=21, bg='#00ab1c', fg='#ffffff', command=add_staff)
 btn_add_staff['font'] = btn_font
-btn_staff = tk.Button(frame, text="Modify Staff Info", width=21, bg='#00ab1c', fg='#ffffff', command=modify_staff)
+btn_staff = tk.Button(frame, text="Staff List", width=21, bg='#00ab1c', fg='#ffffff', command=staff_list)
 btn_staff['font'] = btn_font
 # Confirm if the staff data table exists or not
 if len(sql_staff.Database().Storage()) == 0:
     btn_staff.config(state="disabled")
 btn_add_customer = tk.Button(frame, text="Add Customer", width=21, bg='#ab4d00', fg='#ffffff', command=add_customer)
 btn_add_customer['font'] = btn_font
-btn_customer = tk.Button(frame, text="Modify Customer Info", width=21, bg='#ab4d00', fg='#ffffff', command=modify_customer)
+btn_customer = tk.Button(frame, text="Customer List", width=21, bg='#ab4d00', fg='#ffffff', command=print(""))
 btn_customer['font'] = btn_font
 # Confirm if the customer data table exists or not
 if len(sql_customers.Database().Storage()) == 0:
     btn_customer.config(state="disabled")
-btn_staff_list = tk.Button(frame, text="Staff List", width=21, bg='#FFA500', fg='#ffffff', command=staff_list)
-btn_staff_list['font'] = btn_font
-btn_customer_list = tk.Button(frame, text="Customer List", width=21, bg='#FFA500', fg='#ffffff', command=print(""))
-btn_customer_list['font'] = btn_font
 btn_exit = tk.Button(frame, text="Exit", width=21, command=admin.quit, bg='#fc0303', fg='#ffffff')
 btn_exit['font'] = btn_font
 
@@ -693,10 +691,8 @@ btn_add_staff.grid(row=2, column=0, padx= 15, pady=5, sticky="nsew")
 btn_staff.grid(row=2, column=1, padx= 15, pady=5, sticky="nsew")
 btn_add_customer.grid(row=3, column=0, padx= 15, pady=5, sticky="nsew")
 btn_customer.grid(row=3, column=1, padx= 15, pady=5, sticky="nsew")
-btn_staff_list.grid(row=4, column=0, padx= 15, pady=5, sticky="nsew")
-btn_customer_list.grid(row=4, column=1, padx= 15, pady=5, sticky="nsew")
-btn_exit.grid(row=5, column=0, columnspan = 2, padx= 15, pady=5, sticky="nsew")
-lbl_hihi.grid(row=6, column=0, padx= 5, pady=5, sticky="nsew")
+btn_exit.grid(row=4, column=0, columnspan = 2, padx= 15, pady=5, sticky="nsew")
+lbl_hihi.grid(row=5, column=0, padx= 5, pady=5, sticky="nsew")
 
 # Prevent resizing
 admin.resizable(False, False)
