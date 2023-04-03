@@ -185,6 +185,20 @@ def add_staff():
                 staff.destroy()
             elif fu.add_staff(st_ID, st_pwd, st_name, st_dob, st_address, st_phone, st_email) == False:
                 messagebox.showerror("Error", "Staff info failed to save!\nPlease check again!")
+        
+
+# # Create a new window for modifying staff info [DONE]
+
+#     def delete_staff_func():
+#         if fu.remove_staff(st_ID.get()) == True:
+#             # Verify if the staff info is saved
+#             messagebox.showinfo("Success", "Staff deleted successfully!")
+#             if len(sql_staff.Database().Storage()) == 0:
+#                 btn_staff['state'] = 'disabled'
+#             else:
+#                 btn_staff['state'] = 'normal'
+#         elif fu.remove_staff(st_ID.get()) == False:
+#             messagebox.showerror("Error", "Staff not deleted!")
 
 
 # CUSTOMER SECTION
@@ -344,7 +358,6 @@ def modify_customer():
         cf = tk.messagebox.askyesno("Delete", "Are you sure you want to delete this customer?")
         if cf == True:
             delete_customer_func()
-            
     btn_delete = tk.Button(customer_frame, text="Delete", width=21, bg='#fc7303', fg='#ffffff', command=lambda: del_cf())
     btn_delete['font'] = btn_font
     
@@ -430,12 +443,12 @@ def staff_list():
         tree.delete(*tree.get_children())
         db = sql_staff.Database().Storage()
         for i in range(0,len(db)):
-            tree.insert('', i, iid= None, values = (db[i][0],db[i][2],db[i][3],db[i][4],db[i][5],db[i][6],">"+db[i][0]))
+            tree.insert('', i, iid= None, values = ('> '+ db[i][0],db[i][2],db[i][3],db[i][4],db[i][5],db[i][6]))
     list_all()
 
     def del_cf():
         # Return STRING VALUE of the selected item
-        del_ID = tree.item(tree.focus())['values'][6][1:]
+        del_ID = str(tree.item(tree.focus())['values'][0][2:])
         cf = tk.messagebox.askyesno("Delete", "Are you sure you want to delete this staff?")
         if cf == True:
             delete_staff_func(del_ID)
@@ -444,7 +457,7 @@ def staff_list():
     btn_refresh = tk.Button(list_staff, text="Refresh", width=21, command=lambda: list_all())
     btn_search = tk.Button(list_staff, text="Search", width=21, command=lambda: Search_interface())
     btn_delete = tk.Button(list_staff, text="Delete", width=21, command=lambda: del_cf())
-    btn_update = tk.Button(list_staff, text="Update", width=21, command=lambda: modify_staff(tree.item(tree.focus())['values'][6][1:]))
+    btn_update = tk.Button(list_staff, text="Update", width=21, command=lambda: modify_staff(str(tree.item(tree.focus())['values'][0])))
     btn_exit = tk.Button(list_staff, text="Exit", width=21, command=list_staff.destroy)
 
     def Search_interface():
@@ -516,16 +529,14 @@ def staff_list():
             db = fu.Searchall_staff(id, name, dob, address, phone, email)
             tree.delete(*tree.get_children())
             for i in range(0,len(db)):
-                tree.insert('', i, iid= None, values = (db[i][0],db[i][2],db[i][3],db[i][4],db[i][5],db[i][6],">"+db[i][0]))
+                tree.insert('', i, iid= None, values = (db[i][0],db[i][2],db[i][3],db[i][4],db[i][5],db[i][6]))
 
-    def delete_staff_func(id):
-        if fu.remove_staff(id) == True:
+    def delete_staff_func(i):
+        if fu.remove_staff(i) == True:
+            # Verify if the staff info is saved
+            print(i)
             messagebox.showinfo("Success", "Staff deleted successfully!")
             tree.delete(tree.focus())
-            if len(sql_staff.Database().Storage()) == 0:
-                btn_staff['state'] = 'disabled'
-            else:
-                btn_staff['state'] = 'normal'
         else:
             messagebox.showerror("Error", "Staff not deleted!")
 
@@ -589,13 +600,6 @@ def staff_list():
 
         btn_exit = tk.Button(staff_frame, text="Exit", width=21, bg='#fc0303', fg='#ffffff', command=staff.destroy)
         btn_exit['font'] = btn_font
-        def del_cf():
-            cf = tk.messagebox.askyesno("Delete", "Are you sure you want to delete this staff?")
-            if cf == True:
-                delete_staff_func()
-        btn_delete = tk.Button(staff_frame, text="Delete", width=21, bg='#fc7303', fg='#ffffff', command=lambda: [del_cf(),staff.destroy()])
-        btn_delete['font'] = btn_font
-        
 
         # Create a grid layout
         staff_frame.grid(row=0, column=0, sticky="nsew")
@@ -629,7 +633,7 @@ def staff_list():
         elif sql_staff.Database().Validate(st_ID.get(), st_phone.get(), st_email.get(), 2) == True:
             messagebox.showerror("Error", "Phone or Email info is already exists!\nPlease try again!")
         else:
-            sql_staff.Database().Update(st_pwd.get(), st_name.get(), st_dob.get(), st_address.get(), st_phone.get(), st_email.get(), st_ID.get())
+            sql_staff.Database().Update(st_pwd.get(), st_name.get(), st_dob.get(), st_address.get(), st_phone.get(), st_email.get(), 0, st_ID.get())
             messagebox.showinfo("Success", "Staff info saved!\nPlease refresh the page to see the changes!")
 
 

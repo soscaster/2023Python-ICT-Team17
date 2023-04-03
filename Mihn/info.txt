@@ -1,0 +1,36 @@
+package_name = book_store
+
+nhánh:
+- Thông tin cửa hàng:
+	+ Mã cửa hàng
+	+ Tên cửa hàng
+	+ Địa chỉ cửa hàng
+	+ Số điện thoại cửa hàng
+	+ Email cửa hàng
+- Thông tin nhân viên:
+	+ ID nhân viên
+	+ Tên nhân viên
+	+ DOB nhân viên
+	+ Address nhân viên
+	+ SĐT nhân viên
+	+ Email nhân viên
+- Thông tin khách hàng
+	+ ID Khách hàng
+	+ Tên khách hàng
+	+ DOB khách hàng
+	+ Address khách hàng
+	+ SĐT khách hàng
+	+ Email khách hàng
+- Thông tin sách:
+	+ ID / ISBN sách
+	+ Title sách
+	+ Thể loại sách
+	+ Năm xuất bản sách
+	+ Tác giả sách
+	+ Đối tượng đọc
+	+ Giá tiền sách
+	+ D/M/Y sách nhập kho
+	+ Số lượng sách
+
+Main tree (No GUI):
+# Book detail: book_ID, book_title, book_genre, book_author, book_year, book_rated, book_price, book_quantity

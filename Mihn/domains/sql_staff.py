@@ -11,7 +11,7 @@ class Database:
         self.dbConnection.commit()
 
     def Update(self, pwd, name, dob, address, phone, email, id):
-        self.dbCursor.execute("UPDATE staff SET password = ?, name=?, dob = ?, address = ?, phone = ?, email = ? WHERE id = ?", (pwd, name, dob, address, phone, email, id))
+        self.dbCursor.execute("UPDATE staff SET password = ?, name=?, dob = ?, address = ?, phone = ?, email = ? WHERE id = ?", (pwd, name, dob, address, phone, email, str(id)))
         self.dbConnection.commit()
 
     def Validate(self, id, phone, email ,mode):
