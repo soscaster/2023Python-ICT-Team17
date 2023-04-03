@@ -37,14 +37,14 @@ def modify_store():
     store_email = tk.StringVar()
 
     # Get values from database
-    if len(sql_store.Database().Storage())==0:
+    if len(sql_store.Database().select_all()) == 0:
         store_id.set("")
         store_name.set("")
         store_address.set("")
         store_phone.set("")
         store_email.set("")
     else:
-        db = sql_store.Database().Storage()
+        db = sql_store.Database().select_all()
         store_id.set(db[0][0])
         store_name.set(db[0][1])
         store_address.set(db[0][2])
@@ -178,7 +178,7 @@ def add_staff():
             if fu.add_staff(st_ID, st_pwd, st_name, st_dob, st_address, st_phone, st_email) == True:
                 messagebox.showinfo("Success", "Staff info saved successfully!\nPress 'OK' to continue")
                 # Close the window
-                if len(sql_staff.Database().Storage()) == 0:
+                if len(sql_staff.Database().select_all()) == 0:
                     btn_staff['state'] = 'disabled'
                 else:
                     btn_staff['state'] = 'normal'
@@ -193,7 +193,7 @@ def add_staff():
 #         if fu.remove_staff(st_ID.get()) == True:
 #             # Verify if the staff info is saved
 #             messagebox.showinfo("Success", "Staff deleted successfully!")
-#             if len(sql_staff.Database().Storage()) == 0:
+#             if len(sql_staff.Database().select_all()) == 0:
 #                 btn_staff['state'] = 'disabled'
 #             else:
 #                 btn_staff['state'] = 'normal'
@@ -280,7 +280,7 @@ def add_customer():
             if fu.add_customer(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email) == True:
                 messagebox.showinfo("Success", "Customer info saved successfully!\nPress 'OK' to continue")
                 # Close the window
-                if len(sql_customers.Database().Storage()) == 0:
+                if len(sql_customers.Database().select_all()) == 0:
                     btn_customer['state'] = 'disabled'
                 else:
                     btn_customer['state'] = 'normal'
@@ -319,7 +319,7 @@ def modify_customer():
     cu_email = tk.StringVar()
 
     # Get customer list
-    customer_list = sql_customers.Database().Storage()
+    customer_list = sql_customers.Database().select_all()
     customer_list = [i[0] for i in customer_list]
     cu_ID.set(customer_list[0])
     customer_menu = tk.OptionMenu(customer_frame, cu_ID, *customer_list)
@@ -402,7 +402,7 @@ def modify_customer():
         if fu.remove_customer(cu_ID.get()) == True:
             # Verify if the customer info is saved
             messagebox.showinfo("Success", "Customer deleted successfully!")
-            if len(sql_customers.Database().Storage()) == 0:
+            if len(sql_customers.Database().select_all()) == 0:
                 btn_customer['state'] = 'disabled'
             else:
                 btn_customer['state'] = 'normal'
@@ -417,7 +417,7 @@ def staff_list():
     list_staff.title("Staff")
     frm = tk.Frame(list_staff)
     tree = ttk.Treeview(list_staff)
-    tree['show']='headings'
+    tree['show'] = 'headings'
 
     list_staff.resizable(False,False)
 
@@ -441,7 +441,7 @@ def staff_list():
 
     def list_all():
         tree.delete(*tree.get_children())
-        db = sql_staff.Database().Storage()
+        db = sql_staff.Database().select_all()
         for i in range(0,len(db)):
             tree.insert('', i, iid= None, values = ('> '+ db[i][0],db[i][2],db[i][3],db[i][4],db[i][5],db[i][6]))
     list_all()
@@ -649,13 +649,13 @@ def staff_list():
 
 admin = tk.Tk()
 admin.title("Book Store Management System - Loged in as admin")
-frame = tk.Frame(admin)
+frame = tk.Frame(admin,bg="#333333")
 
 # Create widgets
 btn_font = tkfont.Font(family="Arial", size=15)
 
 # Create labels
-lbl_welcome = tk.Label(frame, text="Welcome to\nBook Store Management System", font=("Arial", 25, 'bold'), justify="center")
+lbl_welcome = tk.Label(frame, text="Welcome to\nBook Store Management System", font=("Arial", 25, 'bold'),bg='#333333',fg='#FFFFFF', justify="center")
 lbl_hihi = tk.Label(frame, text=" ", font=("Arial", 13))
 
 # Create buttons
@@ -666,14 +666,14 @@ btn_add_staff['font'] = btn_font
 btn_staff = tk.Button(frame, text="Staff List", width=21, bg='#00ab1c', fg='#ffffff', command=staff_list)
 btn_staff['font'] = btn_font
 # Confirm if the staff data table exists or not
-if len(sql_staff.Database().Storage()) == 0:
+if len(sql_staff.Database().select_all()) == 0:
     btn_staff.config(state="disabled")
 btn_add_customer = tk.Button(frame, text="Add Customer", width=21, bg='#ab4d00', fg='#ffffff', command=add_customer)
 btn_add_customer['font'] = btn_font
 btn_customer = tk.Button(frame, text="Customer List", width=21, bg='#ab4d00', fg='#ffffff', command=print(""))
 btn_customer['font'] = btn_font
 # Confirm if the customer data table exists or not
-if len(sql_customers.Database().Storage()) == 0:
+if len(sql_customers.Database().select_all()) == 0:
     btn_customer.config(state="disabled")
 btn_exit = tk.Button(frame, text="Exit", width=21, command=admin.quit, bg='#fc0303', fg='#ffffff')
 btn_exit['font'] = btn_font
@@ -687,7 +687,7 @@ btn_staff.grid(row=2, column=1, padx= 15, pady=5, sticky="nsew")
 btn_add_customer.grid(row=3, column=0, padx= 15, pady=5, sticky="nsew")
 btn_customer.grid(row=3, column=1, padx= 15, pady=5, sticky="nsew")
 btn_exit.grid(row=4, column=0, columnspan = 2, padx= 15, pady=5, sticky="nsew")
-lbl_hihi.grid(row=5, column=0, padx= 5, pady=5, sticky="nsew")
+# lbl_hihi.grid(row=5, column=0, padx= 5, pady=5, sticky="nsew")
 
 # Prevent resizing
 admin.resizable(False, False)
