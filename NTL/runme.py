@@ -43,11 +43,11 @@ def runme(t: tk.Tk):
     if input_usr == "admin" and input_pwd == "admin":
         messagebox.showinfo(title="Success", message="Login successful as admin")
         t.destroy()
-        subprocess.call(["python", "admin.py"])
+        subprocess.call(["python3", "admin.py"])
     elif input_usr == "staff" and input_pwd == "staff":
         messagebox.showinfo(title="Success", message="Login successful as staff")
         t.destroy()
-        subprocess.call(["python", "staff.py"])
+        subprocess.call(["python3", "staff.py"])
     elif input_usr == "vuminh" and input_pwd == "npc":
         messagebox.showerror(title="STOP", message="dm vu minh! What are you doing here?")
         exit()
