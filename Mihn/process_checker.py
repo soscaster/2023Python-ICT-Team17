@@ -42,7 +42,7 @@ def input_store_info(id,name,address,phone,email):
             sql_store.Database().Insert(id, name, address, phone, email)
             return True
         else:
-            sql_store.Database().Update(name, address, phone, email,id)
+            sql_store.Database().Update(id,name, address, phone, email)
             return True
     except:
         return False
@@ -113,32 +113,19 @@ def remove_admin(id):
     except:
         return False
     
-def check_ID_if_empty(id):
-    pattern = '^+$'
-    if re.search(pattern,id):
+def check_if_empty(data):
+    pattern = '(.|\s)*\S(.|\s)*'
+    if re.search(pattern,data):
         return True
     else:
         return False
-    
-def check_name_if_empty(name):
-    pattern = '^+$'
-    if re.search(pattern,name):
-        return True
-    else:
-        return False
+
 def check_dob(dob):
     pattern = '^[0-9]{1,2}\\/[0-9]{1,2}\\/[0-9]{4}$'
     if re.search(pattern, dob):
         return True
     else:
         return False    
-
-def check_address_if_empty(address):
-    pattern = '^+$'
-    if re.search(pattern,address):
-        return True
-    else:
-        return False
 
 def check_phone(phone):
     validate_phone_number_pattern = "^\\+?[0-9][0-9]{2,14}$"
