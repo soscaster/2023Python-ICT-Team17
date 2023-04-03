@@ -112,9 +112,9 @@ def add_staff():
     lbl_staff_id = tk.Label(staff_frame, text="Staff ID", font=("Arial", 15))
     lbl_staff_pwd = tk.Label(staff_frame, text = "Staff Login Password", font=("Arial", 15))
     lbl_staff_name = tk.Label(staff_frame, text="Staff Name", font=("Arial", 15))
-    lbl_staff_dob = tk.Label(staff_frame, text="Staff DOB", font=("Arial", 15))
+    lbl_staff_dob = tk.Label(staff_frame, text="Staff DOB (dd/mm/yyyy)", font=("Arial", 15))
     lbl_staff_address = tk.Label(staff_frame, text="Staff Address", font=("Arial", 15))
-    lbl_staff_phone = tk.Label(staff_frame, text="Staff Phone", font=("Arial", 15))
+    lbl_staff_phone = tk.Label(staff_frame, text="Staff Phone (10 digits)", font=("Arial", 15))
     lbl_staff_email = tk.Label(staff_frame, text="Staff Email", font=("Arial", 15))
 
     # Create entry boxes   
@@ -187,18 +187,18 @@ def add_staff():
                 messagebox.showerror("Error", "Staff info failed to save!\nPlease check again!")
         
 
-# Create a new window for modifying staff info [DONE]
+# # Create a new window for modifying staff info [DONE]
 
-    def delete_staff_func():
-        if fu.remove_staff(st_ID.get()) == True:
-            # Verify if the staff info is saved
-            messagebox.showinfo("Success", "Staff deleted successfully!")
-            if len(sql_staff.Database().Storage()) == 0:
-                btn_staff['state'] = 'disabled'
-            else:
-                btn_staff['state'] = 'normal'
-        elif fu.remove_staff(st_ID.get()) == False:
-            messagebox.showerror("Error", "Staff not deleted!")
+#     def delete_staff_func():
+#         if fu.remove_staff(st_ID.get()) == True:
+#             # Verify if the staff info is saved
+#             messagebox.showinfo("Success", "Staff deleted successfully!")
+#             if len(sql_staff.Database().Storage()) == 0:
+#                 btn_staff['state'] = 'disabled'
+#             else:
+#                 btn_staff['state'] = 'normal'
+#         elif fu.remove_staff(st_ID.get()) == False:
+#             messagebox.showerror("Error", "Staff not deleted!")
 
 
 # CUSTOMER SECTION
@@ -218,9 +218,9 @@ def add_customer():
     lbl_customer = tk.Label(customer_frame, text="Add New Customer Info", font=("Arial", 20, 'bold'), justify="center")
     lbl_customer_id = tk.Label(customer_frame, text="Customer ID", font=("Arial", 15))
     lbl_customer_name = tk.Label(customer_frame, text="Customer Name", font=("Arial", 15))
-    lbl_customer_dob = tk.Label(customer_frame, text="Customer DOB", font=("Arial", 15))
+    lbl_customer_dob = tk.Label(customer_frame, text="Customer DOB (dd/mm/yyyy)", font=("Arial", 15))
     lbl_customer_address = tk.Label(customer_frame, text="Customer Address", font=("Arial", 15))
-    lbl_customer_phone = tk.Label(customer_frame, text="Customer Phone", font=("Arial", 15))
+    lbl_customer_phone = tk.Label(customer_frame, text="Customer Phone (10 digits)", font=("Arial", 15))
     lbl_customer_email = tk.Label(customer_frame, text="Customer Email", font=("Arial", 15))
 
     # Create entry boxes   
@@ -304,9 +304,9 @@ def modify_customer():
     lbl_customer = tk.Label(customer_frame, text="Modify Customer Info", font=("Arial", 20, 'bold'), justify="center")
     lbl_customer_id = tk.Label(customer_frame, text="Customer ID", font=("Arial", 15))
     lbl_customer_name = tk.Label(customer_frame, text="Customer Name", font=("Arial", 15))
-    lbl_customer_dob = tk.Label(customer_frame, text="Customer DOB", font=("Arial", 15))
+    lbl_customer_dob = tk.Label(customer_frame, text="Customer DOB (dd/mm/yyyy)", font=("Arial", 15))
     lbl_customer_address = tk.Label(customer_frame, text="Customer Address", font=("Arial", 15))
-    lbl_customer_phone = tk.Label(customer_frame, text="Customer Phone", font=("Arial", 15))
+    lbl_customer_phone = tk.Label(customer_frame, text="Customer Phone (10 digits)", font=("Arial", 15))
     lbl_customer_email = tk.Label(customer_frame, text="Customer Email", font=("Arial", 15))
 
     # Create entry boxes
@@ -443,14 +443,21 @@ def staff_list():
         tree.delete(*tree.get_children())
         db = sql_staff.Database().Storage()
         for i in range(0,len(db)):
-            tree.insert('', i, iid= None, values = (db[i][0],db[i][2],db[i][3],db[i][4],db[i][5],db[i][6]))
+            tree.insert('', i, iid= None, values = ('> '+ db[i][0],db[i][2],db[i][3],db[i][4],db[i][5],db[i][6]))
     list_all()
+
+    def del_cf():
+        # Return STRING VALUE of the selected item
+        del_ID = str(tree.item(tree.focus())['values'][0][2:])
+        cf = tk.messagebox.askyesno("Delete", "Are you sure you want to delete this staff?")
+        if cf == True:
+            delete_staff_func(del_ID)
 
     tree.pack()
     btn_refresh = tk.Button(list_staff, text="Refresh", width=21, command=lambda: list_all())
     btn_search = tk.Button(list_staff, text="Search", width=21, command=lambda: Search_interface())
     btn_delete = tk.Button(list_staff, text="Delete", width=21, command=lambda: del_cf())
-    btn_update = tk.Button(list_staff, text="Update", width=21, command=lambda: modify_staff(tree.item(tree.focus())['values'][0]))
+    btn_update = tk.Button(list_staff, text="Update", width=21, command=lambda: modify_staff(str(tree.item(tree.focus())['values'][0])))
     btn_exit = tk.Button(list_staff, text="Exit", width=21, command=list_staff.destroy)
 
     def Search_interface():
@@ -524,18 +531,14 @@ def staff_list():
             for i in range(0,len(db)):
                 tree.insert('', i, iid= None, values = (db[i][0],db[i][2],db[i][3],db[i][4],db[i][5],db[i][6]))
 
-    def delete_staff_func():
-        if fu.remove_staff(tree.item(tree.focus())['values'][0]) == True:
+    def delete_staff_func(i):
+        if fu.remove_staff(i) == True:
             # Verify if the staff info is saved
+            print(i)
             messagebox.showinfo("Success", "Staff deleted successfully!")
             tree.delete(tree.focus())
         else:
             messagebox.showerror("Error", "Staff not deleted!")
-
-    def del_cf():
-        cf = tk.messagebox.askyesno("Delete", "Are you sure you want to delete this staff?")
-        if cf == True:
-            delete_staff_func()
 
     def modify_staff(id):
         clear()
@@ -567,7 +570,7 @@ def staff_list():
         st_email = tk.StringVar()
 
         # Get staff list
-        st_ID.set(id)
+        st_ID.set(str(id))
 
         # Get staff info and set to entry boxes after selecting staff
         db = sql_staff.Database().Search(id)
@@ -597,13 +600,6 @@ def staff_list():
 
         btn_exit = tk.Button(staff_frame, text="Exit", width=21, bg='#fc0303', fg='#ffffff', command=staff.destroy)
         btn_exit['font'] = btn_font
-        def del_cf():
-            cf = tk.messagebox.askyesno("Delete", "Are you sure you want to delete this staff?")
-            if cf == True:
-                delete_staff_func()
-        btn_delete = tk.Button(staff_frame, text="Delete", width=21, bg='#fc7303', fg='#ffffff', command=lambda: del_cf())
-        btn_delete['font'] = btn_font
-        
 
         # Create a grid layout
         staff_frame.grid(row=0, column=0, sticky="nsew")
@@ -622,7 +618,6 @@ def staff_list():
         ent_staff_email.grid(row=7, column=1, padx= 15, pady=5, sticky="nsew")
         btn_exit.grid(row=8, column=0, padx= 15, pady=5, sticky="nsew")
         btn_save.grid(row=8, column=1, padx= 15, pady=5, sticky="nsew")
-        btn_delete.grid(row=9, column=0, columnspan=2, padx= 15, pady=5, sticky="nsew")
         
         # Prevent the user from resizing the window
         staff.resizable(False, False)

@@ -15,7 +15,7 @@ def add_admin(id, name, dob, phone, email):
 
 def add_staff(id, pwd, name, dob, address, phone, email):
     try:
-        sql_staff.Database().Insert(id, pwd, name, dob, address, phone, email, 0)
+        sql_staff.Database().Insert(id, pwd, name, dob, address, phone, email)
         return True
     except:
         return False
@@ -87,7 +87,7 @@ def Searchall_staff(id, name, dob, address, phone, email):
 
 def remove_staff(id):
     try:
-        sql_staff.Database().Delete(id)
+        sql_staff.Database().Delete(str(id))
         return True
     except:
         return False
