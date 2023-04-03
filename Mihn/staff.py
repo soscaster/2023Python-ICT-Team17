@@ -82,7 +82,7 @@ def add_customer():
             if func.add_customer(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email) == True:
                 messagebox.showinfo("Success", "Customer info saved successfully!\nPress 'OK' to continue")
                 # Close the window
-                if sql_customers.Database().Storage() == 0:
+                if sql_customers.Database().select_all() == 0:
                     btn_mod_customer['state'] = 'disabled'
                 else:
                     btn_mod_customer['state'] = 'normal'
@@ -120,7 +120,7 @@ def modify_customer():
     cu_email = tk.StringVar()
 
     # Get customer list
-    customer_list = sql_customers.Database().Storage()
+    customer_list = sql_customers.Database().select_all()
     customer_list = [i[0] for i in customer_list]
     cu_ID.set(customer_list[0])
     customer_menu = tk.OptionMenu(customer_frame, cu_ID, *customer_list)
@@ -204,7 +204,7 @@ def modify_customer():
         if func.remove_customer(cu_ID.get()) == True:
             # Verify if the customer info is saved
             messagebox.showinfo("Success", "Customer deleted successfully!")
-            if len(sql_customers.Database().Storage()) == 0:
+            if len(sql_customers.Database().select_all()) == 0:
                 btn_mod_customer['state'] = 'disabled'
             else:
                 btn_mod_customer['state'] = 'normal'
@@ -229,7 +229,7 @@ def add_book():
             if func.add_book(book_id, book_title, book_genre, book_author, book_target, book_pub, book_price, book_quantity)==True:
                 messagebox.showinfo("OK", "Book added successfully!")     
                 # Close the window
-                if sql_books.Database().Storage() == 0:
+                if sql_books.Database().select_all() == 0:
                     btn_mod_book['state'] = 'disabled'
                 else:
                     btn_mod_book['state'] = 'normal'
@@ -349,7 +349,7 @@ def mod_book():
         book_quantity.set(book_info[7])
 
     #Option menu list
-    book_list = sql_books.Database().Storage()
+    book_list = sql_books.Database().select_all()
     book_list = [i[0] for i in book_list]
     book_id.set(book_list[0])
     book_menu = tk.OptionMenu(frm_book, book_id, *book_list)
@@ -424,9 +424,9 @@ btn_mod_customer = tk.Button(master = frm, text = 'Modify customer info', font =
 btn_mod_customer['font'] = btn_font
 btn_cut = tk.Button(master = frm, text = 'Exit', font = ("Arial", 15), width = 21, command = window.quit)
 btn_cut['font'] = btn_font
-if len(sql_books.Database().Storage()) == 0:
+if len(sql_books.Database().select_all()) == 0:
     btn_mod_book.config(state="disabled")
-if len(sql_customers.Database().Storage()) == 0:
+if len(sql_customers.Database().select_all()) == 0:
     btn_mod_customer.config(state="disabled")
 
 frm.grid(row = 0, column = 0, sticky = "nsew")
