@@ -15,7 +15,7 @@ def add_admin(id, name, dob, phone, email):
 
 def add_staff(id, pwd, name, dob, address, phone, email):
     try:
-        sql_staff.Database().Insert(id, pwd, name, dob, address, phone, email, 0)
+        sql_staff.Database().Insert(id, pwd, name, dob, address, phone, email)
         return True
     except:
         return False

@@ -230,9 +230,9 @@ def add_book():
                 messagebox.showinfo("OK", "Book added successfully!")     
                 # Close the window
                 if sql_books.Database().Storage() == 0:
-                    btn_mod_customer['state'] = 'disabled'
+                    btn_mod_book['state'] = 'disabled'
                 else:
-                    btn_mod_customer['state'] = 'normal'
+                    btn_mod_book['state'] = 'normal'
                 book.destroy()
             elif func.add_book(book_id, book_title, book_genre, book_author, book_target, book_pub, book_price, book_quantity)==False:
                 messagebox.showerror("Error", "Book info failed to save!\nPlease check again!")

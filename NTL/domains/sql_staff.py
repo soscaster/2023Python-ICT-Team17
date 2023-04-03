@@ -10,8 +10,8 @@ class Database:
         self.dbCursor.execute("INSERT INTO staff VALUES (?, ?, ?, ?, ?, ?, ?)", (id, pwd, name, dob, address, phone, email))
         self.dbConnection.commit()
 
-    def Update(self, pwd, name, dob, address, phone, email, salary, id):
-        self.dbCursor.execute("UPDATE staff SET password = ?, name=?, dob = ?, address = ?, phone = ?, email = ?, salary = ? WHERE id = ?", (pwd, name, dob, address, phone, email, salary, id))
+    def Update(self, pwd, name, dob, address, phone, email, id):
+        self.dbCursor.execute("UPDATE staff SET password = ?, name=?, dob = ?, address = ?, phone = ?, email = ? WHERE id = ?", (pwd, name, dob, address, phone, email, id))
         self.dbConnection.commit()
 
     def Validate(self, id, phone, email ,mode):
