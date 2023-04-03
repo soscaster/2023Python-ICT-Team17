@@ -87,7 +87,7 @@ def Searchall_staff(id, name, dob, address, phone, email):
 
 def remove_staff(id):
     try:
-        sql_staff.Database().Delete(str(id))
+        sql_staff.Database().Delete(id)
         return True
     except:
         return False

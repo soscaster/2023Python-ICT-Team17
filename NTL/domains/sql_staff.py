@@ -7,11 +7,11 @@ class Database:
         self.dbCursor.execute("CREATE TABLE IF NOT EXISTS staff (id PRIMARYKEY text, password text, name text, dob text, address text, phone text, email text)")
 
     def Insert(self, id, pwd, name, dob, address, phone, email):
-        self.dbCursor.execute("INSERT INTO staff VALUES (?, ?, ?, ?, ?, ?, ?)", (str(id), pwd, name, dob, address, phone, email))
+        self.dbCursor.execute("INSERT INTO staff VALUES (?, ?, ?, ?, ?, ?, ?)", (id, pwd, name, dob, address, phone, email))
         self.dbConnection.commit()
 
     def Update(self, pwd, name, dob, address, phone, email, id):
-        self.dbCursor.execute("UPDATE staff SET password = ?, name=?, dob = ?, address = ?, phone = ?, email = ? WHERE id = ?", (pwd, name, dob, address, phone, email, str(id)))
+        self.dbCursor.execute("UPDATE staff SET password = ?, name=?, dob = ?, address = ?, phone = ?, email = ? WHERE id = ?", (pwd, name, dob, address, phone, email, id))
         self.dbConnection.commit()
 
     def Validate(self, id, phone, email ,mode):
@@ -36,7 +36,7 @@ class Database:
         return searchResults
 
     def Delete(self, id):
-        self.dbCursor.execute("DELETE FROM staff WHERE id = ?", (str(id), ))
+        self.dbCursor.execute("DELETE FROM staff WHERE id = ?", (id, ))
         self.dbConnection.commit()
 
     def Storage(self):
