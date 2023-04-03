@@ -1,0 +1,16 @@
+(Nhat Minh)
+1. Admin - Add New Staff - Typo Label Phone Staff
+2. MessageBox all needs to be in that window
+3. MessageBox - Add more text
+4. Terminal - Print more specific Invalid
+5. Admin - Add New Staff - Change valid email condition
+6. Staff - Modify & Customer book info - Button Status Validate
+7. Staff - Add & Modify book info - Messagebox when error.
+
+
+
+(The Long)
+1. Change modify buttons to list buttons
+2. Copy modify and delete functions to update_ & delete_button command in list windows
+3. Add book list func and button (same as staff and cus, no delete button) in staff.py
+4. Add staff list button and function to staff.py
