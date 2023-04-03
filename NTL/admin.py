@@ -559,7 +559,7 @@ def staff_list():
         st_email = tk.StringVar()
 
         # Get staff list
-        st_ID.set(str(id))
+        st_ID.set(id)
 
         # Get staff info and set to entry boxes after selecting staff
         db = sql_staff.Database().Search(id)
