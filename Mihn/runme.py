@@ -25,7 +25,6 @@ password_label = tk.Label(login, text="Password", font=("Arial", 15),bg=backgrou
 username_entry = tk.Entry(login, width=30, font=("Arial", 15, 'bold'), justify="center")
 password_entry = tk.Entry(login, width=30, font=("Arial", 15, 'bold'), justify="center", show="*")
 
-# Create buttons
 
 # Create button Frame
 button_frame = tk.Frame(login, bg=background_main_color)
@@ -43,12 +42,18 @@ btn_exit.pack(side=tk.BOTTOM)#, padx=10, expand=tk.YES)
 
 # Style labels, entry boxes and buttons
 
+# def enter():
+#     print("Enter pressed")
+# password_entry.bind("<Return>",enter())
+
 # Place widget on screen
 lb_title.pack(side=tk.TOP, pady=15)
 username_label.pack(side=tk.TOP, pady=5)
 username_entry.pack(side=tk.TOP, pady=5)
 password_label.pack(side=tk.TOP, pady=5)
 password_entry.pack(side=tk.TOP, pady=5)
+
+
 
 # Grid widgets
 # lb_title.grid(row=0,column=0,columnspan=2,sticky='news')
@@ -75,5 +80,7 @@ def runme(t: tk.Tk):
     else:
         messagebox.showerror(title="Error", message="Invalid username or password\nPlease try again.")
 
+# enter_key = tk.Entry(login)
+# username_entry.bind("<Return>", runme(login))
 
 login.mainloop()
