@@ -2,6 +2,7 @@ import sys
 sys.dont_write_bytecode = True
 import tkinter as tk
 import subprocess
+import func
 from tkinter import messagebox, font as tkfont
 
 login = tk.Tk()
@@ -54,5 +55,8 @@ def runme(t: tk.Tk):
     else:
         messagebox.showerror(title="Error", message="Invalid username or password\nPlease try again.")
 
+
+func.create_connection()
+func.create_store_if_not_exist()
 
 login.mainloop()
