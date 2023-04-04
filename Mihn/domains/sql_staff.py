@@ -39,7 +39,7 @@ class Database:
         self.dbCursor.execute("DELETE FROM staff WHERE id = ?", (str(id), ))
         self.dbConnection.commit()
 
-    def Storage(self):
+    def select_all(self):
         self.dbCursor.execute("SELECT * FROM staff")
         records = self.dbCursor.fetchall()
         return records

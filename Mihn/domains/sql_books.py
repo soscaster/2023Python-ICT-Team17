@@ -34,7 +34,7 @@ class Database:
         self.dbCursor.execute("DELETE FROM books WHERE id = ?", (id, ))
         self.dbConnection.commit()
 
-    def Storage(self):
+    def select_all(self):
         self.dbCursor.execute("SELECT * FROM books")
         records = self.dbCursor.fetchall()
         return records

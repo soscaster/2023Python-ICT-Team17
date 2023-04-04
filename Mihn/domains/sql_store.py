@@ -11,14 +11,14 @@ class Database:
         self.dbConnection.commit()
 
     def Update(self, name, address, phone, email, id):
-        self.dbCursor.execute("UPDATE store SET name = ?, address = ?, phone = ?, email = ?, id = ?", (name, address, phone, email, id))
+        self.dbCursor.execute("UPDATE store SET name = ?, address = ?, phone = ?, email = ?, id = ?", (id, name, address, phone, email))
         self.dbConnection.commit()
 
     def Delete(self):
         self.dbCursor.execute("DELETE * FROM store")
         self.dbConnection.commit()
 
-    def Storage(self):
+    def select_all(self):
         self.dbCursor.execute("SELECT * FROM store")
         records = self.dbCursor.fetchall()
         return records

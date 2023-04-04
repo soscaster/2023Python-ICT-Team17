@@ -3,7 +3,7 @@ sys.dont_write_bytecode = True
 import tkinter as tk
 from tkinter import messagebox, ttk, font as tkfont
 import os
-clear = lambda: os.system('clear')
+clear = lambda: os.system('cls')
 from domains import sql_staff
 from domains import sql_store
 from domains import sql_customers
@@ -15,18 +15,18 @@ def modify_store():
     # Create a new window
     store = tk.Toplevel(admin)
     store.title("Modify Store Info")
-    store_frame = tk.Frame(store)
+    store_frame = tk.Frame(store,bg=dark_bg)
 
     # Create widgets
     btn_font = tkfont.Font(family="Arial", size=15)
 
     # Create labels
-    lbl_store = tk.Label(store_frame, text="Modify Store Info", font=("Arial", 20, 'bold'), justify="center")
-    lbl_store_id = tk.Label(store_frame, text="Store ID", font=("Arial", 15))
-    lbl_store_name = tk.Label(store_frame, text="Store Name", font=("Arial", 15))
-    lbl_store_address = tk.Label(store_frame, text="Store Address", font=("Arial", 15))
-    lbl_store_phone = tk.Label(store_frame, text="Store Phone", font=("Arial", 15))
-    lbl_store_email = tk.Label(store_frame, text="Store Email", font=("Arial", 15))
+    lbl_store = tk.Label(store_frame, text="Modify Store Info", font=("Arial", 20, 'bold'),bg=dark_bg,fg=white_text, justify="center")
+    lbl_store_id = tk.Label(store_frame, text="Store ID", font=("Arial", 15),bg=dark_bg,fg=white_text,)
+    lbl_store_name = tk.Label(store_frame, text="Store Name", font=("Arial", 15),bg=dark_bg,fg=white_text,)
+    lbl_store_address = tk.Label(store_frame, text="Store Address", font=("Arial", 15),bg=dark_bg,fg=white_text,)
+    lbl_store_phone = tk.Label(store_frame, text="Store Phone", font=("Arial", 15),bg=dark_bg,fg=white_text,)
+    lbl_store_email = tk.Label(store_frame, text="Store Email", font=("Arial", 15),bg=dark_bg,fg=white_text,)
 
     # Create entry boxes
     global store_id, store_name, store_address, store_phone, store_email
@@ -37,14 +37,14 @@ def modify_store():
     store_email = tk.StringVar()
 
     # Get values from database
-    if len(sql_store.Database().Storage())==0:
+    if len(sql_store.Database().select_all()) == 0:
         store_id.set("")
         store_name.set("")
         store_address.set("")
         store_phone.set("")
         store_email.set("")
     else:
-        db = sql_store.Database().Storage()
+        db = sql_store.Database().select_all()
         store_id.set(db[0][0])
         store_name.set(db[0][1])
         store_address.set(db[0][2])
@@ -84,9 +84,20 @@ def modify_store():
     store.resizable(False, False)
 
 def modify_store_func():
+
     # If function modify_store returns False, show error message
-    if fu.check_phone(store_phone.get()) == False:
-        messagebox.showerror("Error", "Invalid phone number!\nPlease try again!")
+    if fu.check_if_empty(store_id.get()) == False:
+        messagebox.showerror("Error","Store ID cannot be empty!")
+    elif fu.check_if_empty(store_name.get()) == False:
+        messagebox.showerror("Error","Store Name cannot be empty!")
+    elif fu.check_if_empty(store_address.get()) == False:
+        messagebox.showerror("Error","Store Address cannot be empty!")
+    elif fu.check_if_empty(store_phone.get()) == False:
+        messagebox.showerror("Error","Store phone cannot be empty!")
+    elif fu.check_phone(store_phone.get()) == False:
+        messagebox.showerror("Error", "Invalid phone number!\nPlease try again!")          
+    elif fu.check_if_empty(store_email.get()) == False:
+        messagebox.showerror("Error","Store E-mail cannot be empty!")      
     elif fu.check_email(store_email.get()) == False:
         messagebox.showerror("Error", "Invalid email type!\nPlease try again!")
     elif fu.input_store_info(store_id.get(), store_name.get(), store_address.get(), store_phone.get(), store_email.get()) == False:
@@ -102,20 +113,20 @@ def add_staff():
     # Create a new window
     staff = tk.Toplevel(admin)
     staff.title("Add New Staff Info")
-    staff_frame = tk.Frame(staff)
+    staff_frame = tk.Frame(staff,bg=dark_bg)
 
     # Create widgets
     btn_font = tkfont.Font(family="Arial", size=15)
 
     # Create labels
-    lbl_staff = tk.Label(staff_frame, text="Add New Staff Info", font=("Arial", 20, 'bold'), justify="center")
-    lbl_staff_id = tk.Label(staff_frame, text="Staff ID", font=("Arial", 15))
-    lbl_staff_pwd = tk.Label(staff_frame, text = "Staff Login Password", font=("Arial", 15))
-    lbl_staff_name = tk.Label(staff_frame, text="Staff Name", font=("Arial", 15))
-    lbl_staff_dob = tk.Label(staff_frame, text="Staff DOB (dd/mm/yyyy)", font=("Arial", 15))
-    lbl_staff_address = tk.Label(staff_frame, text="Staff Address", font=("Arial", 15))
-    lbl_staff_phone = tk.Label(staff_frame, text="Staff Phone (10 digits)", font=("Arial", 15))
-    lbl_staff_email = tk.Label(staff_frame, text="Staff Email", font=("Arial", 15))
+    lbl_staff = tk.Label(staff_frame, text="Add New Staff Info", font=("Arial", 20, 'bold'),bg=dark_bg,fg=white_text, justify="center")
+    lbl_staff_id = tk.Label(staff_frame, text="Staff ID", font=("Arial", 15),bg=dark_bg,fg=white_text,)
+    lbl_staff_pwd = tk.Label(staff_frame, text = "Staff Login Password", font=("Arial", 15),bg=dark_bg,fg=white_text,)
+    lbl_staff_name = tk.Label(staff_frame, text="Staff Name", font=("Arial", 15),bg=dark_bg,fg=white_text,)
+    lbl_staff_dob = tk.Label(staff_frame, text="Staff DOB (dd/mm/yyyy)", font=("Arial", 15),bg=dark_bg,fg=white_text,)
+    lbl_staff_address = tk.Label(staff_frame, text="Staff Address", font=("Arial", 15),bg=dark_bg,fg=white_text,)
+    lbl_staff_phone = tk.Label(staff_frame, text="Staff Phone (10 digits)", font=("Arial", 15),bg=dark_bg,fg=white_text,)
+    lbl_staff_email = tk.Label(staff_frame, text="Staff Email", font=("Arial", 15),bg=dark_bg,fg=white_text,)
 
     # Create entry boxes   
     global st_ID, st_pwd, st_name, st_dob, st_address, st_phone, st_email 
@@ -166,10 +177,22 @@ def add_staff():
 
     # Define a function for saving staff info
     def add_staff_func(st_ID, st_pwd, st_name, st_dob, st_address, st_phone, st_email):
-        if fu.check_dob(st_dob) == False:
-            messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!")        
+        if fu.check_if_empty(st_ID) == False:
+            messagebox.showerror("Error","Staff ID cannot be empty!")
+        elif fu.check_if_empty(st_name) == False:
+            messagebox.showerror("Error","Staff name cannot be empty!")
+        elif fu.check_if_empty(st_dob) == False:
+            messagebox.showerror("Error","Date of birth cannot be empty!")
+        elif fu.check_dob(st_dob) == False:
+            messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!")  
+        elif fu.check_if_empty(st_address) == False:
+            messagebox.showerror("Error","Staff address cannot be empty!")
+        elif fu.check_if_empty(st_phone) == False:
+            messagebox.showerror("Error","Staff Phone cannot be empty")
         elif fu.check_phone(st_phone) == False:
             messagebox.showerror("Error", "Invalid phone number!\nPlease try again!")
+        elif fu.check_if_empty(st_email) == False:
+            messagebox.showerror("Error","Staff E-mail cannot be empty!")
         elif fu.check_email(st_email) == False:
             messagebox.showerror("Error", "Invalid email type!\nPlease try again!")
         elif sql_staff.Database().Validate(st_ID, st_phone, st_email, 1) == True:
@@ -178,7 +201,7 @@ def add_staff():
             if fu.add_staff(st_ID, st_pwd, st_name, st_dob, st_address, st_phone, st_email) == True:
                 messagebox.showinfo("Success", "Staff info saved successfully!\nPress 'OK' to continue")
                 # Close the window
-                if len(sql_staff.Database().Storage()) == 0:
+                if len(sql_staff.Database().select_all()) == 0:
                     btn_staff['state'] = 'disabled'
                 else:
                     btn_staff['state'] = 'normal'
@@ -193,7 +216,7 @@ def add_staff():
 #         if fu.remove_staff(st_ID.get()) == True:
 #             # Verify if the staff info is saved
 #             messagebox.showinfo("Success", "Staff deleted successfully!")
-#             if len(sql_staff.Database().Storage()) == 0:
+#             if len(sql_staff.Database().select_all()) == 0:
 #                 btn_staff['state'] = 'disabled'
 #             else:
 #                 btn_staff['state'] = 'normal'
@@ -209,19 +232,19 @@ def add_customer():
     # Create a new window
     customer = tk.Toplevel(admin)
     customer.title("Add New Customer Info")
-    customer_frame = tk.Frame(customer)
+    customer_frame = tk.Frame(customer,bg=dark_bg)
 
     # Create widgets
     btn_font = tkfont.Font(family="Arial", size=15)
 
     # Create labels
-    lbl_customer = tk.Label(customer_frame, text="Add New Customer Info", font=("Arial", 20, 'bold'), justify="center")
-    lbl_customer_id = tk.Label(customer_frame, text="Customer ID", font=("Arial", 15))
-    lbl_customer_name = tk.Label(customer_frame, text="Customer Name", font=("Arial", 15))
-    lbl_customer_dob = tk.Label(customer_frame, text="Customer DOB (dd/mm/yyyy)", font=("Arial", 15))
-    lbl_customer_address = tk.Label(customer_frame, text="Customer Address", font=("Arial", 15))
-    lbl_customer_phone = tk.Label(customer_frame, text="Customer Phone (10 digits)", font=("Arial", 15))
-    lbl_customer_email = tk.Label(customer_frame, text="Customer Email", font=("Arial", 15))
+    lbl_customer = tk.Label(customer_frame, text="Add New Customer Info", font=("Arial", 20, 'bold'),bg=dark_bg,fg=white_text, justify="center")
+    lbl_customer_id = tk.Label(customer_frame, text="Customer ID", font=("Arial", 15),bg=dark_bg,fg=white_text,)
+    lbl_customer_name = tk.Label(customer_frame, text="Customer Name", font=("Arial", 15),bg=dark_bg,fg=white_text,)
+    lbl_customer_dob = tk.Label(customer_frame, text="Customer DOB (dd/mm/yyyy)", font=("Arial", 15),bg=dark_bg,fg=white_text,)
+    lbl_customer_address = tk.Label(customer_frame, text="Customer Address", font=("Arial", 15),bg=dark_bg,fg=white_text,)
+    lbl_customer_phone = tk.Label(customer_frame, text="Customer Phone (10 digits)", font=("Arial", 15),bg=dark_bg,fg=white_text,)
+    lbl_customer_email = tk.Label(customer_frame, text="Customer Email", font=("Arial", 15),bg=dark_bg,fg=white_text,)
 
     # Create entry boxes   
     global cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email 
@@ -268,19 +291,29 @@ def add_customer():
 
     # Define a function for saving customer info
     def add_customer_func(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email):
-        if fu.check_dob(cu_dob) == False:
+        if fu.check_if_empty(cu_ID) == False:
+            messagebox.showerror("Error","Customer ID cannot be empty!")
+        elif fu.check_if_empty(cu_name) == False:
+            messagebox.showerror("Error","Customer Name cannot be empty!")
+        elif fu.check_if_empty(cu_dob) == False:
+            messagebox.showerror("Error","Customer Date of Birth cannot be empty!")
+        elif fu.check_dob(cu_dob) == False:
             messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!")
+        elif fu.check_if_empty(cu_phone) == False:
+            messagebox.showerror("Error","Customer phone number cannot be empty!")
         elif fu.check_phone(cu_phone) == False:
             messagebox.showerror("Error", "Invalid phone number!\nPlease try again!")
+        elif fu.check_if_empty(cu_email) == False:
+            messagebox.showerror("Error","Customer e-mail cannot be empty!")
         elif fu.check_email(cu_email) == False:
             messagebox.showerror("Error", "Invalid email type!\nPlease try again!")
-        elif sql_customers.Database().Validate(cu_ID, cu_phone, cu_email, 1) == True:
+        elif sql_customers.Database().Validate(cu_ID, cu_phone, cu_email, 1) == True:   
             messagebox.showerror("Error", "ID or Phone or Email info is already exists!\nPlease try again!")
         else:
             if fu.add_customer(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email) == True:
                 messagebox.showinfo("Success", "Customer info saved successfully!\nPress 'OK' to continue")
                 # Close the window
-                if len(sql_customers.Database().Storage()) == 0:
+                if len(sql_customers.Database().select_all()) == 0:
                     btn_customer['state'] = 'disabled'
                 else:
                     btn_customer['state'] = 'normal'
@@ -319,7 +352,7 @@ def modify_customer():
     cu_email = tk.StringVar()
 
     # Get customer list
-    customer_list = sql_customers.Database().Storage()
+    customer_list = sql_customers.Database().select_all()
     customer_list = [i[0] for i in customer_list]
     cu_ID.set(customer_list[0])
     customer_menu = tk.OptionMenu(customer_frame, cu_ID, *customer_list)
@@ -386,11 +419,21 @@ def modify_customer():
 
     # Define a function for saving customer info
     def modify_customer_func():
-        if fu.check_dob(cu_dob.get()) == False:
+        if fu.check_if_empty(cu_ID) == False:
+            messagebox.showerror("Error","Customer ID cannot be empty!")
+        elif fu.check_if_empty(cu_name) == False:
+            messagebox.showerror("Error","Customer Name cannot be empty!")
+        elif fu.check_if_empty(cu_dob) == False:
+            messagebox.showerror("Error","Customer Date of Birth cannot be empty!")
+        elif fu.check_dob(cu_dob) == False:
             messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!")
-        elif fu.check_phone(cu_phone.get()) == False:
+        elif fu.check_if_empty(cu_phone) == False:
+            messagebox.showerror("Error","Customer phone number cannot be empty!")
+        elif fu.check_phone(cu_phone) == False:
             messagebox.showerror("Error", "Invalid phone number!\nPlease try again!")
-        elif fu.check_email(cu_email.get()) == False:
+        elif fu.check_if_empty(cu_email) == False:
+            messagebox.showerror("Error","Customer e-mail cannot be empty!")
+        elif fu.check_email(cu_email) == False:
             messagebox.showerror("Error", "Invalid email type!\nPlease try again!")
         elif sql_customers.Database().Validate(cu_ID.get(), cu_phone.get(), cu_email.get(), 2) == True:
             messagebox.showerror("Error", "Phone or Email info is already exists!\nPlease try again!")
@@ -402,7 +445,7 @@ def modify_customer():
         if fu.remove_customer(cu_ID.get()) == True:
             # Verify if the customer info is saved
             messagebox.showinfo("Success", "Customer deleted successfully!")
-            if len(sql_customers.Database().Storage()) == 0:
+            if len(sql_customers.Database().select_all()) == 0:
                 btn_customer['state'] = 'disabled'
             else:
                 btn_customer['state'] = 'normal'
@@ -417,7 +460,7 @@ def staff_list():
     list_staff.title("Staff")
     frm = tk.Frame(list_staff)
     tree = ttk.Treeview(list_staff)
-    tree['show']='headings'
+    tree['show'] = 'headings'
 
     list_staff.resizable(False,False)
 
@@ -441,7 +484,7 @@ def staff_list():
 
     def list_all():
         tree.delete(*tree.get_children())
-        db = sql_staff.Database().Storage()
+        db = sql_staff.Database().select_all()
         for i in range(0,len(db)):
             tree.insert('', i, iid= None, values = ('> '+ db[i][0],db[i][2],db[i][3],db[i][4],db[i][5],db[i][6]))
     list_all()
@@ -647,16 +690,18 @@ def staff_list():
 
 # First window
 
+dark_bg = "#333333"
+white_text = "#FFFFFF"
 admin = tk.Tk()
 admin.title("Book Store Management System - Loged in as admin")
-frame = tk.Frame(admin)
+frame = tk.Frame(admin,bg=dark_bg)
 
 # Create widgets
 btn_font = tkfont.Font(family="Arial", size=15)
 
 # Create labels
-lbl_welcome = tk.Label(frame, text="Welcome to\nBook Store Management System", font=("Arial", 25, 'bold'), justify="center")
-lbl_hihi = tk.Label(frame, text=" ", font=("Arial", 13))
+lbl_welcome = tk.Label(frame, text="Welcome to\nBook Store Management System", font=("Arial", 25, 'bold'),bg=dark_bg,fg='#FFFFFF', justify="center")
+lbl_hihi = tk.Label(frame, text=" ", font=("Arial", 13),bg= dark_bg)
 
 # Create buttons
 btn_store = tk.Button(frame, text="Modify Store Info", width=21, bg='#0052cc', fg='#ffffff', command=modify_store)
@@ -666,14 +711,14 @@ btn_add_staff['font'] = btn_font
 btn_staff = tk.Button(frame, text="Staff List", width=21, bg='#00ab1c', fg='#ffffff', command=staff_list)
 btn_staff['font'] = btn_font
 # Confirm if the staff data table exists or not
-if len(sql_staff.Database().Storage()) == 0:
+if len(sql_staff.Database().select_all()) == 0:
     btn_staff.config(state="disabled")
 btn_add_customer = tk.Button(frame, text="Add Customer", width=21, bg='#ab4d00', fg='#ffffff', command=add_customer)
 btn_add_customer['font'] = btn_font
 btn_customer = tk.Button(frame, text="Customer List", width=21, bg='#ab4d00', fg='#ffffff', command=print(""))
 btn_customer['font'] = btn_font
 # Confirm if the customer data table exists or not
-if len(sql_customers.Database().Storage()) == 0:
+if len(sql_customers.Database().select_all()) == 0:
     btn_customer.config(state="disabled")
 btn_exit = tk.Button(frame, text="Exit", width=21, command=admin.quit, bg='#fc0303', fg='#ffffff')
 btn_exit['font'] = btn_font
@@ -688,6 +733,7 @@ btn_add_customer.grid(row=3, column=0, padx= 15, pady=5, sticky="nsew")
 btn_customer.grid(row=3, column=1, padx= 15, pady=5, sticky="nsew")
 btn_exit.grid(row=4, column=0, columnspan = 2, padx= 15, pady=5, sticky="nsew")
 lbl_hihi.grid(row=5, column=0, padx= 5, pady=5, sticky="nsew")
+
 
 # Prevent resizing
 admin.resizable(False, False)

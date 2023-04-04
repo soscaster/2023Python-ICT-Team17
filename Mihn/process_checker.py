@@ -38,11 +38,11 @@ def add_book(id, title, genre, author, target, publisher, price, quantity):
 #For admin:
 def input_store_info(id,name,address,phone,email):
     try:
-        if len(sql_store.Database().Storage())==0:
+        if len(sql_store.Database().select_all())==0:
             sql_store.Database().Insert(id, name, address, phone, email)
             return True
         else:
-            sql_store.Database().Update(name, address, phone, email,id)
+            sql_store.Database().Update(id,name, address, phone, email)
             return True
     except:
         return False
@@ -112,17 +112,10 @@ def remove_admin(id):
         return True
     except:
         return False
-
-def check_email(email):
-    pattern = '^[a-z0-9]+[\.]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
-    if (re.search(pattern,email)):
-        return True
-    else:
-        return False
-
-def check_phone(phone):
-    validate_phone_number_pattern = "^\\+?[0-9][0-9]{2,14}$"
-    if (re.match(validate_phone_number_pattern,phone)):
+    
+def check_if_empty(data):
+    pattern = '(.|\s)*\S(.|\s)*'
+    if re.search(pattern,data):
         return True
     else:
         return False
@@ -132,4 +125,21 @@ def check_dob(dob):
     if re.search(pattern, dob):
         return True
     else:
+        return False    
+
+def check_phone(phone):
+    validate_phone_number_pattern = "^\\+?[0-9][0-9]{2,14}$"
+    if (re.match(validate_phone_number_pattern,phone)):
+        return True
+    else:
         return False
+
+def check_email(email):
+    pattern = '^[a-z0-9]+[\.]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+    if (re.search(pattern,email)):
+        return True
+    else:
+        return False
+
+
+
