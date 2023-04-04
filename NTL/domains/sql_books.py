@@ -30,8 +30,8 @@ class Database:
         searchResults = self.dbCursor.fetchall()
         return searchResults
 
-    def Searchall(self, id, title, genre, author, target, publisher, price, quantity):
-        self.dbCursor.execute("SELECT * FROM books WHERE id like '%%%s%%' AND title like '%%%s%%' AND genre like '%%%s%%' AND author like '%%%s%%' AND target like '%%%s%%' AND publisher like '%%%s%%' AND price like '%%%s%%' AND quantity like '%%%s%%'" % (id, title, genre, author, target, publisher, price, quantity))
+    def Searchall(self, id, title, genre, author, target, publisher, price1, price2, quantity1, quantity2):
+        self.dbCursor.execute("SELECT * FROM books WHERE id like '%%%s%%' AND title like '%%%s%%' AND genre like '%%%s%%' AND author like '%%%s%%' AND target like '%%%s%%' AND publisher like '%%%s%%' AND price >= ? AND price <= ? AND quantity >= ? AND quantity <= ?" % (id, title, genre, author, target, publisher), (price1, price2, quantity1, quantity2))
         searchResults = self.dbCursor.fetchall()
         return searchResults
 

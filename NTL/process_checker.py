@@ -91,9 +91,9 @@ def Searchall_customer(id, name, dob, address, phone, email):
     except:
         return False
     
-def Searchall_book(id, title, genre, author, target, publisher, price, quantity):
+def Searchall_book(id, title, genre, author, target, publisher, price1, price2, quantity1, quantity2):
     try:
-        return sql_books.Database().Searchall(id, title, genre, author, target, publisher, price, quantity)
+        return sql_books.Database().Searchall(id, title, genre, author, target, publisher, price1, price2, quantity1, quantity2)
     except:
         return False
 
@@ -145,3 +145,41 @@ def check_dob(dob):
         return True
     else:
         return False
+    
+def validate_price_quatity(price, quantity):
+    try:
+        if (int(price)<0) or (int(quantity)<0):
+            return False
+    except:
+        return False
+    return True
+
+def check_price_quantity_format(price, quantity):
+    data = []
+    pattern = '^[0-9]{1,}\\-[0-9]{1,}$'
+    if (re.match(pattern, price)) and (re.match(pattern, quantity)):
+        data.append(price[0:price.index('-')])
+        data.append(price[price.index('-')+1:])
+        data.append(quantity[0:quantity.index('-')])
+        data.append(quantity[quantity.index('-')+1:])
+        return data
+    elif  (len(price)==0) and (len(quantity)==0):
+        return ['0','2147483647','0','2147483647']
+    elif (len(price)==0) and (re.match(pattern, quantity)):
+        data.append('0')
+        data.append('2147483647')
+        data.append(quantity[0:quantity.index('-')])
+        data.append(quantity[quantity.index('-')+1:])
+        return data
+    elif (len(quantity)==0) and (re.match(pattern, price)):
+        data.append(price[0:price.index('-')])
+        data.append(price[price.index('-')+1:])
+        data.append('0')
+        data.append('2147483647')
+        return data
+    else:
+        return False
+
+
+    
+

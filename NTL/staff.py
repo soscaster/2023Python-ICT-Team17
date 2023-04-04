@@ -342,8 +342,10 @@ def add_book():
     
     #Add book cmd
     def add_book_func(book_id, book_title, book_genre, book_author, book_target, book_pub, book_price, book_quantity):
-        if sql_books.Database().Validate(book_id, book_title, book_author, 1) == True:
+        if (sql_books.Database().Validate(book_id, book_title, book_author, 1) == True):
             messagebox.showerror("Error", "Book already exist!")
+        elif (func.validate_price_quatity(book_price, book_quantity)==False):
+            messagebox.showerror("Error", "Invalid Price or Quantity!")
         else:
             if func.add_book(book_id, book_title, book_genre, book_author, book_target, book_pub, book_price, book_quantity)==True:
                 messagebox.showinfo("OK", "Book added successfully!")     
@@ -498,8 +500,8 @@ def book_list():
         lbl_book_author = tk.Label(frm, text="Book Author", font=("Arial", 15))
         lbl_book_target = tk.Label(frm, text="Book Target", font=("Arial", 15))
         lbl_book_publisher = tk.Label(frm, text="Book Publisher", font=("Arial", 15))
-        lbl_book_price = tk.Label(frm, text="Book Price", font=("Arial", 15))
-        lbl_book_quantity = tk.Label(frm, text="Book Quantity", font=("Arial", 15))
+        lbl_book_price = tk.Label(frm, text="Book Price (Format: ?-?)", font=("Arial", 15))
+        lbl_book_quantity = tk.Label(frm, text="Book Quantity (Format: ?-?)", font=("Arial", 15))
 
 
         # Create entry boxes   
@@ -556,12 +558,15 @@ def book_list():
 
 
     def Search_book(id, title, genre, author, target, publisher, price, quantity):
-        if func.Searchall_book(id, title, genre, author, target, publisher, price, quantity) == False:
+        data = func.check_price_quantity_format(price, quantity)
+        if data == False:
+            messagebox.showerror("Error", "Invalid Price or Quantity format!")
+        elif func.Searchall_book(id, title, genre, author, target, publisher, data[0], data[1], data[2], data[3]) == False:
             messagebox.showerror("Error", "Something went wrong\nPlease try again!")
-        elif len(func.Searchall_book(id, title, genre, author, target, publisher, price, quantity))==0:
+        elif len(func.Searchall_book(id, title, genre, author, target, publisher, data[0], data[1], data[2], data[3]))==0:
             messagebox.showinfo("","0 results found!")
         else:
-            db = func.Searchall_book(id, title, genre, author, target, publisher, price, quantity)
+            db = func.Searchall_book(id, title, genre, author, target, publisher, data[0], data[1], data[2], data[3])
             tree.delete(*tree.get_children())
             for i in range(0,len(db)):
                 tree.insert('', i, iid= None, values = (db[i][0],db[i][1],db[i][2],db[i][3],db[i][4],db[i][5],db[i][6],db[i][7],">"+db[i][0]))
@@ -580,6 +585,8 @@ def book_list():
         def mod_book_func():
             if sql_books.Database().Validate(book_id.get(), book_title.get(), book_author.get(), 2) == True:
                 messagebox.showerror("Error", "Book with modfied info is already exist!\nPlease try again!")
+            elif (func.validate_price_quatity(book_price.get(), book_quantity.get())==False):
+                messagebox.showerror("Error", "Invalid Price or Quantity!")
             else:
                 sql_books.Database().Update(book_title.get(), book_genre.get(),book_author.get(),book_target.get(),book_pub.get(),book_price.get(),book_quantity.get(),book_id.get())
                 messagebox.showinfo("OK", "Book Info Modded!")
