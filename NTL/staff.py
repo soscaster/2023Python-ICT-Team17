@@ -349,7 +349,11 @@ def add_book():
             messagebox.showerror("Error", "Invalid Price or Quantity!")
         else:
             if func.add_book(book_id, book_title, book_genre, book_author, book_target, book_pub, book_price, book_quantity)==True:
-                messagebox.showinfo("OK", "Book added successfully!")     
+                messagebox.showinfo("OK", "Book added successfully!")
+                if sql_books.Database().Storage() == 0:
+                    btn_book['state'] = 'disabled'
+                else:
+                    btn_book['state'] = 'normal'
                 book.destroy()
             elif func.add_book(book_id, book_title, book_genre, book_author, book_target, book_pub, book_price, book_quantity)==False:
                 messagebox.showerror("Error", "Book info failed to save!\nPlease check again!")
