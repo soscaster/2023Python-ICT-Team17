@@ -191,7 +191,7 @@ def customer_list():
         ent_customer_email = tk.Entry(frm, width=30, textvariable=cus_email, font=("Arial", 15))
 
         # Create buttons
-        btn_search = tk.Button(frm, text="Search", width=21, bg='#0052cc', fg='#ffffff', command=lambda: [Search_customer(cus_ID.get(), cus_name.get(), cus_dob.get(), cus_address.get(), cus_phone.get(), cus_email.get()), search_inter.destroy()])
+        btn_search = tk.Button(frm, text="Search", width=21, bg='#0052cc', fg='#ffffff', command=lambda: Search_customer(cus_ID.get(), cus_name.get(), cus_dob.get(), cus_address.get(), cus_phone.get(), cus_email.get()))
         btn_search['font'] = btn_font
         btn_exit = tk.Button(frm, text="Exit", width=21, command=search_inter.destroy, bg='#fc0303', fg='#ffffff')
         btn_exit['font'] = btn_font
@@ -219,16 +219,17 @@ def customer_list():
 
 
 
-    def Search_customer(id, name, dob, address, phone, email):
-        if func.Searchall_customer(id, name, dob, address, phone, email) == False:
-            messagebox.showerror("Error", "Something went wrong\nPlease try again!")
-        elif len(func.Searchall_customer(id, name, dob, address, phone, email))==0:
-            messagebox.showinfo("","0 results found!")
-        else:
-            db = func.Searchall_customer(id, name, dob, address, phone, email)
-            tree.delete(*tree.get_children())
-            for i in range(0,len(db)):
-                tree.insert('', i, iid= None, values = (db[i][0],db[i][1],db[i][2],db[i][3],db[i][4],db[i][5],">"+db[i][0]))
+        def Search_customer(id, name, dob, address, phone, email):
+            if func.Searchall_customer(id, name, dob, address, phone, email) == False:
+                messagebox.showerror("Error", "Something went wrong\nPlease try again!")
+            elif len(func.Searchall_customer(id, name, dob, address, phone, email))==0:
+                messagebox.showinfo("","0 results found!")
+            else:
+                db = func.Searchall_customer(id, name, dob, address, phone, email)
+                tree.delete(*tree.get_children())
+                for i in range(0,len(db)):
+                    tree.insert('', i, iid= None, values = (db[i][0],db[i][1],db[i][2],db[i][3],db[i][4],db[i][5],">"+db[i][0]))
+                search_inter.destroy()
 
     def modify_customer():
         try:
@@ -525,7 +526,7 @@ def book_list():
         ent_book_quantity = tk.Entry(frm, width=30, textvariable=quantity, font=("Arial", 15))
 
         # Create buttons
-        btn_search = tk.Button(frm, text="Search", width=21, bg='#0052cc', fg='#ffffff', command=lambda: [Search_book(id.get(), title.get(), genre.get(), author.get(), target.get(), publisher.get(), price.get(), quantity.get()), search_inter.destroy()])
+        btn_search = tk.Button(frm, text="Search", width=21, bg='#0052cc', fg='#ffffff', command=lambda: Search_book(id.get(), title.get(), genre.get(), author.get(), target.get(), publisher.get(), price.get(), quantity.get()))
         btn_search['font'] = btn_font
         btn_exit = tk.Button(frm, text="Exit", width=21, command=search_inter.destroy, bg='#fc0303', fg='#ffffff')
         btn_exit['font'] = btn_font
@@ -557,19 +558,20 @@ def book_list():
 
 
 
-    def Search_book(id, title, genre, author, target, publisher, price, quantity):
-        data = func.check_price_quantity_format(price, quantity)
-        if data == False:
-            messagebox.showerror("Error", "Invalid Price or Quantity format!")
-        elif func.Searchall_book(id, title, genre, author, target, publisher, data[0], data[1], data[2], data[3]) == False:
-            messagebox.showerror("Error", "Something went wrong\nPlease try again!")
-        elif len(func.Searchall_book(id, title, genre, author, target, publisher, data[0], data[1], data[2], data[3]))==0:
-            messagebox.showinfo("","0 results found!")
-        else:
-            db = func.Searchall_book(id, title, genre, author, target, publisher, data[0], data[1], data[2], data[3])
-            tree.delete(*tree.get_children())
-            for i in range(0,len(db)):
-                tree.insert('', i, iid= None, values = (db[i][0],db[i][1],db[i][2],db[i][3],db[i][4],db[i][5],db[i][6],db[i][7],">"+db[i][0]))
+        def Search_book(id, title, genre, author, target, publisher, price, quantity):
+            data = func.check_price_quantity_format(price, quantity)
+            if data == False:
+                messagebox.showerror("Error", "Invalid Price or Quantity format!")
+            elif func.Searchall_book(id, title, genre, author, target, publisher, data[0], data[1], data[2], data[3]) == False:
+                messagebox.showerror("Error", "Something went wrong\nPlease try again!")
+            elif len(func.Searchall_book(id, title, genre, author, target, publisher, data[0], data[1], data[2], data[3]))==0:
+                messagebox.showinfo("","0 results found!")
+            else:
+                db = func.Searchall_book(id, title, genre, author, target, publisher, data[0], data[1], data[2], data[3])
+                tree.delete(*tree.get_children())
+                for i in range(0,len(db)):
+                    tree.insert('', i, iid= None, values = (db[i][0],db[i][1],db[i][2],db[i][3],db[i][4],db[i][5],db[i][6],db[i][7],">"+db[i][0]))
+                search_inter.destroy()
 
     #Function to modify book info
     def mod_book():

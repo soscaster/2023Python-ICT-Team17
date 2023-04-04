@@ -360,7 +360,7 @@ def staff_list():
         ent_staff_email = tk.Entry(frm, width=30, textvariable=st_email, font=("Arial", 15))
 
         # Create buttons
-        btn_search = tk.Button(frm, text="Search", width=21, bg='#0052cc', fg='#ffffff', command=lambda: [Search_staff(st_ID.get(), st_name.get(), st_dob.get(), st_address.get(), st_phone.get(), st_email.get()), search_inter.destroy()])
+        btn_search = tk.Button(frm, text="Search", width=21, bg='#0052cc', fg='#ffffff', command=lambda: Search_staff(st_ID.get(), st_name.get(), st_dob.get(), st_address.get(), st_phone.get(), st_email.get()))
         btn_search['font'] = btn_font
         btn_exit = tk.Button(frm, text="Exit", width=21, command=search_inter.destroy, bg='#fc0303', fg='#ffffff')
         btn_exit['font'] = btn_font
@@ -386,18 +386,17 @@ def staff_list():
         # Prevent resizing
         search_inter.resizable(False, False)
 
-
-
-    def Search_staff(id, name, dob, address, phone, email):
-        if fu.Searchall_staff(id, name, dob, address, phone, email) == False:
-            messagebox.showerror("Error", "Something went wrong\nPlease try again!")
-        elif len(fu.Searchall_staff(id, name, dob, address, phone, email))==0:
-            messagebox.showinfo("","0 results found!")
-        else:
-            db = fu.Searchall_staff(id, name, dob, address, phone, email)
-            tree.delete(*tree.get_children())
-            for i in range(0,len(db)):
-                tree.insert('', i, iid= None, values = (db[i][0],db[i][2],db[i][3],db[i][4],db[i][5],db[i][6],">"+db[i][0]))
+        def Search_staff(id, name, dob, address, phone, email):
+            if fu.Searchall_staff(id, name, dob, address, phone, email) == False:
+                messagebox.showerror("Error", "Something went wrong\nPlease try again!")
+            elif len(fu.Searchall_staff(id, name, dob, address, phone, email))==0:
+                messagebox.showinfo("","0 results found!")
+            else:
+                db = fu.Searchall_staff(id, name, dob, address, phone, email)
+                tree.delete(*tree.get_children())
+                for i in range(0,len(db)):
+                    tree.insert('', i, iid= None, values = (db[i][0],db[i][2],db[i][3],db[i][4],db[i][5],db[i][6],">"+db[i][0]))
+                search_inter.destroy()
 
     def delete_staff_func(id):
         if fu.remove_staff(id) == True:
@@ -614,7 +613,7 @@ def customer_list():
         ent_customer_email = tk.Entry(frm, width=30, textvariable=cus_email, font=("Arial", 15))
 
         # Create buttons
-        btn_search = tk.Button(frm, text="Search", width=21, bg='#0052cc', fg='#ffffff', command=lambda: [Search_customer(cus_ID.get(), cus_name.get(), cus_dob.get(), cus_address.get(), cus_phone.get(), cus_email.get()), search_inter.destroy()])
+        btn_search = tk.Button(frm, text="Search", width=21, bg='#0052cc', fg='#ffffff', command=lambda: Search_customer(cus_ID.get(), cus_name.get(), cus_dob.get(), cus_address.get(), cus_phone.get(), cus_email.get()))
         btn_search['font'] = btn_font
         btn_exit = tk.Button(frm, text="Exit", width=21, command=search_inter.destroy, bg='#fc0303', fg='#ffffff')
         btn_exit['font'] = btn_font
@@ -640,18 +639,17 @@ def customer_list():
         # Prevent resizing
         search_inter.resizable(False, False)
 
-
-
-    def Search_customer(id, name, dob, address, phone, email):
-        if fu.Searchall_customer(id, name, dob, address, phone, email) == False:
-            messagebox.showerror("Error", "Something went wrong\nPlease try again!")
-        elif len(fu.Searchall_customer(id, name, dob, address, phone, email))==0:
-            messagebox.showinfo("","0 results found!")
-        else:
-            db = fu.Searchall_customer(id, name, dob, address, phone, email)
-            tree.delete(*tree.get_children())
-            for i in range(0,len(db)):
-                tree.insert('', i, iid= None, values = (db[i][0],db[i][1],db[i][2],db[i][3],db[i][4],db[i][5],">"+db[i][0]))
+        def Search_customer(id, name, dob, address, phone, email):
+            if fu.Searchall_customer(id, name, dob, address, phone, email) == False:
+                messagebox.showerror("Error", "Something went wrong\nPlease try again!")
+            elif len(fu.Searchall_customer(id, name, dob, address, phone, email))==0:
+                messagebox.showinfo("","0 results found!")
+            else:
+                db = fu.Searchall_customer(id, name, dob, address, phone, email)
+                tree.delete(*tree.get_children())
+                for i in range(0,len(db)):
+                    tree.insert('', i, iid= None, values = (db[i][0],db[i][1],db[i][2],db[i][3],db[i][4],db[i][5],">"+db[i][0]))
+                search_inter.destroy()
 
     def modify_customer():
         try:
