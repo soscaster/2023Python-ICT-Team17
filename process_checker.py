@@ -126,21 +126,22 @@ def remove_admin(id):
         return False
 
 def check_email(email):
-    pattern = '^[a-z0-9]+[\.]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+    # Longest TLD is 63 characters
+    pattern = '^[a-z0-9]+[\.]?[a-z0-9]+[@]\w+[.]\w{2,63}$'
     if (re.search(pattern,email)):
         return True
     else:
         return False
 
 def check_phone(phone):
-    validate_phone_number_pattern = "^\\+?[0-9][0-9]{2,14}$"
+    validate_phone_number_pattern = "^(0|84)(2(0[3-9]|1[0-6|8|9]|2[0-2|5-9]|3[2-9]|4[0-9]|5[1|2|4-9]|6[0-3|9]|7[0-7]|8[0-9]|9[0-4|6|7|9])|3[2-9]|5[5|6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])([0-9]{7})$"
     if (re.match(validate_phone_number_pattern,phone)):
         return True
     else:
         return False
 
 def check_dob(dob):
-    pattern = '^[0-9]{1,2}\\/[0-9]{1,2}\\/[0-9]{4}$'
+    pattern = '^(?:0[1-9]|[12]\d|3[01])([\/.-])(?:0[1-9]|1[012])\1(?:19|20)\d\d$'
     if re.search(pattern, dob):
         return True
     else:
