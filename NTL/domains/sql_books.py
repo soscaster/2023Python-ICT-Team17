@@ -14,11 +14,11 @@ class Database:
         self.dbCursor.execute("UPDATE books SET title = ?, genre = ?, author = ?, target = ?, publisher = ?, price = ?, quantity = ? WHERE id = ?", (title, genre, author, target, publisher, price, quantity, id))
         self.dbConnection.commit()
     
-    def Validate(self, id, title, mode):
+    def Validate(self, id, title, author, mode):
         if (mode==1):
-            self.dbCursor.execute("SELECT * FROM books WHERE id = ? or title = ?", (id, title))
+            self.dbCursor.execute("SELECT * FROM books WHERE id = ? or (title = ? and author = ?)", (id, title, author))
         else:
-            self.dbCursor.execute("SELECT * FROM books WHERE id != ? and title = ?", (id, title))
+            self.dbCursor.execute("SELECT * FROM books WHERE id != ? and title = ? and author = ?", (id, title, author))
         searchResults = self.dbCursor.fetchall()
         if (len(searchResults)==0):
             return False
@@ -27,6 +27,11 @@ class Database:
 
     def Search(self, id):
         self.dbCursor.execute("SELECT * FROM books WHERE id = ?", (id, ))
+        searchResults = self.dbCursor.fetchall()
+        return searchResults
+
+    def Searchall(self, id, title, genre, author, target, publisher, price, quantity):
+        self.dbCursor.execute("SELECT * FROM books WHERE id like '%%%s%%' AND title like '%%%s%%' AND genre like '%%%s%%' AND author like '%%%s%%' AND target like '%%%s%%' AND publisher like '%%%s%%' AND price like '%%%s%%' AND quantity like '%%%s%%'" % (id, title, genre, author, target, publisher, price, quantity))
         searchResults = self.dbCursor.fetchall()
         return searchResults
 

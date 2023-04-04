@@ -85,6 +85,18 @@ def Searchall_staff(id, name, dob, address, phone, email):
     except:
         return False
 
+def Searchall_customer(id, name, dob, address, phone, email):
+    try:
+        return sql_customers.Database().Searchall(id, name, dob, address, phone, email)
+    except:
+        return False
+    
+def Searchall_book(id, title, genre, author, target, publisher, price, quantity):
+    try:
+        return sql_books.Database().Searchall(id, title, genre, author, target, publisher, price, quantity)
+    except:
+        return False
+
 def remove_staff(id):
     try:
         sql_staff.Database().Delete(id)

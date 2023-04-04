@@ -273,128 +273,6 @@ def add_customer():
                 customer.destroy()
             elif fu.add_customer(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email) == False:
                 messagebox.showerror("Error", "Customer info failed to save!\nPlease check again!")
-        
-
-# Create a new window for modifying customer info [DONE]
-def modify_customer():
-    clear()
-    # Create a new window
-    customer = tk.Toplevel(admin)
-    customer.title("Modify Customer Info")
-    customer_frame = tk.Frame(customer)
-
-    # Create widgets
-    btn_font = tkfont.Font(family="Arial", size=15)
-
-    # Create labels
-    lbl_customer = tk.Label(customer_frame, text="Modify Customer Info", font=("Arial", 20, 'bold'), justify="center")
-    lbl_customer_id = tk.Label(customer_frame, text="Customer ID", font=("Arial", 15))
-    lbl_customer_name = tk.Label(customer_frame, text="Customer Name", font=("Arial", 15))
-    lbl_customer_dob = tk.Label(customer_frame, text="Customer DOB (dd/mm/yyyy)", font=("Arial", 15))
-    lbl_customer_address = tk.Label(customer_frame, text="Customer Address", font=("Arial", 15))
-    lbl_customer_phone = tk.Label(customer_frame, text="Customer Phone (10 digits)", font=("Arial", 15))
-    lbl_customer_email = tk.Label(customer_frame, text="Customer Email", font=("Arial", 15))
-
-    # Create entry boxes
-    global cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email
-    cu_ID = tk.StringVar()
-    cu_name = tk.StringVar()
-    cu_dob = tk.StringVar()
-    cu_address = tk.StringVar()
-    cu_phone = tk.StringVar()
-    cu_email = tk.StringVar()
-
-    # Get customer list
-    customer_list = sql_customers.Database().Storage()
-    customer_list = [i[0] for i in customer_list]
-    cu_ID.set(customer_list[0])
-    customer_menu = tk.OptionMenu(customer_frame, cu_ID, *customer_list)
-    # After selecting customer, get customer info and set to entry boxes
-    cu_ID.trace("w", lambda *args: get_customer_info())
-    customer_menu.config(font=("Arial", 12))
-
-    # Get customer info and set to entry boxes after selecting customer
-    def get_customer_info():
-        db = sql_customers.Database().Search(cu_ID.get())
-        cu_ID.set(db[0][0])
-        cu_name.set(db[0][1])
-        cu_dob.set(db[0][2])
-        cu_address.set(db[0][3])
-        cu_phone.set(db[0][4])
-        cu_email.set(db[0][5])
-    
-    # Create entry boxes
-    ent_customer_name = tk.Entry(customer_frame, textvariable=cu_name, width=20, font=("Arial", 15))
-    ent_customer_dob = tk.Entry(customer_frame, textvariable=cu_dob, width=20, font=("Arial", 15))
-    ent_customer_address = tk.Entry(customer_frame, textvariable=cu_address, width=20, font=("Arial", 15))
-    ent_customer_phone = tk.Entry(customer_frame, textvariable=cu_phone, width=20, font=("Arial", 15))
-    ent_customer_email = tk.Entry(customer_frame, textvariable=cu_email, width=20, font=("Arial", 15))
-
-    # Create buttons
-    def save_cf():
-        cf = tk.messagebox.askyesno("Save", "Are you sure you want to overide this customer info?")
-        if cf == True:
-            modify_customer_func()
-    btn_save = tk.Button(customer_frame, text="Save", width=21, bg='#0052cc', fg='#ffffff', command=lambda: save_cf())
-    btn_save['font'] = btn_font
-
-    btn_exit = tk.Button(customer_frame, text="Exit", width=21, bg='#fc0303', fg='#ffffff', command=customer.destroy)
-    btn_exit['font'] = btn_font
-    def del_cf():
-        cf = tk.messagebox.askyesno("Delete", "Are you sure you want to delete this customer?")
-        if cf == True:
-            delete_customer_func()
-            
-    btn_delete = tk.Button(customer_frame, text="Delete", width=21, bg='#fc7303', fg='#ffffff', command=lambda: del_cf())
-    btn_delete['font'] = btn_font
-    
-
-    # Create a grid layout
-    customer_frame.grid(row=0, column=0, sticky="nsew")
-    lbl_customer.grid(row=0, column=0, columnspan=2, padx= 15, pady=5, sticky="nsew")
-    lbl_customer_id.grid(row=1, column=0, padx= 15, pady=5, sticky="nsew")
-    lbl_customer_name.grid(row=2, column=0, padx= 15, pady=5, sticky="nsew")
-    lbl_customer_dob.grid(row=3, column=0, padx= 15, pady=5, sticky="nsew")
-    lbl_customer_address.grid(row=4, column=0, padx= 15, pady=5, sticky="nsew")
-    lbl_customer_phone.grid(row=5, column=0, padx= 15, pady=5, sticky="nsew")
-    lbl_customer_email.grid(row=6, column=0, padx= 15, pady=5, sticky="nsew")
-    customer_menu.grid(row=1, column=1, padx= 15, pady=5, sticky="nsew")
-    ent_customer_name.grid(row=2, column=1, padx= 15, pady=5, sticky="nsew")
-    ent_customer_dob.grid(row=3, column=1, padx= 15, pady=5, sticky="nsew")
-    ent_customer_address.grid(row=4, column=1, padx= 15, pady=5, sticky="nsew")
-    ent_customer_phone.grid(row=5, column=1, padx= 15, pady=5, sticky="nsew")
-    ent_customer_email.grid(row=6, column=1, padx= 15, pady=5, sticky="nsew")
-    btn_exit.grid(row=7, column=0, padx= 15, pady=5, sticky="nsew")
-    btn_save.grid(row=7, column=1, padx= 15, pady=5, sticky="nsew")
-    btn_delete.grid(row=8, column=0, columnspan=2, padx= 15, pady=5, sticky="nsew")
-    
-    # Prevent the user from resizing the window
-    customer.resizable(False, False)
-
-    # Define a function for saving customer info
-    def modify_customer_func():
-        if fu.check_dob(cu_dob.get()) == False:
-            messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!")
-        elif fu.check_phone(cu_phone.get()) == False:
-            messagebox.showerror("Error", "Invalid phone number!\nPlease try again!")
-        elif fu.check_email(cu_email.get()) == False:
-            messagebox.showerror("Error", "Invalid email type!\nPlease try again!")
-        elif sql_customers.Database().Validate(cu_ID.get(), cu_phone.get(), cu_email.get(), 2) == True:
-            messagebox.showerror("Error", "Phone or Email info is already exists!\nPlease try again!")
-        else:
-            sql_customers.Database().Update(cu_name.get(), cu_dob.get(), cu_address.get(), cu_phone.get(), cu_email.get(), cu_ID.get())
-            messagebox.showinfo("Success", "Customer info saved!\nPlease refresh the page to see the changes!")
-
-    def delete_customer_func():
-        if fu.remove_customer(cu_ID.get()) == True:
-            # Verify if the customer info is saved
-            messagebox.showinfo("Success", "Customer deleted successfully!")
-            if len(sql_customers.Database().Storage()) == 0:
-                btn_customer['state'] = 'disabled'
-            else:
-                btn_customer['state'] = 'normal'
-        elif fu.remove_customer(cu_ID.get()) == False:
-            messagebox.showerror("Error", "Customer not deleted!")
 
 #Staff_list window
 def staff_list():
@@ -435,7 +313,10 @@ def staff_list():
 
     def del_cf():
         # Return STRING VALUE of the selected item
-        del_ID = tree.item(tree.focus())['values'][6][1:]
+        try:
+            del_ID = tree.item(tree.focus())['values'][6][1:]
+        except:
+            return
         cf = tk.messagebox.askyesno("Delete", "Are you sure you want to delete this staff?")
         if cf == True:
             delete_staff_func(del_ID)
@@ -444,7 +325,7 @@ def staff_list():
     btn_refresh = tk.Button(list_staff, text="Refresh", width=21, command=lambda: list_all())
     btn_search = tk.Button(list_staff, text="Search", width=21, command=lambda: Search_interface())
     btn_delete = tk.Button(list_staff, text="Delete", width=21, command=lambda: del_cf())
-    btn_update = tk.Button(list_staff, text="Update", width=21, command=lambda: modify_staff(tree.item(tree.focus())['values'][6][1:]))
+    btn_update = tk.Button(list_staff, text="Update", width=21, command=lambda: modify_staff())
     btn_exit = tk.Button(list_staff, text="Exit", width=21, command=list_staff.destroy)
 
     def Search_interface():
@@ -529,7 +410,11 @@ def staff_list():
         else:
             messagebox.showerror("Error", "Staff not deleted!")
 
-    def modify_staff(id):
+    def modify_staff():
+        try:
+            id = tree.item(tree.focus())['values'][6][1:]
+        except:
+            return
         clear()
         # Create a new window
         staff = tk.Toplevel(list_staff)
@@ -588,14 +473,7 @@ def staff_list():
         btn_save['font'] = btn_font
 
         btn_exit = tk.Button(staff_frame, text="Exit", width=21, bg='#fc0303', fg='#ffffff', command=staff.destroy)
-        btn_exit['font'] = btn_font
-        def del_cf():
-            cf = tk.messagebox.askyesno("Delete", "Are you sure you want to delete this staff?")
-            if cf == True:
-                delete_staff_func()
-        btn_delete = tk.Button(staff_frame, text="Delete", width=21, bg='#fc7303', fg='#ffffff', command=lambda: [del_cf(),staff.destroy()])
-        btn_delete['font'] = btn_font
-        
+        btn_exit['font'] = btn_font        
 
         # Create a grid layout
         staff_frame.grid(row=0, column=0, sticky="nsew")
@@ -639,6 +517,242 @@ def staff_list():
     btn_update.pack()
     btn_exit.pack()
 
+#Customer List window
+def customer_list():
+    clear()
+    list_customer = tk.Toplevel(admin)
+
+    list_customer.title("Staff")
+    frm = tk.Frame(list_customer)
+    tree = ttk.Treeview(list_customer)
+    tree['show']='headings'
+
+    list_customer.resizable(False,False)
+
+    # Define number of columns
+    tree["columns"] = ("ID", "Name", "Date of Birth", "Address", "Phone", "Email")
+    #Assign the width,minwidth and anchor to the respective columns 
+    tree.column ("ID", width=100, minwidth=50,anchor=tk.CENTER) 
+    tree.column ("Name", width=200, minwidth=100,anchor=tk.CENTER) 
+    tree.column ("Date of Birth", width=100, minwidth=100,anchor=tk.CENTER) 
+    tree.column ("Address", width=250, minwidth=150, anchor=tk .CENTER) 
+    tree.column ("Phone", width=150, minwidth=150, anchor=tk .CENTER) 
+    tree.column ("Email", width=250, minwidth=150, anchor=tk.CENTER)
+
+    #Assign the heading names to the respective columns 
+    tree.heading ("ID", text="ID", anchor=tk.CENTER) 
+    tree.heading ("Name", text="Name", anchor=tk.CENTER) 
+    tree.heading ("Date of Birth", text="Date of Birth", anchor=tk. CENTER)
+    tree.heading ("Address", text="Address", anchor=tk.CENTER) 
+    tree.heading ("Phone", text="Phone", anchor=tk.CENTER)
+    tree.heading ("Email", text="Email", anchor=tk.CENTER) 
+
+    def list_all():
+        tree.delete(*tree.get_children())
+        db = sql_customers.Database().Storage()
+        for i in range(0,len(db)):
+            tree.insert('', i, iid= None, values = (db[i][0],db[i][1],db[i][2],db[i][3],db[i][4],db[i][5],">"+db[i][0]))
+    list_all()
+
+    def del_cf():
+        # Return STRING VALUE of the selected item
+        try:
+            del_ID = tree.item(tree.focus())['values'][6][1:]
+        except:
+            return
+        cf = tk.messagebox.askyesno("Delete", "Are you sure you want to delete this customer?")
+        if cf == True:
+            delete_customer_func(del_ID)
+
+    def delete_customer_func(id):
+        if fu.remove_customer(id) == True:
+            messagebox.showinfo("Success", "Customer deleted successfully!")
+            tree.delete(tree.focus())
+            if len(sql_customers.Database().Storage()) == 0:
+                btn_customer['state'] = 'disabled'
+            else:
+                btn_customer['state'] = 'normal'
+        else:
+            messagebox.showerror("Error", "Customer not deleted!")
+
+    tree.pack()
+    btn_refresh = tk.Button(list_customer, text="Refresh", width=21, command=lambda: list_all())
+    btn_search = tk.Button(list_customer, text="Search", width=21, command=lambda: Search_interface())
+    btn_delete = tk.Button(list_customer, text="Delete", width=21, command=lambda: del_cf())
+    btn_update = tk.Button(list_customer, text="Update", width=21, command=lambda: modify_customer())
+    btn_exit = tk.Button(list_customer, text="Exit", width=21, command=list_customer.destroy)
+
+    def Search_interface():
+        search_inter = tk.Toplevel(list_customer)
+        frm = tk.Frame(search_inter)
+        # Create widgets
+        btn_font = tkfont.Font(family="Arial", size=15)
+
+        # Create labels
+        lbl_customer = tk.Label(frm, text="Search Customer", font=("Arial", 20, 'bold'), justify="center")
+        lbl_customer_id = tk.Label(frm, text="Customer ID", font=("Arial", 15))
+        lbl_customer_name = tk.Label(frm, text="Customer Name", font=("Arial", 15))
+        lbl_customer_dob = tk.Label(frm, text="Customer DOB", font=("Arial", 15))
+        lbl_customer_address = tk.Label(frm, text="Customer Address", font=("Arial", 15))
+        lbl_customer_phone = tk.Label(frm, text="Customer Phone", font=("Arial", 15))
+        lbl_customer_email = tk.Label(frm, text="Customer Email", font=("Arial", 15))
+
+        # Create entry boxes   
+        global cus_ID, cus_name, cus_dob, cus_address, cus_phone, cus_email 
+        cus_ID = tk.StringVar()
+        cus_name = tk.StringVar()
+        cus_dob = tk.StringVar()
+        cus_address = tk.StringVar()
+        cus_phone = tk.StringVar()
+        cus_email = tk.StringVar()
+
+        ent_customer_id = tk.Entry(frm, width=30, textvariable=cus_ID, font=("Arial", 15))
+        ent_customer_name = tk.Entry(frm, width=30, textvariable=cus_name, font=("Arial", 15))
+        ent_customer_dob = tk.Entry(frm, width=30, textvariable=cus_dob, font=("Arial", 15))
+        ent_customer_address = tk.Entry(frm, width=30, textvariable=cus_address, font=("Arial", 15))
+        ent_customer_phone = tk.Entry(frm, width=30, textvariable=cus_phone, font=("Arial", 15))
+        ent_customer_email = tk.Entry(frm, width=30, textvariable=cus_email, font=("Arial", 15))
+
+        # Create buttons
+        btn_search = tk.Button(frm, text="Search", width=21, bg='#0052cc', fg='#ffffff', command=lambda: [Search_customer(cus_ID.get(), cus_name.get(), cus_dob.get(), cus_address.get(), cus_phone.get(), cus_email.get()), search_inter.destroy()])
+        btn_search['font'] = btn_font
+        btn_exit = tk.Button(frm, text="Exit", width=21, command=search_inter.destroy, bg='#fc0303', fg='#ffffff')
+        btn_exit['font'] = btn_font
+
+        # Style labels, entry boxes and buttons
+        frm.grid(row=0, column=0, sticky="nsew")
+        lbl_customer.grid(row=0, column=0, columnspan=2, padx= 15, pady=15, sticky="nsew")
+        lbl_customer_id.grid(row=1, column=0, padx= 15, pady=5, sticky="nsew")
+        lbl_customer_name.grid(row=3, column=0, padx= 15, pady=5, sticky="nsew")
+        lbl_customer_dob.grid(row=4, column=0, padx= 15, pady=5, sticky="nsew")
+        lbl_customer_address.grid(row=5, column=0, padx= 15, pady=5, sticky="nsew")
+        lbl_customer_phone.grid(row=6, column=0, padx= 15, pady=5, sticky="nsew")
+        lbl_customer_email.grid(row=7, column=0, padx= 15, pady=5, sticky="nsew")
+        ent_customer_id.grid(row=1, column=1, padx= 15, pady=5, sticky="nsew")
+        ent_customer_name.grid(row=3, column=1, padx= 15, pady=5, sticky="nsew")
+        ent_customer_dob.grid(row=4, column=1, padx= 15, pady=5, sticky="nsew")
+        ent_customer_address.grid(row=5, column=1, padx= 15, pady=5, sticky="nsew")
+        ent_customer_phone.grid(row=6, column=1, padx= 15, pady=5, sticky="nsew")
+        ent_customer_email.grid(row=7, column=1, padx= 15, pady=5, sticky="nsew")
+        btn_exit.grid(row=8, column=0, padx= 15, pady=5, sticky="nsew")
+        btn_search.grid(row=8, column=1, padx= 15, pady=5, sticky="nsew")
+        
+        # Prevent resizing
+        search_inter.resizable(False, False)
+
+
+
+    def Search_customer(id, name, dob, address, phone, email):
+        if fu.Searchall_customer(id, name, dob, address, phone, email) == False:
+            messagebox.showerror("Error", "Something went wrong\nPlease try again!")
+        elif len(fu.Searchall_customer(id, name, dob, address, phone, email))==0:
+            messagebox.showinfo("","0 results found!")
+        else:
+            db = fu.Searchall_customer(id, name, dob, address, phone, email)
+            tree.delete(*tree.get_children())
+            for i in range(0,len(db)):
+                tree.insert('', i, iid= None, values = (db[i][0],db[i][1],db[i][2],db[i][3],db[i][4],db[i][5],">"+db[i][0]))
+
+    def modify_customer():
+        try:
+            id = tree.item(tree.focus())['values'][6][1:]
+        except:
+            return
+        clear()
+        # Create a new window
+        customer = tk.Toplevel(list_customer)
+        customer.title("Modify Customer Info")
+        customer_frame = tk.Frame(customer)
+
+        # Create widgets
+        btn_font = tkfont.Font(family="Arial", size=15)
+
+        # Create labels
+        lbl_customer = tk.Label(customer_frame, text="Modify Customer Info", font=("Arial", 20, 'bold'), justify="center")
+        lbl_customer_name = tk.Label(customer_frame, text="Customer Name", font=("Arial", 15))
+        lbl_customer_dob = tk.Label(customer_frame, text="Customer DOB", font=("Arial", 15))
+        lbl_customer_address = tk.Label(customer_frame, text="Customer Address", font=("Arial", 15))
+        lbl_customer_phone = tk.Label(customer_frame, text="Customer Phone", font=("Arial", 15))
+        lbl_customer_email = tk.Label(customer_frame, text="Customer Email", font=("Arial", 15))
+
+        # Create entry boxes
+        global cus_ID, cus_pwd, cus_name, cus_dob, cus_address, cus_phone, cus_email
+        cus_ID = tk.StringVar()
+        cus_name = tk.StringVar()
+        cus_dob = tk.StringVar()
+        cus_address = tk.StringVar()
+        cus_phone = tk.StringVar()
+        cus_email = tk.StringVar()
+
+        # Get staff list
+        cus_ID.set(id)
+
+        # Get staff info and set to entry boxes after selecting staff
+        db = sql_customers.Database().Search(id)
+        cus_ID.set(db[0][0])
+        cus_name.set(db[0][1])
+        cus_dob.set(db[0][2])
+        cus_address.set(db[0][3])
+        cus_phone.set(db[0][4])
+        cus_email.set(db[0][5])
+        
+        # Create entry boxes
+        ent_customer_name = tk.Entry(customer_frame, textvariable=cus_name, width=20, font=("Arial", 15))
+        ent_customer_dob = tk.Entry(customer_frame, textvariable=cus_dob, width=20, font=("Arial", 15))
+        ent_customer_address = tk.Entry(customer_frame, textvariable=cus_address, width=20, font=("Arial", 15))
+        ent_customer_phone = tk.Entry(customer_frame, textvariable=cus_phone, width=20, font=("Arial", 15))
+        ent_customer_email = tk.Entry(customer_frame, textvariable=cus_email, width=20, font=("Arial", 15))
+
+        # Create buttons
+        def save_cf():
+            cf = tk.messagebox.askyesno("Save", "Are you sure you want to overide this staff info?")
+            if cf == True:
+                modify_customer_func()
+        
+        btn_save = tk.Button(customer_frame, text="Save", width=21, bg='#0052cc', fg='#ffffff', command=lambda: save_cf())
+        btn_save['font'] = btn_font
+
+        btn_exit = tk.Button(customer_frame, text="Exit", width=21, bg='#fc0303', fg='#ffffff', command=customer.destroy)
+        btn_exit['font'] = btn_font        
+
+        # Create a grid layout
+        customer_frame.grid(row=0, column=0, sticky="nsew")
+        lbl_customer.grid(row=0, column=0, columnspan=2, padx= 15, pady=5, sticky="nsew")
+        lbl_customer_name.grid(row=3, column=0, padx= 15, pady=5, sticky="nsew")
+        lbl_customer_dob.grid(row=4, column=0, padx= 15, pady=5, sticky="nsew")
+        lbl_customer_address.grid(row=5, column=0, padx= 15, pady=5, sticky="nsew")
+        lbl_customer_phone.grid(row=6, column=0, padx= 15, pady=5, sticky="nsew")
+        lbl_customer_email.grid(row=7, column=0, padx= 15, pady=5, sticky="nsew")
+        ent_customer_name.grid(row=3, column=1, padx= 15, pady=5, sticky="nsew")
+        ent_customer_dob.grid(row=4, column=1, padx= 15, pady=5, sticky="nsew")
+        ent_customer_address.grid(row=5, column=1, padx= 15, pady=5, sticky="nsew")
+        ent_customer_phone.grid(row=6, column=1, padx= 15, pady=5, sticky="nsew")
+        ent_customer_email.grid(row=7, column=1, padx= 15, pady=5, sticky="nsew")
+        btn_exit.grid(row=8, column=0, padx= 15, pady=5, sticky="nsew")
+        btn_save.grid(row=8, column=1, padx= 15, pady=5, sticky="nsew")
+        
+        # Prevent the user from resizing the window
+        customer.resizable(False, False)
+
+    # Define a function for saving staff info
+    def modify_customer_func():
+        if fu.check_dob(cus_dob.get()) == False:
+            messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!")
+        elif fu.check_phone(cus_phone.get()) == False:
+            messagebox.showerror("Error", "Invalid phone number!\nPlease try again!")
+        elif fu.check_email(cus_email.get()) == False:
+            messagebox.showerror("Error", "Invalid email type!\nPlease try again!")
+        elif sql_customers.Database().Validate(cus_ID.get(), cus_phone.get(), cus_email.get(), 2) == True:
+            messagebox.showerror("Error", "Phone or Email info is already exists!\nPlease try again!")
+        else:
+            sql_customers.Database().Update(cus_name.get(), cus_dob.get(), cus_address.get(), cus_phone.get(), cus_email.get(), cus_ID.get())
+            messagebox.showinfo("Success", "Staff info saved!\nPlease refresh the page to see the changes!")
+    
+    btn_refresh.pack()
+    btn_search.pack()
+    btn_delete.pack()
+    btn_update.pack()
+    btn_exit.pack()
 
 # First window
 
@@ -665,7 +779,7 @@ if len(sql_staff.Database().Storage()) == 0:
     btn_staff.config(state="disabled")
 btn_add_customer = tk.Button(frame, text="Add Customer", width=21, bg='#ab4d00', fg='#ffffff', command=add_customer)
 btn_add_customer['font'] = btn_font
-btn_customer = tk.Button(frame, text="Customer List", width=21, bg='#ab4d00', fg='#ffffff', command=print(""))
+btn_customer = tk.Button(frame, text="Customer List", width=21, bg='#ab4d00', fg='#ffffff', command=customer_list)
 btn_customer['font'] = btn_font
 # Confirm if the customer data table exists or not
 if len(sql_customers.Database().Storage()) == 0:
