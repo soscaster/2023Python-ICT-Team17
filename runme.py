@@ -3,6 +3,8 @@ sys.dont_write_bytecode = True
 import tkinter as tk
 import subprocess
 from tkinter import messagebox, font as tkfont
+from domains import sql_session
+import sqlite3
 
 # Login Image "People illustrations" by Storyset
 def hide():
@@ -70,22 +72,41 @@ box_pwd.place(x=415, y=340)
 lb_cpr.place(x=715, y=1)
 
 def runme(t: tk.Tk, event=None):
+    log = sqlite3.connect("bookstore.db")
+    cur = log.cursor()
+    cur.execute("SELECT * FROM staff WHERE id = ? AND password = ?", (box_usr.get(), box_pwd.get()))
+    data = cur.fetchall()
+
     input_usr = box_usr.get()
     input_pwd = box_pwd.get()
 
-    if input_usr == "admin" and input_pwd == "admin":
+
+    if data:
+        # Get the name of the staff
+        cur.execute("SELECT name FROM staff WHERE id = ? AND password = ?", (box_usr.get(), box_pwd.get()))
+        name = cur.fetchone()[0]
+        sql_session.Session().Insert(input_usr, name)
+        messagebox.showinfo(title="Success", message=f"Login successful as {name}")
+        t.destroy()
+        subprocess.call(["python3", "staff.py"])
+    # elif input_usr == "staff" and input_pwd == "staff":
+    #     messagebox.showinfo(title="Success", message="Login successful as staff")
+    #     t.destroy()
+    #     subprocess.call(["python3", "staff.py"])
+    elif input_usr == "admin" and input_pwd == "admin":
+        id = "admin"
+        name = "admin"
+        sql_session.Session().Insert(id, name)
         messagebox.showinfo(title="Success", message="Login successful as admin")
         t.destroy()
         subprocess.call(["python3", "admin.py"])
-    elif input_usr == "staff" and input_pwd == "staff":
-        messagebox.showinfo(title="Success", message="Login successful as staff")
-        t.destroy()
-        subprocess.call(["python3", "staff.py"])
     elif input_usr == "vuminh" and input_pwd == "npc":
+        id = "vuminh"
+        name = "vuminh"
+        sql_session.Session().Insert(id, name)
         messagebox.showerror(title="STOP", message="dm vu minh! What are you doing here?")
         exit()
     else:
         messagebox.showerror(title="Error", message="Invalid username or password\nPlease try again.")
-
 
 login.mainloop()
