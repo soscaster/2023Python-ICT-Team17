@@ -4,7 +4,7 @@ class Session:
     def __init__(self):
         self.dbConnection = sqlite3.connect("bookstore.db")
         self.dbCursor = self.dbConnection.cursor()
-        self.dbCursor.execute("CREATE TABLE IF NOT EXISTS session (id AUTO_INCREMENT int, usr_id text, usr_name text, PRIMARY KEY (id))")
+        self.dbCursor.execute("CREATE TABLE IF NOT EXISTS session (id int, usr_id text, usr_name text, PRIMARY KEY (id))")
 
     def Insert(self, usr_id, usr_name):
         # Count number of records

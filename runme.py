@@ -74,6 +74,7 @@ lb_cpr.place(x=715, y=1)
 def runme(t: tk.Tk, event=None):
     log = sqlite3.connect("bookstore.db")
     cur = log.cursor()
+    cur.execute("CREATE TABLE IF NOT EXISTS staff (id PRIMARYKEY text, password text, name text, dob text, address text, phone text, email text)")
     cur.execute("SELECT * FROM staff WHERE id = ? AND password = ?", (box_usr.get(), box_pwd.get()))
     data = cur.fetchall()
 

@@ -25,9 +25,9 @@ def add_customer():
     lbl_customer = tk.Label(customer_frame, text="Add New Customer Info", font=("Arial", 20, 'bold'), justify="center")
     lbl_customer_id = tk.Label(customer_frame, text="Customer ID", font=("Arial", 15))
     lbl_customer_name = tk.Label(customer_frame, text="Customer Name", font=("Arial", 15))
-    lbl_customer_dob = tk.Label(customer_frame, text="Customer DOB", font=("Arial", 15))
+    lbl_customer_dob = tk.Label(customer_frame, text="Customer DOB (dd/mm/yyyy)", font=("Arial", 15))
     lbl_customer_address = tk.Label(customer_frame, text="Customer Address", font=("Arial", 15))
-    lbl_customer_phone = tk.Label(customer_frame, text="Customer Phone", font=("Arial", 15))
+    lbl_customer_phone = tk.Label(customer_frame, text="Customer Phone (10 digits)", font=("Arial", 15))
     lbl_customer_email = tk.Label(customer_frame, text="Customer Email", font=("Arial", 15))
 
     # Create entry boxes   
@@ -170,9 +170,9 @@ def customer_list():
         lbl_customer = tk.Label(frm, text="Search Customer", font=("Arial", 20, 'bold'), justify="center")
         lbl_customer_id = tk.Label(frm, text="Customer ID", font=("Arial", 15))
         lbl_customer_name = tk.Label(frm, text="Customer Name", font=("Arial", 15))
-        lbl_customer_dob = tk.Label(frm, text="Customer DOB", font=("Arial", 15))
+        lbl_customer_dob = tk.Label(frm, text="Customer DOB (dd/mm/yyyy)", font=("Arial", 15))
         lbl_customer_address = tk.Label(frm, text="Customer Address", font=("Arial", 15))
-        lbl_customer_phone = tk.Label(frm, text="Customer Phone", font=("Arial", 15))
+        lbl_customer_phone = tk.Label(frm, text="Customer Phone (10 digits)", font=("Arial", 15))
         lbl_customer_email = tk.Label(frm, text="Customer Email", font=("Arial", 15))
 
         # Create entry boxes   
@@ -249,9 +249,9 @@ def customer_list():
         # Create labels
         lbl_customer = tk.Label(customer_frame, text="Modify Customer Info", font=("Arial", 20, 'bold'), justify="center")
         lbl_customer_name = tk.Label(customer_frame, text="Customer Name", font=("Arial", 15))
-        lbl_customer_dob = tk.Label(customer_frame, text="Customer DOB", font=("Arial", 15))
+        lbl_customer_dob = tk.Label(customer_frame, text="Customer DOB (dd/mm/yyyy)", font=("Arial", 15))
         lbl_customer_address = tk.Label(customer_frame, text="Customer Address", font=("Arial", 15))
-        lbl_customer_phone = tk.Label(customer_frame, text="Customer Phone", font=("Arial", 15))
+        lbl_customer_phone = tk.Label(customer_frame, text="Customer Phone (10 digits)", font=("Arial", 15))
         lbl_customer_email = tk.Label(customer_frame, text="Customer Email", font=("Arial", 15))
 
         # Create entry boxes

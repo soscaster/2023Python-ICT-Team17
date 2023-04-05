@@ -758,6 +758,9 @@ admin = tk.Tk()
 admin.title("Book Store Management System - Loged in as admin")
 admin.geometry("800x600")
 
+box = tk.Toplevel(admin)
+box.withdraw()
+
 imgbg = tk.PhotoImage(file="img/main.png")
 # Fit the image to the buttons
 m_st = tk.PhotoImage(file="img/icons/m_st.png")
@@ -775,9 +778,6 @@ img_e = ex.subsample(2, 2)
 
 lbl_hihi = tk.Label(image=imgbg)
 lbl_hihi.place(x=0, y=0)
-
-box = tk.Toplevel(admin)
-box.withdraw()
 
 # Create widgets
 btn_font = tkfont.Font(family="Arial", size=15)
