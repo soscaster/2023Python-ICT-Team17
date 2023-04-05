@@ -13,6 +13,11 @@ class Session:
         self.dbCursor.execute("INSERT INTO session VALUES (?, ?, ?)", (count, usr_id, usr_name))
         self.dbConnection.commit()
 
+    def Print(self):
+        # Print the last record
+        self.dbCursor.execute("SELECT * FROM session ORDER BY id DESC LIMIT 1")
+        return self.dbCursor.fetchone()
+
     def __close__(self):
         self.dbCursor.close()
         self.dbConnection.close()

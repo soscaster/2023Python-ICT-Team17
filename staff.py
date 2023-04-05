@@ -5,6 +5,7 @@ from tkinter import messagebox, ttk, font as tkfont
 import process_checker as func
 import os
 clear = lambda: os.system('clear')
+from domains import sql_session
 from domains import sql_customers
 from domains import sql_books
 
@@ -690,6 +691,9 @@ frm = tk.Frame(window)
 
 btn_font = tkfont.Font(family="Arial", size=15)
 
+session_get = sql_session.Session().Print()
+session_name = session_get[2]
+lbl_session = tk.Label(master=frm, text='Welcome, ' + session_name, font=("Arial", 15, "bold"), justify="center")
 lbl_welcome = tk.Label(master=frm, text='Bookstore management \n(Staff edition)\n', font=("Arial", 25, "bold"), justify="center")
 
 btn_add_book = tk.Button(master = frm, text = 'Add book', font = ("Arial", 15), width = 21, command = add_book)
@@ -714,6 +718,7 @@ btn_book.grid(row = 1, column = 1, padx = 10, pady = 5, sticky = "nsew")
 btn_add_customer.grid(row = 2, column = 0, padx = 10, pady = 5, sticky = "nsew")
 btn_customer.grid(row = 2, column = 1, padx = 10, pady = 5, sticky = "nsew")
 btn_cut.grid(row = 3, column = 0, columnspan = 2, padx = 10, pady = 5, sticky = "nsew")
+lbl_session.grid(row = 4, column = 0, columnspan = 2, sticky = "nsew")
 
 frm.rowconfigure(0, weight=1, minsize=50)
 frm.rowconfigure(1, weight=1, minsize=50)
