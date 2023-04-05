@@ -141,7 +141,7 @@ def check_phone(phone):
         return False
 
 def check_dob(dob):
-    pattern = '^(?:0[1-9]|[12]\d|3[01])([\/.-])(?:0[1-9]|1[012])\1(?:19|20)\d\d$'
+    pattern = '^[0-9]{2}/[0-9]{2}/[0-9]{4}$'
     if re.search(pattern, dob):
         return True
     else:

@@ -40,6 +40,11 @@ lb_cpr = tk.Label(login, text="© 2023 Team 17 - ICT\nVersion BETA", font=("Aria
 box_usr = tk.Entry(login, width=31, font=("Arial", 12), relief='flat', borderwidth=0, fg='firebrick1', highlightthickness=0)
 box_pwd = tk.Entry(login, width=31, font=("Arial", 12), relief='flat', borderwidth=0, fg='firebrick1', show="*", highlightthickness=0)
 
+# Enter to jump to next entry box
+box_usr.bind("<Return>", lambda event: box_pwd.focus())
+# Enter event for entry boxes
+box_pwd.bind("<Return>", lambda event: runme(login))
+
 # Create lines for entry boxes
 line_usr = tk.Canvas(login, width=282, height=2, bg='firebrick1', highlightthickness=0)
 line_pwd = tk.Canvas(login, width=282, height=2, bg='firebrick1', highlightthickness=0)
@@ -64,7 +69,7 @@ lb_pwd.place(x=420, y=310)
 box_pwd.place(x=415, y=340)
 lb_cpr.place(x=715, y=1)
 
-def runme(t: tk.Tk):
+def runme(t: tk.Tk, event=None):
     input_usr = box_usr.get()
     input_pwd = box_pwd.get()
 
