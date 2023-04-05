@@ -710,7 +710,7 @@ session_name = session_get[2]
 window.title(f"BSMS Beta - Logged in as staff: {session_id} - {session_name}")
 lbl_session = tk.Label(master=window, text='Welcome, ' + session_id +' - '+ session_name, font=("Arial", 13, "bold"), bg='#73a2c7', justify="left", fg='white')
 lbl_welcome = tk.Label(master=window, text="Book Store Management System\n(Staff Edition)", font=("Arial", 25, 'bold'), justify="center", bg='white', fg='#318bd2')
-lb_cpr = tk.Label(window, text="© 2023 Team 17 - ICT\nVersion BETA", font=("Arial", 6), bg='#73a2c7', justify="right", fg='white')
+lb_cpr = tk.Label(window, text="© 2023 - BI12 - ICT Team 17\nVersion BETA", font=("Arial", 6), bg='#73a2c7', justify="right", fg='white')
 
 btn_add_book = tk.Button(image=img_a_b,text="Add Book",compound = 'left', width=231, height=50, bg='#00ab1c', fg='#ffffff', command=add_book)
 btn_add_book['font'] = btn_font

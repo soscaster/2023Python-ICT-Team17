@@ -784,7 +784,7 @@ btn_font = tkfont.Font(family="Arial", size=15)
 
 # Create labels
 lbl_welcome = tk.Label(text="Welcome to\nBook Store Management System", font=("Arial", 25, 'bold'), justify="center", bg='white', fg='#318bd2')
-lb_cpr = tk.Label(admin, text="© 2023 Team 17 - ICT\nVersion BETA", font=("Arial", 6), bg='#73a2c7', justify="right", fg='white')
+lb_cpr = tk.Label(admin, text="© 2023 - BI12 - ICT Team 17\nVersion BETA", font=("Arial", 6), bg='#73a2c7', justify="right", fg='white')
 
 # Create buttons
 btn_store = tk.Button(image= img_mst, text="Modify Store Info",compound = 'left', width=495, height=50, bg='#0052cc', fg='#ffffff', command=modify_store)

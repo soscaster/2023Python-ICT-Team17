@@ -36,7 +36,7 @@ bg.place(x=0, y=0)
 lb_title = tk.Label(login, text="Login to\nBook Store\nManagement System", font=("Arial", 23, 'bold'), justify="center", bg='white', fg='#318bd2')
 lb_usr = tk.Label(login, text="Username", font=("Arial", 15), bg='white', fg='#318bd2')
 lb_pwd = tk.Label(login, text="Password", font=("Arial", 15), bg='white', fg='#318bd2')
-lb_cpr = tk.Label(login, text="© 2023 Team 17 - ICT\nVersion BETA", font=("Arial", 6), bg='#73a2c7', justify="right", fg='white')
+lb_cpr = tk.Label(login, text="© 2023 - BI12 - ICT Team 17\nVersion BETA", font=("Arial", 6), bg='#73a2c7', justify="right", fg='white')
 
 # Create entry boxes
 box_usr = tk.Entry(login, width=31, font=("Arial", 12), relief='flat', borderwidth=0, fg='firebrick1', highlightthickness=0)
