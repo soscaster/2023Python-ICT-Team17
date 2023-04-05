@@ -755,7 +755,7 @@ def customer_list():
 # First window
 
 admin = tk.Tk()
-admin.title("Book Store Management System - Loged in as admin")
+admin.title("BSMS Beta - Logged in as Administrator")
 admin.geometry("800x600")
 
 box = tk.Toplevel(admin)
@@ -784,6 +784,7 @@ btn_font = tkfont.Font(family="Arial", size=15)
 
 # Create labels
 lbl_welcome = tk.Label(text="Welcome to\nBook Store Management System", font=("Arial", 25, 'bold'), justify="center", bg='white', fg='#318bd2')
+lb_cpr = tk.Label(admin, text="© 2023 Team 17 - ICT\nVersion BETA", font=("Arial", 6), bg='#73a2c7', justify="right", fg='white')
 
 # Create buttons
 btn_store = tk.Button(image= img_mst, text="Modify Store Info",compound = 'left', width=495, height=50, bg='#0052cc', fg='#ffffff', command=modify_store)
@@ -813,6 +814,7 @@ btn_staff.place(x=407, y=275)
 btn_add_customer.place(x=143, y=355)
 btn_customer.place(x=407, y=355)
 btn_exit.place(x=143, y=435)
+lb_cpr.place(x=715, y=573)
 
 # Prevent resizing
 admin.resizable(False, False)

@@ -18,7 +18,7 @@ def show():
     btn_eye.config(command=hide)
 
 login = tk.Tk()
-login.title("Book Store Management System")
+login.title("BSMS Beta - Login")
 login.geometry("800x600")
 login.resizable(False, False)
 
@@ -87,7 +87,7 @@ def runme(t: tk.Tk, event=None):
         cur.execute("SELECT name FROM staff WHERE id = ? AND password = ?", (box_usr.get(), box_pwd.get()))
         name = cur.fetchone()[0]
         sql_session.Session().Insert(input_usr, name)
-        messagebox.showinfo(title="Success", message=f"Login successful as {name}")
+        messagebox.showinfo(title="Success", message=f"Login successful as:\n{name}")
         t.destroy()
         subprocess.call(["python3", "staff.py"])
     # elif input_usr == "staff" and input_pwd == "staff":
@@ -98,14 +98,14 @@ def runme(t: tk.Tk, event=None):
         id = "admin"
         name = "admin"
         sql_session.Session().Insert(id, name)
-        messagebox.showinfo(title="Success", message="Login successful as admin")
+        messagebox.showinfo(title="Success", message="Login successful as:\nAdministrator")
         t.destroy()
         subprocess.call(["python3", "admin.py"])
     elif input_usr == "vuminh" and input_pwd == "npc":
         id = "vuminh"
         name = "vuminh"
         sql_session.Session().Insert(id, name)
-        messagebox.showerror(title="STOP", message="dm vu minh! What are you doing here?")
+        messagebox.showerror(title="STOP", message="dm vu minh!\nWhat are you doing here?")
         exit()
     else:
         messagebox.showerror(title="Error", message="Invalid username or password\nPlease try again.")
