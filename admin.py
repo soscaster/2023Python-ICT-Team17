@@ -762,10 +762,14 @@ imgbg = tk.PhotoImage(file="img/main.png")
 # Fit the image to the buttons
 m_st = tk.PhotoImage(file="img/icons/m_st.png")
 img_mst = m_st.subsample(2, 2)
-mod = tk.PhotoImage(file="img/icons/mod.png")
-img_m = mod.subsample(2, 2)
-add = tk.PhotoImage(file="img/icons/add.png")
-img_a = add.subsample(2, 2)
+mod_s = tk.PhotoImage(file="img/icons/m_s.png")
+img_m_s = mod_s.subsample(2, 2)
+mod_c = tk.PhotoImage(file="img/icons/m_c.png")
+img_m_c = mod_c.subsample(2, 2)
+add_c = tk.PhotoImage(file="img/icons/a_c.png")
+img_a_c = add_c.subsample(2, 2)
+add_s = tk.PhotoImage(file="img/icons/a_s.png")
+img_a_s = add_s.subsample(2, 2)
 ex = tk.PhotoImage(file="img/icons/exit.png")
 img_e = ex.subsample(2, 2)
 
@@ -784,16 +788,16 @@ lbl_welcome = tk.Label(text="Welcome to\nBook Store Management System", font=("A
 # Create buttons
 btn_store = tk.Button(image= img_mst, text="Modify Store Info",compound = 'left', width=495, height=50, bg='#0052cc', fg='#ffffff', command=modify_store)
 btn_store['font'] = btn_font
-btn_add_staff = tk.Button(image=img_a,text="Add Staff",compound = 'left', width=231, height=50, bg='#00ab1c', fg='#ffffff', command=add_staff)
+btn_add_staff = tk.Button(image=img_a_s,text="Add Staff",compound = 'left', width=231, height=50, bg='#00ab1c', fg='#ffffff', command=add_staff)
 btn_add_staff['font'] = btn_font
-btn_staff = tk.Button(image=img_m,text="Staff List", compound = 'left', width=231, height=50, bg='#00ab1c', fg='#ffffff', command=staff_list)
+btn_staff = tk.Button(image=img_m_s,text="Staff List", compound = 'left', width=231, height=50, bg='#00ab1c', fg='#ffffff', command=staff_list)
 btn_staff['font'] = btn_font
 # Confirm if the staff data table exists or not
 if len(sql_staff.Database().Storage()) == 0:
     btn_staff.config(state="disabled")
-btn_add_customer = tk.Button(image=img_a,text="Add Customer", compound = 'left', width=231, height=50, bg='#ab4d00', fg='#ffffff', command=add_customer)
+btn_add_customer = tk.Button(image=img_a_c,text="Add Customer", compound = 'left', width=231, height=50, bg='#ab4d00', fg='#ffffff', command=add_customer)
 btn_add_customer['font'] = btn_font
-btn_customer = tk.Button(image=img_m,text="Customer List", compound = 'left', width=231, height=50, bg='#ab4d00', fg='#ffffff', command=customer_list)
+btn_customer = tk.Button(image=img_m_c,text="Customer List", compound = 'left', width=231, height=50, bg='#ab4d00', fg='#ffffff', command=customer_list)
 btn_customer['font'] = btn_font
 # Confirm if the customer data table exists or not
 if len(sql_customers.Database().Storage()) == 0:

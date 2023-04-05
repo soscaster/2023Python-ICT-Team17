@@ -681,53 +681,61 @@ def book_list():
     btn_exit.pack()
 
 
-    
-
-    
 window = tk.Tk()
-
 window.title("Staff")
-frm = tk.Frame(window)
+window.geometry("800x600")
+
+imgbg = tk.PhotoImage(file="img/main.png")
+# Fit the image to the buttons
+mod_c = tk.PhotoImage(file="img/icons/m_c.png")
+img_m_c = mod_c.subsample(2, 2)
+add_c = tk.PhotoImage(file="img/icons/a_c.png")
+img_a_c = add_c.subsample(2, 2)
+mod_b = tk.PhotoImage(file="img/icons/m_b.png")
+img_m_b = mod_b.subsample(2, 2)
+add_b = tk.PhotoImage(file="img/icons/a_b.png")
+img_a_b = add_b.subsample(2, 2)
+sell = tk.PhotoImage(file="img/icons/s_b.png")
+sell_b = sell.subsample(2, 2)
+ex = tk.PhotoImage(file="img/icons/exit.png")
+img_e = ex.subsample(2, 2)
+
+lbl_hihi = tk.Label(image=imgbg)
+lbl_hihi.place(x=0, y=0)
 
 btn_font = tkfont.Font(family="Arial", size=15)
 
 session_get = sql_session.Session().Print()
+session_id = session_get[1]
 session_name = session_get[2]
-lbl_session = tk.Label(master=frm, text='Welcome, ' + session_name, font=("Arial", 15, "bold"), justify="center")
-lbl_welcome = tk.Label(master=frm, text='Bookstore management \n(Staff edition)\n', font=("Arial", 25, "bold"), justify="center")
+lbl_session = tk.Label(master=window, text='Welcome, ' + session_id +' - '+ session_name, font=("Arial", 13, "bold"), bg='#73a2c7', justify="left", fg='white')
+lbl_welcome = tk.Label(master=window, text='Bookstore management \n(Staff edition)\n', font=("Arial", 25, "bold"), justify="center", bg='white', fg='#318bd2')
 
-btn_add_book = tk.Button(master = frm, text = 'Add book', font = ("Arial", 15), width = 21, command = add_book)
+btn_add_book = tk.Button(image=img_a_b,text="Add Book",compound = 'left', width=231, height=50, bg='#00ab1c', fg='#ffffff', command=add_book)
 btn_add_book['font'] = btn_font
-btn_book = tk.Button(master = frm, text='Book List', font = ("Arial", 15), width = 21, command = book_list)
+btn_book = tk.Button(image=img_a_b,text="Manage Book List",compound = 'left', width=231, height=50, bg='#00ab1c', fg='#ffffff', command = book_list)
 btn_book['font'] = btn_font
-btn_add_customer = tk.Button(master = frm, text = 'Add customer', font = ("Arial", 15), width = 21, command = add_customer)
+btn_add_customer = tk.Button(image=img_a_c,text="Add Customer", compound = 'left', width=231, height=50, bg='#ab4d00', fg='#ffffff', command = add_customer)
 btn_add_customer['font'] = btn_font
-btn_customer = tk.Button(master = frm, text = 'Customer List', font = ("Arial", 15), width = 21, command = customer_list)
+btn_customer = tk.Button(image=img_m_c,text="Customer List", compound = 'left', width=231, height=50, bg='#ab4d00', fg='#ffffff', command = customer_list)
 btn_customer['font'] = btn_font
-btn_cut = tk.Button(master = frm, text = 'Exit', font = ("Arial", 15), width = 21, command = window.quit)
+btn_cut = tk.Button(image=img_e, text="Exit", compound= 'left', width=495, height=50, bg='#570b0b', fg='#ffffff', command = window.quit)
 btn_cut['font'] = btn_font
+btn_sell_book = tk.Button(image= sell_b, text="Sell Book",compound = 'left', width=495, height=50, bg='#0052cc', fg='#ffffff', command = add_book)
+btn_sell_book['font'] = btn_font
 if len(sql_books.Database().Storage()) == 0:
     btn_book.config(state="disabled")
 if len(sql_customers.Database().Storage()) == 0:
     btn_customer.config(state="disabled")
 
-frm.grid(row = 0, column = 0, sticky = "nsew")
-lbl_welcome.grid(row = 0, column = 0, columnspan = 2, sticky = "nsew")
-btn_add_book.grid(row = 1, column = 0, padx = 10, pady = 5, sticky = "nsew")
-btn_book.grid(row = 1, column = 1, padx = 10, pady = 5, sticky = "nsew")
-btn_add_customer.grid(row = 2, column = 0, padx = 10, pady = 5, sticky = "nsew")
-btn_customer.grid(row = 2, column = 1, padx = 10, pady = 5, sticky = "nsew")
-btn_cut.grid(row = 3, column = 0, columnspan = 2, padx = 10, pady = 5, sticky = "nsew")
-lbl_session.grid(row = 4, column = 0, columnspan = 2, sticky = "nsew")
-
-frm.rowconfigure(0, weight=1, minsize=50)
-frm.rowconfigure(1, weight=1, minsize=50)
-frm.rowconfigure(2, weight=1, minsize=50)
-frm.rowconfigure(3, weight=1, minsize=50)
-frm.columnconfigure(0, weight=1, minsize=75)
-frm.columnconfigure(1, weight=1, minsize=75)
-window.columnconfigure(0, weight=1, minsize=75)
-window.rowconfigure(0, weight=1, minsize=50)
+lbl_welcome.place(x=206, y=95)
+btn_add_book.place(x=143, y=195)
+btn_book.place(x=407, y=195)
+btn_add_customer.place(x=143, y=275)
+btn_customer.place(x=407, y=275)
+btn_sell_book.place(x=143, y=355)
+btn_cut.place(x=143, y=435)
+lbl_session.place(x=5, y=5)
 
 window.mainloop()
 
