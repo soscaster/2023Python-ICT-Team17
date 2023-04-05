@@ -69,7 +69,7 @@ lb_usr.place(x=420, y=230)
 box_usr.place(x=415, y=260)
 lb_pwd.place(x=420, y=310)
 box_pwd.place(x=415, y=340)
-lb_cpr.place(x=715, y=1)
+lb_cpr.place(x=690, y=3)
 
 def runme(t: tk.Tk, event=None):
     log = sqlite3.connect("bookstore.db")

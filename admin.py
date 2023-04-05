@@ -814,7 +814,7 @@ btn_staff.place(x=407, y=275)
 btn_add_customer.place(x=143, y=355)
 btn_customer.place(x=407, y=355)
 btn_exit.place(x=143, y=435)
-lb_cpr.place(x=715, y=573)
+lb_cpr.place(x=690, y=573)
 
 # Prevent resizing
 admin.resizable(False, False)

@@ -737,7 +737,7 @@ btn_customer.place(x=407, y=275)
 btn_sell_book.place(x=143, y=355)
 btn_cut.place(x=143, y=435)
 lbl_session.place(x=5, y=5)
-lb_cpr.place(x=715, y=573)
+lb_cpr.place(x=690, y=573)
 
 window.mainloop()
 
