@@ -276,6 +276,18 @@ def add_customer():
 
 #Staff_list window
 def staff_list():
+    
+    # Configure style for table
+    style = ttk.Style()
+    style.configure ("Treeview",
+        background = "#D3D3D3",
+        foreground = "black",
+        rowheight=25,
+        fieldbackground="silver"
+        )
+
+    style.map('Treeview',background=[('selected','grey')])
+
     clear()
     list_staff = tk.Toplevel(admin)
 
@@ -304,11 +316,18 @@ def staff_list():
     tree.heading ("Phone", text="Phone", anchor=tk.CENTER)
     tree.heading ("Email", text="Email", anchor=tk.CENTER) 
 
+    # Color for odd and even row
+    tree.tag_configure('even_row',background='white')
+    tree.tag_configure('odd_row',background='lightblue')
+
     def list_all():
         tree.delete(*tree.get_children())
         db = sql_staff.Database().Storage()
         for i in range(0,len(db)):
-            tree.insert('', i, iid= None, values = (db[i][0],db[i][2],db[i][3],db[i][4],db[i][5],db[i][6],">"+db[i][0]))
+            if i % 2 == 0:
+                tree.insert('', i, iid= None, values = (db[i][0],db[i][2],db[i][3],db[i][4],db[i][5],db[i][6],">"+db[i][0]),tags='even_row')
+            else:
+                tree.insert('', i, iid= None, values = (db[i][0],db[i][2],db[i][3],db[i][4],db[i][5],db[i][6],">"+db[i][0]),tags='odd_row')
     list_all()
 
     def del_cf():
@@ -321,7 +340,7 @@ def staff_list():
         if cf == True:
             delete_staff_func(del_ID)
 
-    tree.pack()
+    tree.pack(padx=20,pady=20 )
     btn_refresh = tk.Button(list_staff, text="Refresh", width=21, command=lambda: list_all())
     btn_search = tk.Button(list_staff, text="Search", width=21, command=lambda: Search_interface())
     btn_delete = tk.Button(list_staff, text="Delete", width=21, command=lambda: del_cf())
@@ -517,6 +536,8 @@ def staff_list():
     btn_exit.pack()
 
 #Customer List window
+
+
 def customer_list():
     clear()
     list_customer = tk.Toplevel(admin)
