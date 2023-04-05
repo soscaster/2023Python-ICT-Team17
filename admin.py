@@ -279,21 +279,39 @@ def staff_list():
     
     # Configure style for table
     style = ttk.Style()
+    style.theme_use("default")
     style.configure ("Treeview",
-        background = "#D3D3D3",
-        foreground = "black",
+        background="#D3D3D3",
+        foreground="black",
         rowheight=25,
         fieldbackground="silver"
         )
-
-    style.map('Treeview',background=[('selected','grey')])
+    
+    # Change color of selected record
+    style.map('Treeview',background=[('selected','#347083')])
 
     clear()
     list_staff = tk.Toplevel(admin)
 
     list_staff.title("Staff")
-    frm = tk.Frame(list_staff)
-    tree = ttk.Treeview(list_staff)
+
+    # Create tree view frame
+    tree_frame = tk.Frame(list_staff)
+    tree_frame.pack(pady=20,padx=20)
+
+    # Create scrollbar
+    tree_scroll = tk.Scrollbar(tree_frame)
+    tree_scroll.pack(side='right',fill="y")
+
+    # Create treeview
+    tree = ttk.Treeview(tree_frame,yscrollcommand=tree_scroll.set)
+
+    # Pack to screen
+    tree.pack()
+
+    # Configure scrollbar
+    tree_scroll.config(command=tree.yview)
+
     tree['show']='headings'
 
     list_staff.resizable(False,False)
@@ -306,7 +324,7 @@ def staff_list():
     tree.column ("Date of Birth", width=100, minwidth=100,anchor=tk.CENTER) 
     tree.column ("Address", width=250, minwidth=150, anchor=tk .CENTER) 
     tree.column ("Phone", width=150, minwidth=150, anchor=tk .CENTER) 
-    tree.column ("Email", width=250, minwidth=150, anchor=tk.CENTER)
+    tree.column ("Email", width=150, minwidth=100, anchor=tk.CENTER)
 
     #Assign the heading names to the respective columns 
     tree.heading ("ID", text="ID", anchor=tk.CENTER) 
@@ -340,12 +358,24 @@ def staff_list():
         if cf == True:
             delete_staff_func(del_ID)
 
-    tree.pack(padx=20,pady=20 )
-    btn_refresh = tk.Button(list_staff, text="Refresh", width=21, command=lambda: list_all())
-    btn_search = tk.Button(list_staff, text="Search", width=21, command=lambda: Search_interface())
-    btn_delete = tk.Button(list_staff, text="Delete", width=21, command=lambda: del_cf())
-    btn_update = tk.Button(list_staff, text="Update", width=21, command=lambda: modify_staff())
-    btn_exit = tk.Button(list_staff, text="Exit", width=21, command=list_staff.destroy)
+    # Add button frame
+    button_frame = tk.LabelFrame(list_staff,text="Functions")
+    button_frame.pack(fill="x",expand='yes',padx=20,pady=20)
+
+
+
+
+    btn_refresh = tk.Button(button_frame, text="Refresh", width=21, command=lambda: list_all())
+    btn_search = tk.Button(button_frame, text="Search", width=21, command=lambda: Search_interface())
+    btn_delete = tk.Button(button_frame, text="Delete", width=21, command=lambda: del_cf())
+    btn_update = tk.Button(button_frame, text="Update", width=21, command=lambda: modify_staff())
+    btn_exit = tk.Button(button_frame, text="Exit", width=21, command=list_staff.destroy)
+
+    btn_refresh.grid(row=0,column=0,padx=10,pady=10)
+    btn_search.grid(row=0,column=1,padx=10,pady=10)
+    btn_delete.grid(row=0,column=2,padx=10,pady=10)
+    btn_update.grid(row=0,column=3,padx=10,pady=10)
+    btn_exit.grid(row=0,column=4,padx=10,pady=10)
 
     def Search_interface():
         search_inter = tk.Toplevel(list_staff)
@@ -529,11 +559,11 @@ def staff_list():
             messagebox.showinfo("Success", "Staff info saved!\nPlease refresh the page to see the changes!", parent=box)
 
 
-    btn_refresh.pack()
-    btn_search.pack()
-    btn_delete.pack()
-    btn_update.pack()
-    btn_exit.pack()
+    # btn_refresh.pack()
+    # btn_search.pack()
+    # btn_delete.pack()
+    # btn_update.pack()
+    # btn_exit.pack()
 
 #Customer List window
 
