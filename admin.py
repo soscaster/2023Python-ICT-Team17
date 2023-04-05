@@ -21,12 +21,12 @@ def modify_store():
     btn_font = tkfont.Font(family="Arial", size=15)
 
     # Create labels
-    lbl_store = tk.Label(store_frame, text="Modify Store Info", font=("Arial", 20, 'bold'), justify="center")
-    lbl_store_id = tk.Label(store_frame, text="Store ID", font=("Arial", 15))
-    lbl_store_name = tk.Label(store_frame, text="Store Name", font=("Arial", 15))
-    lbl_store_address = tk.Label(store_frame, text="Store Address", font=("Arial", 15))
-    lbl_store_phone = tk.Label(store_frame, text="Store Phone", font=("Arial", 15))
-    lbl_store_email = tk.Label(store_frame, text="Store Email", font=("Arial", 15))
+    lbl_store = tk.Label(store_text="Modify Store Info", font=("Arial", 20, 'bold'), justify="center")
+    lbl_store_id = tk.Label(store_text="Store ID", font=("Arial", 15))
+    lbl_store_name = tk.Label(store_text="Store Name", font=("Arial", 15))
+    lbl_store_address = tk.Label(store_text="Store Address", font=("Arial", 15))
+    lbl_store_phone = tk.Label(store_text="Store Phone", font=("Arial", 15))
+    lbl_store_email = tk.Label(store_text="Store Email", font=("Arial", 15))
 
     # Create entry boxes
     global store_id, store_name, store_address, store_phone, store_email
@@ -51,16 +51,16 @@ def modify_store():
         store_phone.set(db[0][3])
         store_email.set(db[0][4])
 
-    ent_store_id = tk.Entry(store_frame, width=30, textvariable=store_id, font=("Arial", 15))
-    ent_store_name = tk.Entry(store_frame, width=30, textvariable= store_name, font=("Arial", 15))
-    ent_store_address = tk.Entry(store_frame, width=30, textvariable= store_address, font=("Arial", 15))
-    ent_store_phone = tk.Entry(store_frame, width=30, textvariable= store_phone, font=("Arial", 15))
-    ent_store_email = tk.Entry(store_frame, width=30, textvariable= store_email, font=("Arial", 15))
+    ent_store_id = tk.Entry(store_width=30, textvariable=store_id, font=("Arial", 15))
+    ent_store_name = tk.Entry(store_width=30, textvariable= store_name, font=("Arial", 15))
+    ent_store_address = tk.Entry(store_width=30, textvariable= store_address, font=("Arial", 15))
+    ent_store_phone = tk.Entry(store_width=30, textvariable= store_phone, font=("Arial", 15))
+    ent_store_email = tk.Entry(store_width=30, textvariable= store_email, font=("Arial", 15))
 
     # Create buttons
-    btn_save = tk.Button(store_frame, text="Save", width=21, bg='#0052cc', fg='#ffffff', command = modify_store_func)
+    btn_save = tk.Button(store_text="Save", width=21, bg='#0052cc', fg='#ffffff', command = modify_store_func)
     btn_save['font'] = btn_font
-    btn_exit = tk.Button(store_frame, text="Exit", width=21, command=store.destroy, bg='#fc0303', fg='#ffffff')
+    btn_exit = tk.Button(store_text="Exit", width=21, command=store.destroy, bg='#fc0303', fg='#ffffff')
     btn_exit['font'] = btn_font
 
     # Style labels, entry boxes and buttons
@@ -108,14 +108,14 @@ def add_staff():
     btn_font = tkfont.Font(family="Arial", size=15)
 
     # Create labels
-    lbl_staff = tk.Label(staff_frame, text="Add New Staff Info", font=("Arial", 20, 'bold'), justify="center")
-    lbl_staff_id = tk.Label(staff_frame, text="Staff ID", font=("Arial", 15))
-    lbl_staff_pwd = tk.Label(staff_frame, text = "Staff Login Password", font=("Arial", 15))
-    lbl_staff_name = tk.Label(staff_frame, text="Staff Name", font=("Arial", 15))
-    lbl_staff_dob = tk.Label(staff_frame, text="Staff DOB (dd/mm/yyyy)", font=("Arial", 15))
-    lbl_staff_address = tk.Label(staff_frame, text="Staff Address", font=("Arial", 15))
-    lbl_staff_phone = tk.Label(staff_frame, text="Staff Phone (10 digits)", font=("Arial", 15))
-    lbl_staff_email = tk.Label(staff_frame, text="Staff Email", font=("Arial", 15))
+    lbl_staff = tk.Label(staff_text="Add New Staff Info", font=("Arial", 20, 'bold'), justify="center")
+    lbl_staff_id = tk.Label(staff_text="Staff ID", font=("Arial", 15))
+    lbl_staff_pwd = tk.Label(staff_text = "Staff Login Password", font=("Arial", 15))
+    lbl_staff_name = tk.Label(staff_text="Staff Name", font=("Arial", 15))
+    lbl_staff_dob = tk.Label(staff_text="Staff DOB (dd/mm/yyyy)", font=("Arial", 15))
+    lbl_staff_address = tk.Label(staff_text="Staff Address", font=("Arial", 15))
+    lbl_staff_phone = tk.Label(staff_text="Staff Phone (10 digits)", font=("Arial", 15))
+    lbl_staff_email = tk.Label(staff_text="Staff Email", font=("Arial", 15))
 
     # Create entry boxes   
     global st_ID, st_pwd, st_name, st_dob, st_address, st_phone, st_email 
@@ -127,18 +127,18 @@ def add_staff():
     st_phone = tk.StringVar()
     st_email = tk.StringVar()
 
-    ent_staff_id = tk.Entry(staff_frame, width=30, textvariable=st_ID, font=("Arial", 15))
-    ent_staff_pwd = tk.Entry(staff_frame, width=30, textvariable=st_pwd, font=("Arial", 15), show="*")
-    ent_staff_name = tk.Entry(staff_frame, width=30, textvariable=st_name, font=("Arial", 15))
-    ent_staff_dob = tk.Entry(staff_frame, width=30, textvariable=st_dob, font=("Arial", 15))
-    ent_staff_address = tk.Entry(staff_frame, width=30, textvariable=st_address, font=("Arial", 15))
-    ent_staff_phone = tk.Entry(staff_frame, width=30, textvariable=st_phone, font=("Arial", 15))
-    ent_staff_email = tk.Entry(staff_frame, width=30, textvariable=st_email, font=("Arial", 15))
+    ent_staff_id = tk.Entry(staff_width=30, textvariable=st_ID, font=("Arial", 15))
+    ent_staff_pwd = tk.Entry(staff_width=30, textvariable=st_pwd, font=("Arial", 15), show="*")
+    ent_staff_name = tk.Entry(staff_width=30, textvariable=st_name, font=("Arial", 15))
+    ent_staff_dob = tk.Entry(staff_width=30, textvariable=st_dob, font=("Arial", 15))
+    ent_staff_address = tk.Entry(staff_width=30, textvariable=st_address, font=("Arial", 15))
+    ent_staff_phone = tk.Entry(staff_width=30, textvariable=st_phone, font=("Arial", 15))
+    ent_staff_email = tk.Entry(staff_width=30, textvariable=st_email, font=("Arial", 15))
 
     # Create buttons
-    btn_save = tk.Button(staff_frame, text="Save", width=21, bg='#0052cc', fg='#ffffff', command=lambda: add_staff_func(st_ID.get(), st_pwd.get(), st_name.get(), st_dob.get(), st_address.get(), st_phone.get(), st_email.get()))
+    btn_save = tk.Button(staff_text="Save", width=21, bg='#0052cc', fg='#ffffff', command=lambda: add_staff_func(st_ID.get(), st_pwd.get(), st_name.get(), st_dob.get(), st_address.get(), st_phone.get(), st_email.get()))
     btn_save['font'] = btn_font
-    btn_exit = tk.Button(staff_frame, text="Exit", width=21, command=staff.destroy, bg='#fc0303', fg='#ffffff')
+    btn_exit = tk.Button(staff_text="Exit", width=21, command=staff.destroy, bg='#fc0303', fg='#ffffff')
     btn_exit['font'] = btn_font
 
     # Style labels, entry boxes and buttons
@@ -201,13 +201,13 @@ def add_customer():
     btn_font = tkfont.Font(family="Arial", size=15)
 
     # Create labels
-    lbl_customer = tk.Label(customer_frame, text="Add New Customer Info", font=("Arial", 20, 'bold'), justify="center")
-    lbl_customer_id = tk.Label(customer_frame, text="Customer ID", font=("Arial", 15))
-    lbl_customer_name = tk.Label(customer_frame, text="Customer Name", font=("Arial", 15))
-    lbl_customer_dob = tk.Label(customer_frame, text="Customer DOB (dd/mm/yyyy)", font=("Arial", 15))
-    lbl_customer_address = tk.Label(customer_frame, text="Customer Address", font=("Arial", 15))
-    lbl_customer_phone = tk.Label(customer_frame, text="Customer Phone (10 digits)", font=("Arial", 15))
-    lbl_customer_email = tk.Label(customer_frame, text="Customer Email", font=("Arial", 15))
+    lbl_customer = tk.Label(customer_text="Add New Customer Info", font=("Arial", 20, 'bold'), justify="center")
+    lbl_customer_id = tk.Label(customer_text="Customer ID", font=("Arial", 15))
+    lbl_customer_name = tk.Label(customer_text="Customer Name", font=("Arial", 15))
+    lbl_customer_dob = tk.Label(customer_text="Customer DOB (dd/mm/yyyy)", font=("Arial", 15))
+    lbl_customer_address = tk.Label(customer_text="Customer Address", font=("Arial", 15))
+    lbl_customer_phone = tk.Label(customer_text="Customer Phone (10 digits)", font=("Arial", 15))
+    lbl_customer_email = tk.Label(customer_text="Customer Email", font=("Arial", 15))
 
     # Create entry boxes   
     global cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email 
@@ -218,17 +218,17 @@ def add_customer():
     cu_phone = tk.StringVar()
     cu_email = tk.StringVar()
 
-    ent_customer_id = tk.Entry(customer_frame, width=30, textvariable=cu_ID, font=("Arial", 15))
-    ent_customer_name = tk.Entry(customer_frame, width=30, textvariable=cu_name, font=("Arial", 15))
-    ent_customer_dob = tk.Entry(customer_frame, width=30, textvariable=cu_dob, font=("Arial", 15))
-    ent_customer_address = tk.Entry(customer_frame, width=30, textvariable=cu_address, font=("Arial", 15))
-    ent_customer_phone = tk.Entry(customer_frame, width=30, textvariable=cu_phone, font=("Arial", 15))
-    ent_customer_email = tk.Entry(customer_frame, width=30, textvariable=cu_email, font=("Arial", 15))
+    ent_customer_id = tk.Entry(customer_width=30, textvariable=cu_ID, font=("Arial", 15))
+    ent_customer_name = tk.Entry(customer_width=30, textvariable=cu_name, font=("Arial", 15))
+    ent_customer_dob = tk.Entry(customer_width=30, textvariable=cu_dob, font=("Arial", 15))
+    ent_customer_address = tk.Entry(customer_width=30, textvariable=cu_address, font=("Arial", 15))
+    ent_customer_phone = tk.Entry(customer_width=30, textvariable=cu_phone, font=("Arial", 15))
+    ent_customer_email = tk.Entry(customer_width=30, textvariable=cu_email, font=("Arial", 15))
 
     # Create buttons
-    btn_save = tk.Button(customer_frame, text="Save", width=21, bg='#0052cc', fg='#ffffff', command=lambda: add_customer_func(cu_ID.get(), cu_name.get(), cu_dob.get(), cu_address.get(), cu_phone.get(), cu_email.get()))
+    btn_save = tk.Button(customer_text="Save", width=21, bg='#0052cc', fg='#ffffff', command=lambda: add_customer_func(cu_ID.get(), cu_name.get(), cu_dob.get(), cu_address.get(), cu_phone.get(), cu_email.get()))
     btn_save['font'] = btn_font
-    btn_exit = tk.Button(customer_frame, text="Exit", width=21, command=customer.destroy, bg='#fc0303', fg='#ffffff')
+    btn_exit = tk.Button(customer_text="Exit", width=21, command=customer.destroy, bg='#fc0303', fg='#ffffff')
     btn_exit['font'] = btn_font
 
     # Style labels, entry boxes and buttons
@@ -424,13 +424,13 @@ def staff_list():
         btn_font = tkfont.Font(family="Arial", size=15)
 
         # Create labels
-        lbl_staff = tk.Label(staff_frame, text="Modify Staff Info", font=("Arial", 20, 'bold'), justify="center")
-        lbl_staff_pwd = tk.Label(staff_frame, text="Staff Login Password", font=("Arial", 15))
-        lbl_staff_name = tk.Label(staff_frame, text="Staff Name", font=("Arial", 15))
-        lbl_staff_dob = tk.Label(staff_frame, text="Staff DOB", font=("Arial", 15))
-        lbl_staff_address = tk.Label(staff_frame, text="Staff Address", font=("Arial", 15))
-        lbl_staff_phone = tk.Label(staff_frame, text="Staff Phone", font=("Arial", 15))
-        lbl_staff_email = tk.Label(staff_frame, text="Staff Email", font=("Arial", 15))
+        lbl_staff = tk.Label(staff_text="Modify Staff Info", font=("Arial", 20, 'bold'), justify="center")
+        lbl_staff_pwd = tk.Label(staff_text="Staff Login Password", font=("Arial", 15))
+        lbl_staff_name = tk.Label(staff_text="Staff Name", font=("Arial", 15))
+        lbl_staff_dob = tk.Label(staff_text="Staff DOB", font=("Arial", 15))
+        lbl_staff_address = tk.Label(staff_text="Staff Address", font=("Arial", 15))
+        lbl_staff_phone = tk.Label(staff_text="Staff Phone", font=("Arial", 15))
+        lbl_staff_email = tk.Label(staff_text="Staff Email", font=("Arial", 15))
 
         # Create entry boxes
         global st_ID, st_pwd, st_name, st_dob, st_address, st_phone, st_email
@@ -456,22 +456,22 @@ def staff_list():
         st_email.set(db[0][6])
         
         # Create entry boxes
-        ent_staff_pwd = tk.Entry(staff_frame, textvariable=st_pwd, width=20, font=("Arial", 15), show="*")
-        ent_staff_name = tk.Entry(staff_frame, textvariable=st_name, width=20, font=("Arial", 15))
-        ent_staff_dob = tk.Entry(staff_frame, textvariable=st_dob, width=20, font=("Arial", 15))
-        ent_staff_address = tk.Entry(staff_frame, textvariable=st_address, width=20, font=("Arial", 15))
-        ent_staff_phone = tk.Entry(staff_frame, textvariable=st_phone, width=20, font=("Arial", 15))
-        ent_staff_email = tk.Entry(staff_frame, textvariable=st_email, width=20, font=("Arial", 15))
+        ent_staff_pwd = tk.Entry(staff_textvariable=st_pwd, width=20, font=("Arial", 15), show="*")
+        ent_staff_name = tk.Entry(staff_textvariable=st_name, width=20, font=("Arial", 15))
+        ent_staff_dob = tk.Entry(staff_textvariable=st_dob, width=20, font=("Arial", 15))
+        ent_staff_address = tk.Entry(staff_textvariable=st_address, width=20, font=("Arial", 15))
+        ent_staff_phone = tk.Entry(staff_textvariable=st_phone, width=20, font=("Arial", 15))
+        ent_staff_email = tk.Entry(staff_textvariable=st_email, width=20, font=("Arial", 15))
 
         # Create buttons
         def save_cf():
             cf = tk.messagebox.askyesno("Save", "Are you sure you want to overide this staff info?")
             if cf == True:
                 modify_staff_func()
-        btn_save = tk.Button(staff_frame, text="Save", width=21, bg='#0052cc', fg='#ffffff', command=lambda: save_cf())
+        btn_save = tk.Button(staff_text="Save", width=21, bg='#0052cc', fg='#ffffff', command=lambda: save_cf())
         btn_save['font'] = btn_font
 
-        btn_exit = tk.Button(staff_frame, text="Exit", width=21, bg='#fc0303', fg='#ffffff', command=staff.destroy)
+        btn_exit = tk.Button(staff_text="Exit", width=21, bg='#fc0303', fg='#ffffff', command=staff.destroy)
         btn_exit['font'] = btn_font        
 
         # Create a grid layout
@@ -666,12 +666,12 @@ def customer_list():
         btn_font = tkfont.Font(family="Arial", size=15)
 
         # Create labels
-        lbl_customer = tk.Label(customer_frame, text="Modify Customer Info", font=("Arial", 20, 'bold'), justify="center")
-        lbl_customer_name = tk.Label(customer_frame, text="Customer Name", font=("Arial", 15))
-        lbl_customer_dob = tk.Label(customer_frame, text="Customer DOB", font=("Arial", 15))
-        lbl_customer_address = tk.Label(customer_frame, text="Customer Address", font=("Arial", 15))
-        lbl_customer_phone = tk.Label(customer_frame, text="Customer Phone", font=("Arial", 15))
-        lbl_customer_email = tk.Label(customer_frame, text="Customer Email", font=("Arial", 15))
+        lbl_customer = tk.Label(customer_text="Modify Customer Info", font=("Arial", 20, 'bold'), justify="center")
+        lbl_customer_name = tk.Label(customer_text="Customer Name", font=("Arial", 15))
+        lbl_customer_dob = tk.Label(customer_text="Customer DOB", font=("Arial", 15))
+        lbl_customer_address = tk.Label(customer_text="Customer Address", font=("Arial", 15))
+        lbl_customer_phone = tk.Label(customer_text="Customer Phone", font=("Arial", 15))
+        lbl_customer_email = tk.Label(customer_text="Customer Email", font=("Arial", 15))
 
         # Create entry boxes
         global cus_ID, cus_pwd, cus_name, cus_dob, cus_address, cus_phone, cus_email
@@ -695,11 +695,11 @@ def customer_list():
         cus_email.set(db[0][5])
         
         # Create entry boxes
-        ent_customer_name = tk.Entry(customer_frame, textvariable=cus_name, width=20, font=("Arial", 15))
-        ent_customer_dob = tk.Entry(customer_frame, textvariable=cus_dob, width=20, font=("Arial", 15))
-        ent_customer_address = tk.Entry(customer_frame, textvariable=cus_address, width=20, font=("Arial", 15))
-        ent_customer_phone = tk.Entry(customer_frame, textvariable=cus_phone, width=20, font=("Arial", 15))
-        ent_customer_email = tk.Entry(customer_frame, textvariable=cus_email, width=20, font=("Arial", 15))
+        ent_customer_name = tk.Entry(customer_textvariable=cus_name, width=20, font=("Arial", 15))
+        ent_customer_dob = tk.Entry(customer_textvariable=cus_dob, width=20, font=("Arial", 15))
+        ent_customer_address = tk.Entry(customer_textvariable=cus_address, width=20, font=("Arial", 15))
+        ent_customer_phone = tk.Entry(customer_textvariable=cus_phone, width=20, font=("Arial", 15))
+        ent_customer_email = tk.Entry(customer_textvariable=cus_email, width=20, font=("Arial", 15))
 
         # Create buttons
         def save_cf():
@@ -707,10 +707,10 @@ def customer_list():
             if cf == True:
                 modify_customer_func()
         
-        btn_save = tk.Button(customer_frame, text="Save", width=21, bg='#0052cc', fg='#ffffff', command=lambda: save_cf())
+        btn_save = tk.Button(customer_text="Save", width=21, bg='#0052cc', fg='#ffffff', command=lambda: save_cf())
         btn_save['font'] = btn_font
 
-        btn_exit = tk.Button(customer_frame, text="Exit", width=21, bg='#fc0303', fg='#ffffff', command=customer.destroy)
+        btn_exit = tk.Button(customer_text="Exit", width=21, bg='#fc0303', fg='#ffffff', command=customer.destroy)
         btn_exit['font'] = btn_font        
 
         # Create a grid layout
@@ -756,7 +756,21 @@ def customer_list():
 
 admin = tk.Tk()
 admin.title("Book Store Management System - Loged in as admin")
-frame = tk.Frame(admin)
+admin.geometry("800x600")
+
+imgbg = tk.PhotoImage(file="img/main.png")
+# Fit the image to the buttons
+m_st = tk.PhotoImage(file="img/icons/m_st.png")
+img_mst = m_st.subsample(2, 2)
+mod = tk.PhotoImage(file="img/icons/mod.png")
+img_m = mod.subsample(2, 2)
+add = tk.PhotoImage(file="img/icons/add.png")
+img_a = add.subsample(2, 2)
+ex = tk.PhotoImage(file="img/icons/exit.png")
+img_e = ex.subsample(2, 2)
+
+lbl_hihi = tk.Label(image=imgbg)
+lbl_hihi.place(x=0, y=0)
 
 box = tk.Toplevel(admin)
 box.withdraw()
@@ -765,39 +779,36 @@ box.withdraw()
 btn_font = tkfont.Font(family="Arial", size=15)
 
 # Create labels
-lbl_welcome = tk.Label(frame, text="Welcome to\nBook Store Management System", font=("Arial", 25, 'bold'), justify="center")
-lbl_hihi = tk.Label(frame, text=" ", font=("Arial", 13))
+lbl_welcome = tk.Label(text="Welcome to\nBook Store Management System", font=("Arial", 25, 'bold'), justify="center", bg='white', fg='#318bd2')
 
 # Create buttons
-btn_store = tk.Button(frame, text="Modify Store Info", width=21, bg='#0052cc', fg='#ffffff', command=modify_store)
+btn_store = tk.Button(image= img_mst, text="Modify Store Info",compound = 'left', width=495, height=50, bg='#0052cc', fg='#ffffff', command=modify_store)
 btn_store['font'] = btn_font
-btn_add_staff = tk.Button(frame, text="Add Staff", width=21, bg='#00ab1c', fg='#ffffff', command=add_staff)
+btn_add_staff = tk.Button(image=img_a,text="Add Staff",compound = 'left', width=231, height=50, bg='#00ab1c', fg='#ffffff', command=add_staff)
 btn_add_staff['font'] = btn_font
-btn_staff = tk.Button(frame, text="Staff List", width=21, bg='#00ab1c', fg='#ffffff', command=staff_list)
+btn_staff = tk.Button(image=img_m,text="Staff List", compound = 'left', width=231, height=50, bg='#00ab1c', fg='#ffffff', command=staff_list)
 btn_staff['font'] = btn_font
 # Confirm if the staff data table exists or not
 if len(sql_staff.Database().Storage()) == 0:
     btn_staff.config(state="disabled")
-btn_add_customer = tk.Button(frame, text="Add Customer", width=21, bg='#ab4d00', fg='#ffffff', command=add_customer)
+btn_add_customer = tk.Button(image=img_a,text="Add Customer", compound = 'left', width=231, height=50, bg='#ab4d00', fg='#ffffff', command=add_customer)
 btn_add_customer['font'] = btn_font
-btn_customer = tk.Button(frame, text="Customer List", width=21, bg='#ab4d00', fg='#ffffff', command=customer_list)
+btn_customer = tk.Button(image=img_m,text="Customer List", compound = 'left', width=231, height=50, bg='#ab4d00', fg='#ffffff', command=customer_list)
 btn_customer['font'] = btn_font
 # Confirm if the customer data table exists or not
 if len(sql_customers.Database().Storage()) == 0:
     btn_customer.config(state="disabled")
-btn_exit = tk.Button(frame, text="Exit", width=21, command=admin.quit, bg='#fc0303', fg='#ffffff')
+btn_exit = tk.Button(image=img_e, text="Exit", compound= 'left', width=495, height=50, command=admin.quit, bg='#570b0b', fg='#ffffff')
 btn_exit['font'] = btn_font
 
 # Style labels, entry boxes and buttons
-frame.grid(row=0, column=0, sticky="nsew")
-lbl_welcome.grid(row=0, column=0, columnspan = 2, padx= 15, pady=15, sticky="nsew")
-btn_store.grid(row=1, column=0, columnspan = 2, padx= 15, pady=5, sticky="nsew")
-btn_add_staff.grid(row=2, column=0, padx= 15, pady=5, sticky="nsew")
-btn_staff.grid(row=2, column=1, padx= 15, pady=5, sticky="nsew")
-btn_add_customer.grid(row=3, column=0, padx= 15, pady=5, sticky="nsew")
-btn_customer.grid(row=3, column=1, padx= 15, pady=5, sticky="nsew")
-btn_exit.grid(row=4, column=0, columnspan = 2, padx= 15, pady=5, sticky="nsew")
-lbl_hihi.grid(row=5, column=0, padx= 5, pady=5, sticky="nsew")
+lbl_welcome.place(x=143, y=95)
+btn_store.place(x=143, y=195)
+btn_add_staff.place(x=143, y=275)
+btn_staff.place(x=407, y=275)
+btn_add_customer.place(x=143, y=355)
+btn_customer.place(x=407, y=355)
+btn_exit.place(x=143, y=435)
 
 # Prevent resizing
 admin.resizable(False, False)
