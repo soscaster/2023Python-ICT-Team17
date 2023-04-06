@@ -97,12 +97,40 @@ def add_customer():
         
 
 def customer_list():
+
+    # Configure style for table
+    style = ttk.Style()
+    style.theme_use("default")
+    style.configure ("Treeview",
+        background="#D3D3D3",
+        foreground="black",
+        rowheight=25,
+        fieldbackground="silver"
+        )
+    
+    # Change color of selected record
+    style.map('Treeview',background=[('selected','#347083')])
+
     clear()
     list_customer = tk.Toplevel(window)
 
-    list_customer.title("Staff")
+    list_customer.title("Customer List")
+
+    # Create tree view frame
     frm = tk.Frame(list_customer)
-    tree = ttk.Treeview(list_customer)
+    frm.pack(pady=20, padx=20)
+
+    # Create scrollbar
+    tree_scroll = tk.Scrollbar(frm)
+    tree_scroll.pack(side='right', fill='y')
+
+    # Create tree view
+    tree = ttk.Treeview(frm, yscrollcommand=tree_scroll.set)
+
+    tree.pack()
+
+    # Configure scrollbar
+    tree_scroll.config(command=tree.yview)
     tree['show']='headings'
 
     list_customer.resizable(False,False)
@@ -115,7 +143,7 @@ def customer_list():
     tree.column ("Date of Birth", width=100, minwidth=100,anchor=tk.CENTER) 
     tree.column ("Address", width=250, minwidth=150, anchor=tk .CENTER) 
     tree.column ("Phone", width=150, minwidth=150, anchor=tk .CENTER) 
-    tree.column ("Email", width=250, minwidth=150, anchor=tk.CENTER)
+    tree.column ("Email", width=150, minwidth=150, anchor=tk.CENTER)
 
     #Assign the heading names to the respective columns 
     tree.heading ("ID", text="ID", anchor=tk.CENTER) 
@@ -123,7 +151,11 @@ def customer_list():
     tree.heading ("Date of Birth", text="Date of Birth", anchor=tk. CENTER)
     tree.heading ("Address", text="Address", anchor=tk.CENTER) 
     tree.heading ("Phone", text="Phone", anchor=tk.CENTER)
-    tree.heading ("Email", text="Email", anchor=tk.CENTER) 
+    tree.heading ("Email", text="Email", anchor=tk.CENTER)
+
+    # Color for odd and even row
+    tree.tag_configure('even_row',background='white')
+    tree.tag_configure('odd_row',background='lightblue')
 
     def list_all():
         tree.delete(*tree.get_children())
@@ -144,21 +176,30 @@ def customer_list():
 
     def delete_customer_func(id):
         if func.remove_customer(id) == True:
-            messagebox.showinfo("Success", "Customer deleted successfully!")
+            messagebox.showinfo("Success", "Customer deleted successfully!", parent=box)
             tree.delete(tree.focus())
             if len(sql_customers.Database().Storage()) == 0:
                 btn_customer['state'] = 'disabled'
             else:
                 btn_customer['state'] = 'normal'
         else:
-            messagebox.showerror("Error", "Customer not deleted!")
+            messagebox.showerror("Error", "Customer not deleted!", parent=box)
 
-    tree.pack()
-    btn_refresh = tk.Button(list_customer, text="Refresh", width=21, command=lambda: list_all())
-    btn_search = tk.Button(list_customer, text="Search", width=21, command=lambda: Search_interface())
-    btn_delete = tk.Button(list_customer, text="Delete", width=21, command=lambda: del_cf())
-    btn_update = tk.Button(list_customer, text="Update", width=21, command=lambda: modify_customer())
-    btn_exit = tk.Button(list_customer, text="Exit", width=21, command=list_customer.destroy)
+    # Add button frame
+    button_frame = tk.LabelFrame(list_customer, text = "Functions")
+    button_frame.pack(fill="x", expand="yes", padx=20, pady=20)
+
+    btn_refresh = tk.Button(button_frame, text="Refresh", width=21, command=lambda: list_all())
+    btn_search = tk.Button(button_frame, text="Search", width=21, command=lambda: Search_interface())
+    btn_delete = tk.Button(button_frame, text="Delete", width=21, command=lambda: del_cf())
+    btn_update = tk.Button(button_frame, text="Update", width=21, command=lambda: modify_customer())
+    btn_exit = tk.Button(button_frame, text="Exit", width=21, command=list_customer.destroy)
+
+    btn_refresh.grid(row=0, column=0, padx=10, pady=10)
+    btn_search.grid(row=0, column=1, padx=10, pady=10)
+    btn_delete.grid(row=0, column=2, padx=10, pady=10)
+    btn_update.grid(row=0, column=3, padx=10, pady=10)
+    btn_exit.grid(row=0, column=4, padx=10, pady=10)
 
     def Search_interface():
         search_inter = tk.Toplevel(list_customer)
@@ -170,9 +211,9 @@ def customer_list():
         lbl_customer = tk.Label(frm, text="Search Customer", font=("Arial", 20, 'bold'), justify="center")
         lbl_customer_id = tk.Label(frm, text="Customer ID", font=("Arial", 15))
         lbl_customer_name = tk.Label(frm, text="Customer Name", font=("Arial", 15))
-        lbl_customer_dob = tk.Label(frm, text="Customer DOB (dd/mm/yyyy)", font=("Arial", 15))
+        lbl_customer_dob = tk.Label(frm, text="Customer DOB", font=("Arial", 15))
         lbl_customer_address = tk.Label(frm, text="Customer Address", font=("Arial", 15))
-        lbl_customer_phone = tk.Label(frm, text="Customer Phone (10 digits)", font=("Arial", 15))
+        lbl_customer_phone = tk.Label(frm, text="Customer Phone", font=("Arial", 15))
         lbl_customer_email = tk.Label(frm, text="Customer Email", font=("Arial", 15))
 
         # Create entry boxes   
@@ -218,13 +259,11 @@ def customer_list():
         # Prevent resizing
         search_inter.resizable(False, False)
 
-
-
         def Search_customer(id, name, dob, address, phone, email):
             if func.Searchall_customer(id, name, dob, address, phone, email) == False:
-                messagebox.showerror("Error", "Something went wrong\nPlease try again!")
+                messagebox.showerror("Error", "Something went wrong\nPlease try again!", parent=box)
             elif len(func.Searchall_customer(id, name, dob, address, phone, email))==0:
-                messagebox.showinfo("","0 results found!")
+                messagebox.showinfo("","0 results found!", parent=box)
             else:
                 db = func.Searchall_customer(id, name, dob, address, phone, email)
                 tree.delete(*tree.get_children())
@@ -249,9 +288,9 @@ def customer_list():
         # Create labels
         lbl_customer = tk.Label(customer_frame, text="Modify Customer Info", font=("Arial", 20, 'bold'), justify="center")
         lbl_customer_name = tk.Label(customer_frame, text="Customer Name", font=("Arial", 15))
-        lbl_customer_dob = tk.Label(customer_frame, text="Customer DOB (dd/mm/yyyy)", font=("Arial", 15))
+        lbl_customer_dob = tk.Label(customer_frame, text="Customer DOB", font=("Arial", 15))
         lbl_customer_address = tk.Label(customer_frame, text="Customer Address", font=("Arial", 15))
-        lbl_customer_phone = tk.Label(customer_frame, text="Customer Phone (10 digits)", font=("Arial", 15))
+        lbl_customer_phone = tk.Label(customer_frame, text="Customer Phone", font=("Arial", 15))
         lbl_customer_email = tk.Label(customer_frame, text="Customer Email", font=("Arial", 15))
 
         # Create entry boxes
@@ -316,22 +355,22 @@ def customer_list():
     # Define a function for saving staff info
     def modify_customer_func():
         if func.check_dob(cus_dob.get()) == False:
-            messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!")
+            messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!", parent=box)
         elif func.check_phone(cus_phone.get()) == False:
-            messagebox.showerror("Error", "Invalid phone number!\nPlease try again!")
+            messagebox.showerror("Error", "Invalid phone number!\nPlease try again!", parent=box)
         elif func.check_email(cus_email.get()) == False:
-            messagebox.showerror("Error", "Invalid email type!\nPlease try again!")
+            messagebox.showerror("Error", "Invalid email type!\nPlease try again!", parent=box)
         elif sql_customers.Database().Validate(cus_ID.get(), cus_phone.get(), cus_email.get(), 2) == True:
-            messagebox.showerror("Error", "Phone or Email info is already exists!\nPlease try again!")
+            messagebox.showerror("Error", "Phone or Email info is already exists!\nPlease try again!", parent=box)
         else:
             sql_customers.Database().Update(cus_name.get(), cus_dob.get(), cus_address.get(), cus_phone.get(), cus_email.get(), cus_ID.get())
-            messagebox.showinfo("Success", "Staff info saved!\nPlease refresh the page to see the changes!")
+            messagebox.showinfo("Success", "Staff info saved!\nPlease refresh the page to see the changes!", parent=box)
     
-    btn_refresh.pack()
-    btn_search.pack()
-    btn_delete.pack()
-    btn_update.pack()
-    btn_exit.pack()
+    # btn_refresh.pack()
+    # btn_search.pack()
+    # btn_delete.pack()
+    # btn_update.pack()
+    # btn_exit.pack()
             
 #End customer section
 
@@ -680,9 +719,47 @@ def book_list():
     btn_update.pack()
     btn_exit.pack()
 
+# -------------------------
+# SELL BOOK FUNC
+def sell_book_func():
+    #Sell book window
+    sell = tk.Toplevel()
+    sell.title("Sell Book")
+    sell.geometry("800x600")
+    sell.resizable(False, False)
+
+
+    #Labels
+    lbl_sell = tk.Label(master = sell, text = "Sell Book", font = ("Arial", 20), bg = "white")
+    lbl_sell_book_id = tk.Label(master = sell, text = "Book ID", font = ("Arial", 15), bg = "white")
+    lbl_sell_quantity = tk.Label(master = sell, text = "Quantity", font = ("Arial", 15), bg = "white")
+
+    #Entry boxes
+    sell_book_id = tk.StringVar()
+    sell_quantity = tk.StringVar()
+    ent_sell_book_id = tk.Entry(master = sell, width = 30, textvariable = sell_book_id, font = ("Arial", 15))
+    ent_sell_quantity = tk.Entry(master = sell, width = 30, textvariable = sell_quantity, font = ("Arial", 15))
+
+    #Save info cmd
+    def sell_book():
+        cf = tk.messagebox.askyesno("Sell", "Sell this book?")
+        if cf == True:
+            sell_book_func()
+            
+    #Buttons        
+    btn_sell = tk.Button(sell, text="Sell", font = ("Arial", 15), width=21, command=lambda: sell_book())
+    btn_exit = tk.Button(sell, text="Exit", font = ("Arial", 15), width=21, command=sell.destroy)
+
+    #Grid layout
+    lbl_sell.grid(row = 0, column = 0, columnspan = 2, padx = 15, pady = 5, sticky = "nsew")
+    lbl_sell_book_id.grid(row = 1, column = 0, padx = 15, pady = 5, sticky = "nsew")
+    lbl_sell_quantity.grid(row = 2, column = 0, padx = 15, pady = 5, sticky = "nsew")
 
 window = tk.Tk()
 window.geometry("800x600")
+
+box = tk.Toplevel(window)
+box.withdraw()
 
 imgbg = tk.PhotoImage(file="img/main.png")
 # Fit the image to the buttons
@@ -722,7 +799,7 @@ btn_customer = tk.Button(image=img_m_c,text="Customer List", compound = 'left', 
 btn_customer['font'] = btn_font
 btn_cut = tk.Button(image=img_e, text="Exit", compound= 'left', width=495, height=50, bg='#570b0b', fg='#ffffff', command = window.quit)
 btn_cut['font'] = btn_font
-btn_sell_book = tk.Button(image= sell_b, text="Sell Book",compound = 'left', width=495, height=50, bg='#0052cc', fg='#ffffff', command = add_book)
+btn_sell_book = tk.Button(image= sell_b, text="Sell Book",compound = 'left', width=495, height=50, bg='#0052cc', fg='#ffffff', command = sell_book_func)
 btn_sell_book['font'] = btn_font
 if len(sql_books.Database().Storage()) == 0:
     btn_book.config(state="disabled")
