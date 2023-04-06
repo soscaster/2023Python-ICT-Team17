@@ -362,11 +362,11 @@ def staff_list():
     button_frame = tk.LabelFrame(list_staff,text="Functions")
     button_frame.pack(fill="x",expand='yes',padx=20,pady=20)
 
-    btn_refresh = tk.Button(button_frame, text="Refresh", width=21, command=lambda: list_all())
-    btn_search = tk.Button(button_frame, text="Search", width=21, command=lambda: Search_interface())
-    btn_delete = tk.Button(button_frame, text="Delete", width=21, command=lambda: del_cf())
-    btn_update = tk.Button(button_frame, text="Update", width=21, command=lambda: modify_staff())
-    btn_exit = tk.Button(button_frame, text="Exit", width=21, command=list_staff.destroy)
+    btn_refresh = tk.Button(button_frame, text="Refresh", width=23, command=lambda: list_all())
+    btn_search = tk.Button(button_frame, text="Search", width=23, command=lambda: Search_interface())
+    btn_delete = tk.Button(button_frame, text="Delete", width=23, command=lambda: del_cf())
+    btn_update = tk.Button(button_frame, text="Update", width=23, command=lambda: modify_staff())
+    btn_exit = tk.Button(button_frame, text="Exit", width=23, command=list_staff.destroy)
 
     btn_refresh.grid(row=0, column=0, padx=10, pady=10)
     btn_search.grid(row=0, column=1, padx=10, pady=10)
@@ -658,11 +658,11 @@ def customer_list():
     button_frame = tk.LabelFrame(list_customer, text = "Functions")
     button_frame.pack(fill="x", expand="yes", padx=20, pady=20)
 
-    btn_refresh = tk.Button(button_frame, text="Refresh", width=21, command=lambda: list_all())
-    btn_search = tk.Button(button_frame, text="Search", width=21, command=lambda: Search_interface())
-    btn_delete = tk.Button(button_frame, text="Delete", width=21, command=lambda: del_cf())
-    btn_update = tk.Button(button_frame, text="Update", width=21, command=lambda: modify_customer())
-    btn_exit = tk.Button(button_frame, text="Exit", width=21, command=list_customer.destroy)
+    btn_refresh = tk.Button(button_frame, text="Refresh", width=23, command=lambda: list_all())
+    btn_search = tk.Button(button_frame, text="Search", width=23, command=lambda: Search_interface())
+    btn_delete = tk.Button(button_frame, text="Delete", width=23, command=lambda: del_cf())
+    btn_update = tk.Button(button_frame, text="Update", width=23, command=lambda: modify_customer())
+    btn_exit = tk.Button(button_frame, text="Exit", width=23, command=list_customer.destroy)
 
     btn_refresh.grid(row=0, column=0, padx=10, pady=10)
     btn_search.grid(row=0, column=1, padx=10, pady=10)

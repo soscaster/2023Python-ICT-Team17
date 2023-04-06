@@ -118,7 +118,7 @@ def customer_list():
 
     # Create tree view frame
     frm = tk.Frame(list_customer)
-    frm.pack(pady=20, padx=20)
+    frm.pack(pady=20, padx=30)
 
     # Create scrollbar
     tree_scroll = tk.Scrollbar(frm)
@@ -189,11 +189,11 @@ def customer_list():
     button_frame = tk.LabelFrame(list_customer, text = "Functions")
     button_frame.pack(fill="x", expand="yes", padx=20, pady=20)
 
-    btn_refresh = tk.Button(button_frame, text="Refresh", width=21, command=lambda: list_all())
-    btn_search = tk.Button(button_frame, text="Search", width=21, command=lambda: Search_interface())
-    btn_delete = tk.Button(button_frame, text="Delete", width=21, command=lambda: del_cf())
-    btn_update = tk.Button(button_frame, text="Update", width=21, command=lambda: modify_customer())
-    btn_exit = tk.Button(button_frame, text="Exit", width=21, command=list_customer.destroy)
+    btn_refresh = tk.Button(button_frame, text="Refresh", width=23, command=lambda: list_all())
+    btn_search = tk.Button(button_frame, text="Search", width=23, command=lambda: Search_interface())
+    btn_delete = tk.Button(button_frame, text="Delete", width=23, command=lambda: del_cf())
+    btn_update = tk.Button(button_frame, text="Update", width=23, command=lambda: modify_customer())
+    btn_exit = tk.Button(button_frame, text="Exit", width=23, command=list_customer.destroy)
 
     btn_refresh.grid(row=0, column=0, padx=10, pady=10)
     btn_search.grid(row=0, column=1, padx=10, pady=10)
@@ -525,11 +525,11 @@ def book_list():
             messagebox.showerror("Error", "Customer not deleted!")
 
     tree.pack()
-    btn_refresh = tk.Button(list_book, text="Refresh", width=21, command=lambda: list_all())
-    btn_search = tk.Button(list_book, text="Search", width=21, command=lambda: Search_interface())
-    btn_delete = tk.Button(list_book, text="Delete", width=21, command=lambda: del_cf())
-    btn_update = tk.Button(list_book, text="Update", width=21, command=lambda: mod_book())
-    btn_exit = tk.Button(list_book, text="Exit", width=21, command=list_book.destroy)
+    btn_refresh = tk.Button(list_book, text="Refresh", width=23, command=lambda: list_all())
+    btn_search = tk.Button(list_book, text="Search", width=23, command=lambda: Search_interface())
+    btn_delete = tk.Button(list_book, text="Delete", width=23, command=lambda: del_cf())
+    btn_update = tk.Button(list_book, text="Update", width=23, command=lambda: mod_book())
+    btn_exit = tk.Button(list_book, text="Exit", width=23, command=list_book.destroy)
 
     def Search_interface():
         search_inter = tk.Toplevel(list_book)
