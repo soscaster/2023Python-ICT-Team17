@@ -5,6 +5,7 @@ import subprocess
 import datetime
 from tkinter import messagebox, font as tkfont
 from domains import sql_session
+from domains import sql_store
 import sqlite3
 
 # Login Image "People illustrations" by Storyset
@@ -17,6 +18,15 @@ def show():
     box_pwd.config(show="")
     btn_eye.config(image=eye)
     btn_eye.config(command=hide)
+
+def exit_verify():
+        # Verify if the user wants to exit the program
+        box = messagebox.askquestion("Exit", "Are you sure you want to exit?")
+        if box == "yes":
+            messagebox.showinfo("Exit", "Thank you for using the program!\n© 2023 - BI12 - ICT Team 17")
+            login.quit()
+        else:
+            pass
 
 login = tk.Tk()
 login.title("BSMS Beta - Login")
@@ -58,7 +68,7 @@ line_pwd.place(x=415, y=360)
 btn_eye = tk.Button(image=eye2, bd=0, bg='white', activebackground='white', highlightthickness=0, cursor="hand2", command=show)
 btn_eye.place(x=701, y=340)
 btn_login = tk.Button(text="Login", width=23, bg='#318bd2', bd=0, activebackground='firebrick1', highlightthickness=0, command=lambda: runme(login))
-btn_exit = tk.Button(text="Exit", width=23, bg='#318bd2', bd=0, activebackground='firebrick1', highlightthickness=0, command=login.quit)
+btn_exit = tk.Button(text="Exit", width=23, bg='#318bd2', bd=0, activebackground='firebrick1', highlightthickness=0, command=exit_verify)
 btn_login["font"] = btn_font
 btn_login.place(x=417, y=420)
 btn_exit["font"] = btn_font
@@ -91,6 +101,9 @@ def runme(t: tk.Tk, event=None):
         name = cur.fetchone()[0]
         sql_session.Session().Insert(input_usr, name)
         messagebox.showinfo(title="Success", message=f"Login successful as:\n{name}\nLogin time: {time}")
+        # Confirm if the store data table exists or not
+        if len(sql_store.Database().Storage()) == 0:
+            messagebox.showinfo(title="Store data error!", message="Store Information not found!\nPlease contact Administrator first!")
         t.destroy()
         subprocess.call(["python3", "staff.py"])
     # elif input_usr == "staff" and input_pwd == "staff":

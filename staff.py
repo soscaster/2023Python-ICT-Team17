@@ -8,6 +8,7 @@ clear = lambda: os.system('clear')
 from domains import sql_session
 from domains import sql_customers
 from domains import sql_books
+from domains import sql_store
 
 # CUSTOMER SECTION
 
@@ -755,6 +756,15 @@ def sell_book_func():
     lbl_sell_book_id.grid(row = 1, column = 0, padx = 15, pady = 5, sticky = "nsew")
     lbl_sell_quantity.grid(row = 2, column = 0, padx = 15, pady = 5, sticky = "nsew")
 
+def exit_verify():
+        # Verify if the user wants to exit the program
+        box = messagebox.askquestion("Exit", "Are you sure you want to exit?")
+        if box == "yes":
+            messagebox.showinfo("Exit", "Thank you for using the program!\n© 2023 - BI12 - ICT Team 17")
+            window.quit()
+        else:
+            pass
+
 window = tk.Tk()
 window.geometry("800x600")
 
@@ -781,9 +791,14 @@ lbl_hihi.place(x=0, y=0)
 
 btn_font = tkfont.Font(family="Arial", size=15)
 
-session_get = sql_session.Session().Print()
-session_id = session_get[1]
-session_name = session_get[2]
+if len(sql_session.Session().Storage()) == 0:
+    session_id = "Guest"
+    session_name = "Guest"
+else:
+    session_get = sql_session.Session().Print()
+    session_id = session_get[1]
+    session_name = session_get[2]
+
 window.title(f"BSMS Beta - Logged in as staff: {session_id} - {session_name}")
 lbl_session = tk.Label(master=window, text='Welcome, ' + session_id +' - '+ session_name, font=("Arial", 13, "bold"), bg='#73a2c7', justify="left", fg='white')
 lbl_welcome = tk.Label(master=window, text="Book Store Management System\n(Staff Edition)", font=("Arial", 25, 'bold'), justify="center", bg='white', fg='#318bd2')
@@ -797,14 +812,19 @@ btn_add_customer = tk.Button(image=img_a_c,text="Add Customer", compound = 'left
 btn_add_customer['font'] = btn_font
 btn_customer = tk.Button(image=img_m_c,text="Customer List", compound = 'left', width=231, height=50, bg='#ab4d00', fg='#ffffff', command = customer_list)
 btn_customer['font'] = btn_font
-btn_cut = tk.Button(image=img_e, text="Exit", compound= 'left', width=495, height=50, bg='#570b0b', fg='#ffffff', command = window.quit)
-btn_cut['font'] = btn_font
 btn_sell_book = tk.Button(image= sell_b, text="Sell Book",compound = 'left', width=495, height=50, bg='#0052cc', fg='#ffffff', command = sell_book_func)
 btn_sell_book['font'] = btn_font
 if len(sql_books.Database().Storage()) == 0:
     btn_book.config(state="disabled")
 if len(sql_customers.Database().Storage()) == 0:
     btn_customer.config(state="disabled")
+btn_cut = tk.Button(image=img_e, text="Exit", compound= 'left', width=495, height=50, bg='#570b0b', fg='#ffffff', command = exit_verify)
+btn_cut['font'] = btn_font
+# Confirm if the store data table exists or not
+if len(sql_store.Database().Storage()) == 0:
+    btn_add_book.config(state="disabled")
+    btn_add_customer.config(state="disabled")
+    btn_sell_book.config(state="disabled")
 
 lbl_welcome.place(x=143, y=95)
 btn_add_book.place(x=143, y=195)

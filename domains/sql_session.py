@@ -20,6 +20,10 @@ class Session:
         # Print the last record
         self.dbCursor.execute("SELECT * FROM session ORDER BY id DESC LIMIT 1")
         return self.dbCursor.fetchone()
+    
+    def Storage(self):
+        self.dbCursor.execute("SELECT * FROM session")
+        return self.dbCursor.fetchall()
 
     def __close__(self):
         self.dbCursor.close()

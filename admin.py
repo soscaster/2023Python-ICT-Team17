@@ -25,7 +25,7 @@ def modify_store():
     lbl_store_id = tk.Label(store_frame, text="Store ID", font=("Arial", 15))
     lbl_store_name = tk.Label(store_frame, text="Store Name", font=("Arial", 15))
     lbl_store_address = tk.Label(store_frame, text="Store Address", font=("Arial", 15))
-    lbl_store_phone = tk.Label(store_frame, text="Store Phone", font=("Arial", 15))
+    lbl_store_phone = tk.Label(store_frame, text="Store Phone (10 digits)", font=("Arial", 15))
     lbl_store_email = tk.Label(store_frame, text="Store Email", font=("Arial", 15))
 
     # Create entry boxes
@@ -58,7 +58,7 @@ def modify_store():
     ent_store_email = tk.Entry(store_frame, width=30, textvariable= store_email, font=("Arial", 15))
 
     # Create buttons
-    btn_save = tk.Button(store_frame, text="Save", width=21, bg='#0052cc', fg='#ffffff', command = modify_store_func)
+    btn_save = tk.Button(store_frame, text="Save", width=21, bg='#0052cc', fg='#ffffff', command = lambda: modify_store_func())
     btn_save['font'] = btn_font
     btn_exit = tk.Button(store_frame, text="Exit", width=21, command=store.destroy, bg='#fc0303', fg='#ffffff')
     btn_exit['font'] = btn_font
@@ -83,18 +83,18 @@ def modify_store():
     # Prevent resizing
     store.resizable(False, False)
 
-def modify_store_func():
-    # If function modify_store returns False, show error message
-    if fu.check_phone(store_phone.get()) == False:
-        messagebox.showerror("Error", "Invalid phone number!\nPlease try again!", parent=box)
-    elif fu.check_email(store_email.get()) == False:
-        messagebox.showerror("Error", "Invalid email type!\nPlease try again!", parent=box)
-    elif fu.input_store_info(store_id.get(), store_name.get(), store_address.get(), store_phone.get(), store_email.get()) == False:
-        messagebox.showerror("Error", "Store info is not modified!", parent=box)
-    elif fu.input_store_info(store_id.get(), store_name.get(), store_address.get(), store_phone.get(), store_email.get()) == True:
-    # Verify if the staff info is saved
-        messagebox.showinfo("Success", "Store info modified successfully!", parent=box)
-
+    def modify_store_func():
+        # If function modify_store returns False, show error message
+        if fu.check_phone(store_phone.get()) == False:
+            messagebox.showerror("Error", "Invalid phone number!\nPlease try again!", parent=box)
+        elif fu.check_email(store_email.get()) == False:
+            messagebox.showerror("Error", "Invalid email type!\nPlease try again!", parent=box)
+        elif fu.input_store_info(store_id.get(), store_name.get(), store_address.get(), store_phone.get(), store_email.get()) == False:
+            messagebox.showerror("Error", "Store info is not modified!", parent=box)
+        elif fu.input_store_info(store_id.get(), store_name.get(), store_address.get(), store_phone.get(), store_email.get()) == True:
+        # Verify if the staff info is saved
+            messagebox.showinfo("Success", "Store info modified successfully!\nPress OK to continue.", parent=box)
+            store.destroy()
 
 # Create a new window for creating staff info [DONE]
 def add_staff():
@@ -841,6 +841,15 @@ def customer_list():
     # btn_update.pack()
     # btn_exit.pack()
 
+def exit_verify():
+        # Verify if the user wants to exit the program
+        box = messagebox.askquestion("Exit", "Are you sure you want to exit?")
+        if box == "yes":
+            messagebox.showinfo("Exit", "Thank you for using the program!\n© 2023 - BI12 - ICT Team 17")
+            admin.quit()
+        else:
+            pass
+
 # First window
 
 admin = tk.Tk()
@@ -887,12 +896,16 @@ if len(sql_staff.Database().Storage()) == 0:
     btn_staff.config(state="disabled")
 btn_add_customer = tk.Button(image=img_a_c,text="Add Customer", compound = 'left', width=231, height=50, bg='#ab4d00', fg='#ffffff', command=add_customer)
 btn_add_customer['font'] = btn_font
+# Confirm if the store data table exists or not
+if len(sql_store.Database().Storage()) == 0:
+    btn_add_staff.config(state="disabled")
+    btn_add_customer.config(state="disabled")
 btn_customer = tk.Button(image=img_m_c,text="Customer List", compound = 'left', width=231, height=50, bg='#ab4d00', fg='#ffffff', command=customer_list)
 btn_customer['font'] = btn_font
 # Confirm if the customer data table exists or not
 if len(sql_customers.Database().Storage()) == 0:
     btn_customer.config(state="disabled")
-btn_exit = tk.Button(image=img_e, text="Exit", compound= 'left', width=495, height=50, command=admin.quit, bg='#570b0b', fg='#ffffff')
+btn_exit = tk.Button(image=img_e, text="Exit", compound= 'left', width=495, height=50, command=exit_verify, bg='#570b0b', fg='#ffffff')
 btn_exit['font'] = btn_font
 
 # Style labels, entry boxes and buttons

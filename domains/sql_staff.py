@@ -4,7 +4,7 @@ class Database:
     def __init__(self):
         self.dbConnection = sqlite3.connect("bookstore.db")
         self.dbCursor = self.dbConnection.cursor()
-        self.dbCursor.execute("CREATE TABLE IF NOT EXISTS staff (id PRIMARYKEY text, password text, name text, dob text, address text, phone text, email text)")
+        self.dbCursor.execute("CREATE TABLE IF NOT EXISTS staff (id text, password text, name text, dob text, address text, phone text, email text, PRIMARY KEY (id))")
 
     def Insert(self, id, pwd, name, dob, address, phone, email):
         self.dbCursor.execute("INSERT INTO staff VALUES (?, ?, ?, ?, ?, ?, ?)", (id, pwd, name, dob, address, phone, email))
