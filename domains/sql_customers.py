@@ -44,6 +44,11 @@ class Database:
         records = self.dbCursor.fetchall()
         return records
     
+    def GetCustomers(self):
+        self.dbCursor.execute("SELECT id, name FROM customers")
+        records = self.dbCursor.fetchall()
+        return records
+    
     def __close__(self):
         self.dbCursor.close()
         self.dbConnection.close()

@@ -93,6 +93,8 @@ def modify_store():
             messagebox.showerror("Error", "Store info is not modified!", parent=box)
         elif fu.input_store_info(store_id.get(), store_name.get(), store_address.get(), store_phone.get(), store_email.get()) == True:
         # Verify if the staff info is saved
+            btn_add_customer['state'] = 'normal'
+            btn_add_staff['state'] = 'normal'
             messagebox.showinfo("Success", "Store info modified successfully!\nPress OK to continue.", parent=box)
             store.destroy()
 

@@ -43,7 +43,12 @@ class Database:
         self.dbCursor.execute("SELECT * FROM books")
         records = self.dbCursor.fetchall()
         return records
-
+    
+    def GetBooks(self):
+        self.dbCursor.execute("SELECT id, title FROM books")
+        records = self.dbCursor.fetchall()
+        return records
+        
     def __close__(self):
         self.dbCursor.close()
         self.dbConnection.close()

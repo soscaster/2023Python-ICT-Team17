@@ -127,7 +127,7 @@ def remove_admin(id):
 
 def check_email(email):
     # Longest TLD is 63 characters
-    pattern = '^[a-z0-9]+[\.]?[a-z0-9]+[@]\w+[.]\w{2,63}$'
+    pattern = '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,63}$'
     if (re.search(pattern,email)):
         return True
     else:

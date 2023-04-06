@@ -91,6 +91,10 @@ def add_customer():
                 if sql_customers.Database().Storage() == 0:
                     btn_customer['state'] = 'disabled'
                 else:
+                    if sql_books.Database().Storage() == 0:
+                        btn_sell_book['state'] = 'disabled'
+                    else:
+                        btn_sell_book['state'] = 'normal'
                     btn_customer['state'] = 'normal'
                 customer.destroy()
             elif func.add_customer(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email) == False:
@@ -394,6 +398,10 @@ def add_book():
                 if sql_books.Database().Storage() == 0:
                     btn_book['state'] = 'disabled'
                 else:
+                    if sql_customers.Database().Storage() == 0:
+                        btn_sell_book['state'] = 'disabled'
+                    else:
+                        btn_sell_book['state'] = 'normal'
                     btn_book['state'] = 'normal'
                 book.destroy()
             elif func.add_book(book_id, book_title, book_genre, book_author, book_target, book_pub, book_price, book_quantity)==False:
@@ -729,32 +737,75 @@ def sell_book_func():
     sell.geometry("800x600")
     sell.resizable(False, False)
 
+    # Create widgets
+    btn_font = tkfont.Font(family="Arial", size=15)
+    lbl_img = tk.Label(sell, image = imgsell)
+    lbl_img.place(x=0, y=0)
 
-    #Labels
-    lbl_sell = tk.Label(master = sell, text = "Sell Book", font = ("Arial", 20), bg = "white")
-    lbl_sell_book_id = tk.Label(master = sell, text = "Book ID", font = ("Arial", 15), bg = "white")
-    lbl_sell_quantity = tk.Label(master = sell, text = "Quantity", font = ("Arial", 15), bg = "white")
+    # Create labels
+    lb_title = tk.Label(sell, text="Sell Book", font=("Arial", 23, 'bold'), justify="center", bg='white', fg='#318bd2')
+    lb_book = tk.Label(sell, text="Book Title", font=("Arial", 15), bg='white', fg='#318bd2')
+    lb_customer = tk.Label(sell, text="Customer", font=("Arial", 15), bg='white', fg='#318bd2')
+    lb_quantity = tk.Label(sell, text="Quantity", font=("Arial", 15), bg='white', fg='#318bd2')
 
-    #Entry boxes
-    sell_book_id = tk.StringVar()
-    sell_quantity = tk.StringVar()
-    ent_sell_book_id = tk.Entry(master = sell, width = 30, textvariable = sell_book_id, font = ("Arial", 15))
-    ent_sell_quantity = tk.Entry(master = sell, width = 30, textvariable = sell_quantity, font = ("Arial", 15))
+    # Create dropdown menu for book title
+    get_data_b = sql_books.Database()
+    get_book = get_data_b.GetBooks()
+    book_title = tk.StringVar()
+    book_title.set("Select Book")
+    book_list = []
+    for i in get_book:
+        book_list.append(i[0] + " - " + i[1])
+    drop_book = tk.OptionMenu(sell, book_title, *book_list)
+    drop_book.config(width=40, height=2, font=("Arial", 12), bg='white', fg='firebrick1', activebackground='firebrick1', activeforeground='white', highlightthickness=0)
+    drop_book["menu"].config(bg='white', fg='firebrick1', activebackground='firebrick1', activeforeground='white')
+    
+    # Create dropdown menu for customer
+    get_data_c = sql_customers.Database()
+    get_customer = get_data_c.GetCustomers()
+    customer = tk.StringVar()
+    customer.set("Select Customer")
+    customer_list = []
+    for i in get_customer:
+        customer_list.append(i[0] + " - " + i[1])
+    drop_customer = tk.OptionMenu(sell, customer, *customer_list)
+    drop_customer.config(width=40, height=2, font=("Arial", 12), bg='white', fg='firebrick1', activebackground='firebrick1', activeforeground='white', highlightthickness=0)
+    drop_customer["menu"].config(bg='white', fg='firebrick1', activebackground='firebrick1', activeforeground='white')
+    
+    # Create entry for quantity
+    box_quantity = tk.Entry(sell, width=44, font=("Arial", 12), relief='flat', borderwidth=0, fg='firebrick1', highlightthickness=0, justify="center")
 
-    #Save info cmd
+    # Enter event for entry boxes
+    box_quantity.bind("<Return>", lambda event: sell_book())
+    
+    # Create lines for entry box
+    line_quantity = tk.Canvas(sell, width=400, height=2, bg='firebrick1', highlightthickness=0)
+    line_quantity.place(x=300, y=380)
+
+    # Create buttons
+    btn_sell_cf = tk.Button(sell, text="Sell the book", width=34, bg='#318bd2', bd=0, activebackground='firebrick1', highlightthickness=0, command=lambda: sell_book())
+    btn_exit = tk.Button(sell, text="Exit", width=34, bg='#318bd2', bd=0, activebackground='firebrick1', highlightthickness=0, command=sell.destroy)
+    btn_sell_cf["font"] = btn_font
+    btn_sell_cf.place(x=417, y=420)
+    btn_exit["font"] = btn_font
+    btn_exit.place(x=417, y=470)
+
+    # Style labels, entry boxes and buttons
+    lb_title.place(x=420, y=90)
+    lb_book.place(x=300, y=150)
+    drop_book.place(x=300, y=180)
+    lb_customer.place(x=300, y=240)
+    drop_customer.place(x=300, y=270)
+    lb_quantity.place(x=300, y=330)
+    box_quantity.place(x=300, y=360)
+    btn_sell_cf.place(x=302, y=420)
+    btn_exit.place(x=302, y=470)
+
     def sell_book():
-        cf = tk.messagebox.askyesno("Sell", "Sell this book?")
-        if cf == True:
-            sell_book_func()
-            
-    #Buttons        
-    btn_sell = tk.Button(sell, text="Sell", font = ("Arial", 15), width=21, command=lambda: sell_book())
-    btn_exit = tk.Button(sell, text="Exit", font = ("Arial", 15), width=21, command=sell.destroy)
+        print("Sell book")
+        
+    
 
-    #Grid layout
-    lbl_sell.grid(row = 0, column = 0, columnspan = 2, padx = 15, pady = 5, sticky = "nsew")
-    lbl_sell_book_id.grid(row = 1, column = 0, padx = 15, pady = 5, sticky = "nsew")
-    lbl_sell_quantity.grid(row = 2, column = 0, padx = 15, pady = 5, sticky = "nsew")
 
 def exit_verify():
         # Verify if the user wants to exit the program
@@ -772,6 +823,7 @@ box = tk.Toplevel(window)
 box.withdraw()
 
 imgbg = tk.PhotoImage(file="img/main.png")
+imgsell = tk.PhotoImage(file="img/sell.png")
 # Fit the image to the buttons
 mod_c = tk.PhotoImage(file="img/icons/m_c.png")
 img_m_c = mod_c.subsample(2, 2)
@@ -820,10 +872,11 @@ if len(sql_customers.Database().Storage()) == 0:
     btn_customer.config(state="disabled")
 btn_cut = tk.Button(image=img_e, text="Exit", compound= 'left', width=495, height=50, bg='#570b0b', fg='#ffffff', command = exit_verify)
 btn_cut['font'] = btn_font
-# Confirm if the store data table exists or not
 if len(sql_store.Database().Storage()) == 0:
     btn_add_book.config(state="disabled")
     btn_add_customer.config(state="disabled")
+    btn_sell_book.config(state="disabled")
+if len(sql_books.Database().Storage()) == 0 or len(sql_customers.Database().Storage()) == 0:
     btn_sell_book.config(state="disabled")
 
 lbl_welcome.place(x=143, y=95)
