@@ -2,6 +2,7 @@ import sys
 sys.dont_write_bytecode = True
 import tkinter as tk
 import subprocess
+import datetime
 from tkinter import messagebox, font as tkfont
 from domains import sql_session
 import sqlite3
@@ -81,13 +82,15 @@ def runme(t: tk.Tk, event=None):
     input_usr = box_usr.get()
     input_pwd = box_pwd.get()
 
+    time = str(datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S"))
+
 
     if data:
         # Get the name of the staff
         cur.execute("SELECT name FROM staff WHERE id = ? AND password = ?", (box_usr.get(), box_pwd.get()))
         name = cur.fetchone()[0]
         sql_session.Session().Insert(input_usr, name)
-        messagebox.showinfo(title="Success", message=f"Login successful as:\n{name}")
+        messagebox.showinfo(title="Success", message=f"Login successful as:\n{name}\nLogin time: {time}")
         t.destroy()
         subprocess.call(["python3", "staff.py"])
     # elif input_usr == "staff" and input_pwd == "staff":
@@ -98,7 +101,7 @@ def runme(t: tk.Tk, event=None):
         id = "admin"
         name = "admin"
         sql_session.Session().Insert(id, name)
-        messagebox.showinfo(title="Success", message="Login successful as:\nAdministrator")
+        messagebox.showinfo(title="Success", message=f"Login successful as:\nAdministrator\nLogin time: {time}")
         t.destroy()
         subprocess.call(["python3", "admin.py"])
     elif input_usr == "vuminh" and input_pwd == "npc":
