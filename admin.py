@@ -103,8 +103,18 @@ def modify_store():
 
     def modify_store_func():
         # If function modify_store returns False, show error message
-        if fu.check_phone(store_phone.get()) == False:
+        if fu.check_if_empty(store_id.get()) == False:
+            messagebox.showerror("Error","Store ID cannot be empty!", parent=store)
+        elif fu.check_if_empty(store_name.get()) == False:
+            messagebox.showerror("Error","Store name cannot be empty!", parent=store)
+        elif fu.check_if_empty(store_address.get()) == False:
+            messagebox.showerror("Error","Store address cannot be empty!", parent=store)
+        elif fu.check_if_empty(store_phone.get()) == False:
+            messagebox.showerror("Error","Store phone number cannot be empty!", parent=store)
+        elif fu.check_phone(store_phone.get()) == False:
             messagebox.showerror("Error", "Invalid phone number!\nPlease try again!", parent=store)
+        elif fu.check_if_empty(store_email.get()) == False:
+            messagebox.showerror("Error","Store e-mail address cannot be empty", parent=store)
         elif fu.check_email(store_email.get()) == False:
             messagebox.showerror("Error", "Invalid email type!\nPlease try again!", parent=store)
         elif fu.input_store_info(store_id.get(), store_name.get(), store_address.get(), store_phone.get(), store_email.get()) == False:
@@ -210,12 +220,22 @@ def add_staff():
     
     # Define a function for saving staff info
     def add_staff_func(st_ID, st_pwd, st_name, st_dob, st_address, st_phone, st_email):
-        if fu.check_dob(st_dob) == False:
+        if fu.check_if_empty(st_ID) == False:
+            messagebox.showerror("Error", "Staff ID cannot be empty!", parent=staff)
+        elif fu.check_if_empty(st_pwd) == False:
+            messagebox.showerror("Error","Staff password cannot be empty!", parent=staff)
+        elif fu.check_if_empty(st_dob) == False:
+            messagebox.showerror("Error", "Staff date of birth cannot be empty!", parent=staff)
+        elif fu.check_dob(st_dob) == False:
             messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!", parent=staff)
+        elif fu.check_if_empty(st_phone) == False:
+            messagebox.showerror("Error","Staff phone number cannot be empty", parent=staff)        
         elif fu.check_phone(st_phone) == False:
             messagebox.showerror("Error", "Invalid phone number!\nPlease try again!", parent=staff)
+        elif fu.check_if_empty(st_email) == False:
+            messagebox.showerror("Error","Staff e-mail cannot be empty!", parent=staff)
         elif fu.check_email(st_email) == False:
-            messagebox.showerror("Error", "Invalid email type!\nPlease try again!", parent=staff) 
+            messagebox.showerror("Error", "Invalid e-mail type!\nPlease try again!", parent=staff) 
         elif sql_staff.Database().Validate(st_ID, st_phone, st_email, 1) == True:
             messagebox.showerror("Error", "ID or Phone or Email is already exists!\nPlease try again!", parent=staff)
         else:
@@ -320,12 +340,22 @@ def add_customer():
 
     # Define a function for saving customer info
     def add_customer_func(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email):
-        if fu.check_dob(cu_dob) == False:
+        if fu.check_if_empty(cu_ID) == False:
+            messagebox.showerror("Error","Customer ID cannot be empty!", parent=customer)
+        elif fu.check_if_empty(cu_name) == False:
+            messagebox.showerror("Error","Customer name cannot be empty!", parent=customer)
+        elif fu.check_if_empty(cu_dob) == False:
+            messagebox.showerror("Error","Customer date of birth cannot be empty!", parent=customer)
+        elif fu.check_dob(cu_dob) == False:
             messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!", parent=customer)
+        elif fu.check_if_empty(cu_phone) == False:
+            messagebox.showerror("Error","Customer phone number cannot be empty!", parent=customer)
         elif fu.check_phone(cu_phone) == False:
             messagebox.showerror("Error", "Invalid phone number!\nPlease try again!", parent=customer)
+        elif fu.check_if_empty(cu_email) == False:
+            messagebox.showerror("Error","Customer e-mail address cannot be empty!", parent=customer)
         elif fu.check_email(cu_email) == False:
-            messagebox.showerror("Error", "Invalid email type!\nPlease try again!", parent=customer)
+            messagebox.showerror("Error", "Invalid e-mail type!\nPlease try again!", parent=customer)
         elif sql_customers.Database().Validate(cu_ID, cu_phone, cu_email, 1) == True:
             messagebox.showerror("Error", "ID or Phone or Email info is already exists!\nPlease try again!", parent=customer)
         else:
@@ -617,12 +647,22 @@ def staff_list():
 
         # Define a function for saving staff info
         def modify_staff_func():
-            if fu.check_dob(st_dob.get()) == False:
+            if fu.check_if_empty(st_ID.get()) == False:
+                messagebox.showerror("Error", "Staff ID cannot be empty!", parent=staff)
+            elif fu.check_if_empty(st_pwd.get()) == False:
+                messagebox.showerror("Error","Staff password cannot be empty!", parent=staff)
+            elif fu.check_if_empty(st_dob.get()) == False:
+                messagebox.showerror("Error", "Staff date of birth cannot be empty!", parent=staff)
+            elif fu.check_dob(st_dob.get()) == False:
                 messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!", parent=staff)
+            elif fu.check_if_empty(st_phone.get()) == False:
+                messagebox.showerror("Error","Staff phone number cannot be empty", parent=staff)        
             elif fu.check_phone(st_phone.get()) == False:
                 messagebox.showerror("Error", "Invalid phone number!\nPlease try again!", parent=staff)
+            elif fu.check_if_empty(st_email.get()) == False:
+                messagebox.showerror("Error","Staff e-mail cannot be empty!", parent=staff)
             elif fu.check_email(st_email.get()) == False:
-                messagebox.showerror("Error", "Invalid email type!\nPlease try again!", parent=staff)
+                messagebox.showerror("Error", "Invalid e-mail type!\nPlease try again!", parent=staff)
             elif sql_staff.Database().Validate(st_ID.get(), st_phone.get(), st_email.get(), 2) == True:
                 messagebox.showerror("Error", "Phone or Email info is already exists!\nPlease try again!", parent=staff)
             else:
@@ -896,12 +936,22 @@ def customer_list():
 
         # Define a function for saving customer info
         def modify_customer_func():
-            if fu.check_dob(cus_dob.get()) == False:
+            if fu.check_if_empty(cu_ID.get()) == False:
+                messagebox.showerror("Error","Customer ID cannot be empty!", parent=customer)
+            elif fu.check_if_empty(cu_name.get()) == False:
+                messagebox.showerror("Error","Customer name cannot be empty!", parent=customer)
+            elif fu.check_if_empty(cu_dob.get()) == False:
+                messagebox.showerror("Error","Customer date of birth cannot be empty!", parent=customer)
+            elif fu.check_dob(cu_dob.get()) == False:
                 messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!", parent=customer)
-            elif fu.check_phone(cus_phone.get()) == False:
+            elif fu.check_if_empty(cu_phone.get()) == False:
+                messagebox.showerror("Error","Customer phone number cannot be empty!", parent=customer)
+            elif fu.check_phone(cu_phone.get()) == False:
                 messagebox.showerror("Error", "Invalid phone number!\nPlease try again!", parent=customer)
-            elif fu.check_email(cus_email.get()) == False:
-                messagebox.showerror("Error", "Invalid email type!\nPlease try again!", parent=customer)
+            elif fu.check_if_empty(cu_email.get()) == False:
+                messagebox.showerror("Error","Customer e-mail address cannot be empty!", parent=customer)
+            elif fu.check_email(cu_email.get()) == False:
+                messagebox.showerror("Error", "Invalid e-mail type!\nPlease try again!", parent=customer)
             elif sql_customers.Database().Validate(cus_ID.get(), cus_phone.get(), cus_email.get(), 2) == True:
                 messagebox.showerror("Error", "Phone or Email info is already exists!\nPlease try again!", parent=customer)
             else:

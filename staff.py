@@ -99,12 +99,22 @@ def add_customer():
 
     # Define a function for saving customer info
     def add_customer_func(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email):
-        if func.check_dob(cu_dob) == False:
-            messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!", parent = customer)
+        if func.check_if_empty(cu_ID) == False:
+            messagebox.showerror("Error","Customer ID cannot be empty!", parent=customer)
+        elif func.check_if_empty(cu_name) == False:
+            messagebox.showerror("Error","Customer name cannot be empty!", parent=customer)
+        elif func.check_if_empty(cu_dob) == False:
+            messagebox.showerror("Error","Customer date of birth cannot be empty!", parent=customer)
+        elif func.check_dob(cu_dob) == False:
+            messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!", parent=customer)
+        elif func.check_if_empty(cu_phone) == False:
+            messagebox.showerror("Error","Customer phone number cannot be empty!", parent=customer)
         elif func.check_phone(cu_phone) == False:
-            messagebox.showerror("Error", "Invalid phone number!\nPlease try again!", parent = customer)
+            messagebox.showerror("Error", "Invalid phone number!\nPlease try again!", parent=customer)
+        elif func.check_if_empty(cu_email) == False:
+            messagebox.showerror("Error","Customer e-mail address cannot be empty!", parent=customer)
         elif func.check_email(cu_email) == False:
-            messagebox.showerror("Error", "Invalid email type!\nPlease try again!", parent = customer)
+            messagebox.showerror("Error", "Invalid e-mail type!\nPlease try again!", parent=customer)
         elif sql_customers.Database().Validate(cu_ID, cu_phone, cu_email, 1) == True:
             messagebox.showerror("Error", "ID or Phone or Email info is already exists!\nPlease try again!", parent = customer)
         else:
@@ -382,12 +392,22 @@ def customer_list():
 
         # Define a function for saving customer info
         def modify_customer_func():
-            if func.check_dob(cus_dob.get()) == False:
+            if func.check_if_empty(cu_ID.get()) == False:
+                messagebox.showerror("Error","Customer ID cannot be empty!", parent=customer)
+            elif func.check_if_empty(cu_name.get()) == False:
+                messagebox.showerror("Error","Customer name cannot be empty!", parent=customer)
+            elif func.check_if_empty(cu_dob.get()) == False:
+                messagebox.showerror("Error","Customer date of birth cannot be empty!", parent=customer)
+            elif func.check_dob(cu_dob.get()) == False:
                 messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!", parent=customer)
-            elif func.check_phone(cus_phone.get()) == False:
+            elif func.check_if_empty(cu_phone.get()) == False:
+                messagebox.showerror("Error","Customer phone number cannot be empty!", parent=customer)
+            elif func.check_phone(cu_phone.get()) == False:
                 messagebox.showerror("Error", "Invalid phone number!\nPlease try again!", parent=customer)
-            elif func.check_email(cus_email.get()) == False:
-                messagebox.showerror("Error", "Invalid email type!\nPlease try again!", parent=customer)
+            elif func.check_if_empty(cu_email.get()) == False:
+                messagebox.showerror("Error","Customer e-mail address cannot be empty!", parent=customer)
+            elif func.check_email(cu_email.get()) == False:
+                messagebox.showerror("Error", "Invalid e-mail type!\nPlease try again!", parent=customer)
             elif sql_customers.Database().Validate(cus_ID.get(), cus_phone.get(), cus_email.get(), 2) == True:
                 messagebox.showerror("Error", "Phone or Email info is already exists!\nPlease try again!", parent=customer)
             else:
@@ -413,7 +433,23 @@ def add_book():
     
     #Add book cmd
     def add_book_func(book_id, book_title, book_genre, book_author, book_target, book_pub, book_price, book_quantity):
-        if (sql_books.Database().Validate(book_id, book_title, book_author, 1) == True):
+        if func.check_if_empty(book_id) == False:
+            messagebox.showerror("Error","Book ID cannot be empty!", parent=book)
+        elif func.check_if_empty(book_title) == False:
+            messagebox.showerror("Error","Book title cannot be empty!", parent=book)
+        elif func.check_if_empty(book_genre) == False:
+            messagebox.showerror("Error","Gerne cannot be empty!", parent=book)
+        elif func.check_dob(book_author) == False:
+            messagebox.showerror("Error", "Author name cannot be empty!", parent=book)
+        elif func.check_if_empty(book_target) == False:
+            messagebox.showerror("Error","The target for this book cannot be empty!", parent=book)
+        elif func.check_phone(book_pub) == False:
+            messagebox.showerror("Error", "Publisher name cannot be empty!", parent=book)
+        elif func.check_if_empty(book_price) == False:
+            messagebox.showerror("Error","Book price cannot be empty!\nAre you giving them away?!", parent=book)
+        elif func.check_email(book_quantity) == False:
+            messagebox.showerror("Error", "Quantity cannot be empty!", parent=book)
+        elif (sql_books.Database().Validate(book_id, book_title, book_author, 1) == True):
             messagebox.showerror("Error", "Book already exist!", parent=book)
         elif (func.validate_price_quatity(book_price, book_quantity)==False):
             messagebox.showerror("Error", "Invalid Price or Quantity!", parent=book)
@@ -689,7 +725,25 @@ def book_list():
 
         #Mode book cmd
         def mod_book_func():
-            if sql_books.Database().Validate(book_id.get(), book_title.get(), book_author.get(), 2) == True:
+            if func.check_if_empty(book_id.get()) == False:
+                messagebox.showerror("Error","Book ID cannot be empty!", parent=book)
+            elif func.check_if_empty(book_title.get()) == False:
+                messagebox.showerror("Error","Book title cannot be empty!", parent=book)
+            elif func.check_if_empty(book_genre.get()) == False:
+                messagebox.showerror("Error","Gerne cannot be empty!", parent=book)
+            elif func.check_dob(book_author.get()) == False:
+                messagebox.showerror("Error", "Author name cannot be empty!", parent=book)
+            elif func.check_if_empty(book_target.get()) == False:
+                messagebox.showerror("Error","The target for this book cannot be empty!", parent=book)
+            elif func.check_phone(book_pub.get()) == False:
+                messagebox.showerror("Error", "Publisher name cannot be empty!", parent=book)
+            elif func.check_if_empty(book_price.get()) == False:
+                messagebox.showerror("Error","Customer e-mail address cannot be empty!", parent=book)
+            elif func.check_email(book_price.get()) == False:
+                    messagebox.showerror("Error", "Book price cannot be empty!\nAre you giving them away?!", parent=book)
+            elif func.check_email(book_quantity) == False:
+                messagebox.showerror("Error", "Quantity cannot be empty!", parent=book)
+            elif sql_books.Database().Validate(book_id.get(), book_title.get(), book_author.get(), 2) == True:
                 messagebox.showerror("Error", "Book with modfied info is already exist!\nPlease try again!", parent = book)
             elif (func.validate_price_quatity(book_price.get(), book_quantity.get())==False):
                 messagebox.showerror("Error", "Invalid Price or Quantity!", parent = book)

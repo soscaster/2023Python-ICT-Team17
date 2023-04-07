@@ -182,5 +182,10 @@ def check_price_quantity_format(price, quantity):
         return False
 
 
-    
-
+# Check if information is empty or contain spaces
+def check_if_empty(data):
+    pattern = '^(.|\s)*\S(.|\s)*$'
+    if re.search(pattern,data):
+        return True
+    else:
+        return False
