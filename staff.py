@@ -77,16 +77,16 @@ def add_customer():
     # Define a function for saving customer info
     def add_customer_func(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email):
         if func.check_dob(cu_dob) == False:
-            messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!")
+            messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!", parent = customer)
         elif func.check_phone(cu_phone) == False:
-            messagebox.showerror("Error", "Invalid phone number!\nPlease try again!")
+            messagebox.showerror("Error", "Invalid phone number!\nPlease try again!", parent = customer)
         elif func.check_email(cu_email) == False:
-            messagebox.showerror("Error", "Invalid email type!\nPlease try again!")
+            messagebox.showerror("Error", "Invalid email type!\nPlease try again!", parent = customer)
         elif sql_customers.Database().Validate(cu_ID, cu_phone, cu_email, 1) == True:
-            messagebox.showerror("Error", "ID or Phone or Email info is already exists!\nPlease try again!")
+            messagebox.showerror("Error", "ID or Phone or Email info is already exists!\nPlease try again!", parent = customer)
         else:
             if func.add_customer(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email) == True:
-                messagebox.showinfo("Success", "Customer info saved successfully!\nPress 'OK' to continue")
+                messagebox.showinfo("Success", "Customer info saved successfully!\nPress 'OK' to continue", parent = customer)
                 # Close the window
                 if sql_customers.Database().Storage() == 0:
                     btn_customer['state'] = 'disabled'
@@ -98,7 +98,7 @@ def add_customer():
                     btn_customer['state'] = 'normal'
                 customer.destroy()
             elif func.add_customer(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email) == False:
-                messagebox.showerror("Error", "Customer info failed to save!\nPlease check again!")
+                messagebox.showerror("Error", "Customer info failed to save!\nPlease check again!", parent = customer)
         
 
 def customer_list():
@@ -175,20 +175,20 @@ def customer_list():
             del_ID = tree.item(tree.focus())['values'][6][1:]
         except:
             return
-        cf = tk.messagebox.askyesno("Delete", "Are you sure you want to delete this customer?")
+        cf = messagebox.askyesno("Delete", "Are you sure you want to delete this customer?", parent = list_customer)
         if cf == True:
             delete_customer_func(del_ID)
 
     def delete_customer_func(id):
         if func.remove_customer(id) == True:
-            messagebox.showinfo("Success", "Customer deleted successfully!", parent=box)
+            messagebox.showinfo("Success", "Customer deleted successfully!", parent = list_customer)
             tree.delete(tree.focus())
             if len(sql_customers.Database().Storage()) == 0:
                 btn_customer['state'] = 'disabled'
             else:
                 btn_customer['state'] = 'normal'
         else:
-            messagebox.showerror("Error", "Customer not deleted!", parent=box)
+            messagebox.showerror("Error", "Customer not deleted!", parent = list_customer)
 
     # Add button frame
     button_frame = tk.LabelFrame(list_customer, text = "Functions")
@@ -266,9 +266,9 @@ def customer_list():
 
         def Search_customer(id, name, dob, address, phone, email):
             if func.Searchall_customer(id, name, dob, address, phone, email) == False:
-                messagebox.showerror("Error", "Something went wrong\nPlease try again!", parent=box)
+                messagebox.showerror("Error", "Something went wrong\nPlease try again!", parent = search_inter)
             elif len(func.Searchall_customer(id, name, dob, address, phone, email))==0:
-                messagebox.showinfo("","0 results found!", parent=box)
+                messagebox.showinfo("","0 results found!", parent = search_inter)
             else:
                 db = func.Searchall_customer(id, name, dob, address, phone, email)
                 tree.delete(*tree.get_children())
@@ -307,10 +307,10 @@ def customer_list():
         cus_phone = tk.StringVar()
         cus_email = tk.StringVar()
 
-        # Get staff list
+        # Get customer list
         cus_ID.set(id)
 
-        # Get staff info and set to entry boxes after selecting staff
+        # Get customer info and set to entry boxes after selecting customer
         db = sql_customers.Database().Search(id)
         cus_ID.set(db[0][0])
         cus_name.set(db[0][1])
@@ -328,7 +328,7 @@ def customer_list():
 
         # Create buttons
         def save_cf():
-            cf = tk.messagebox.askyesno("Save", "Are you sure you want to overide this staff info?")
+            cf = messagebox.askyesno("Save", "Are you sure you want to overide this customer info?", parent= customer)
             if cf == True:
                 modify_customer_func()
         
@@ -357,19 +357,20 @@ def customer_list():
         # Prevent the user from resizing the window
         customer.resizable(False, False)
 
-    # Define a function for saving staff info
-    def modify_customer_func():
-        if func.check_dob(cus_dob.get()) == False:
-            messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!", parent=box)
-        elif func.check_phone(cus_phone.get()) == False:
-            messagebox.showerror("Error", "Invalid phone number!\nPlease try again!", parent=box)
-        elif func.check_email(cus_email.get()) == False:
-            messagebox.showerror("Error", "Invalid email type!\nPlease try again!", parent=box)
-        elif sql_customers.Database().Validate(cus_ID.get(), cus_phone.get(), cus_email.get(), 2) == True:
-            messagebox.showerror("Error", "Phone or Email info is already exists!\nPlease try again!", parent=box)
-        else:
-            sql_customers.Database().Update(cus_name.get(), cus_dob.get(), cus_address.get(), cus_phone.get(), cus_email.get(), cus_ID.get())
-            messagebox.showinfo("Success", "Staff info saved!\nPlease refresh the page to see the changes!", parent=box)
+        # Define a function for saving customer info
+        def modify_customer_func():
+            if func.check_dob(cus_dob.get()) == False:
+                messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!", parent=customer)
+            elif func.check_phone(cus_phone.get()) == False:
+                messagebox.showerror("Error", "Invalid phone number!\nPlease try again!", parent=customer)
+            elif func.check_email(cus_email.get()) == False:
+                messagebox.showerror("Error", "Invalid email type!\nPlease try again!", parent=customer)
+            elif sql_customers.Database().Validate(cus_ID.get(), cus_phone.get(), cus_email.get(), 2) == True:
+                messagebox.showerror("Error", "Phone or Email info is already exists!\nPlease try again!", parent=customer)
+            else:
+                sql_customers.Database().Update(cus_name.get(), cus_dob.get(), cus_address.get(), cus_phone.get(), cus_email.get(), cus_ID.get())
+                messagebox.showinfo("Success", "Customer info saved!\nPlease refresh the page to see the changes!", parent=customer)
+                customer.destroy()
     
     # btn_refresh.pack()
     # btn_search.pack()
@@ -389,12 +390,12 @@ def add_book():
     #Add book cmd
     def add_book_func(book_id, book_title, book_genre, book_author, book_target, book_pub, book_price, book_quantity):
         if (sql_books.Database().Validate(book_id, book_title, book_author, 1) == True):
-            messagebox.showerror("Error", "Book already exist!")
+            messagebox.showerror("Error", "Book already exist!", parent=book)
         elif (func.validate_price_quatity(book_price, book_quantity)==False):
-            messagebox.showerror("Error", "Invalid Price or Quantity!")
+            messagebox.showerror("Error", "Invalid Price or Quantity!", parent=book)
         else:
             if func.add_book(book_id, book_title, book_genre, book_author, book_target, book_pub, book_price, book_quantity)==True:
-                messagebox.showinfo("OK", "Book added successfully!")
+                messagebox.showinfo("OK", "Book added successfully!", parent=book)
                 if sql_books.Database().Storage() == 0:
                     btn_book['state'] = 'disabled'
                 else:
@@ -405,7 +406,7 @@ def add_book():
                     btn_book['state'] = 'normal'
                 book.destroy()
             elif func.add_book(book_id, book_title, book_genre, book_author, book_target, book_pub, book_price, book_quantity)==False:
-                messagebox.showerror("Error", "Book info failed to save!\nPlease check again!")
+                messagebox.showerror("Error", "Book info failed to save!\nPlease check again!", parent=book)
 
     #Labels
     lbl_book = tk.Label(master = frm_book, text = 'Add New Book Info', font = ("Arial", 25, "bold"), justify = "center")
@@ -476,7 +477,7 @@ def book_list():
     clear()
     list_book = tk.Toplevel(window)
 
-    list_book.title("Staff")
+    list_book.title("Book List")
     frm = tk.Frame(list_book)
     tree = ttk.Treeview(list_book)
     tree['show']='headings'
@@ -518,20 +519,20 @@ def book_list():
             del_ID = tree.item(tree.focus())['values'][8][1:]
         except:
             return
-        cf = tk.messagebox.askyesno("Delete", "Are you sure you want to delete this book?")
+        cf = tk.messagebox.askyesno("Delete", "Are you sure you want to delete this book?", parent = list_book)
         if cf == True:
             delete_book_func(del_ID)
 
     def delete_book_func(id):
         if func.remove_book(id) == True:
-            messagebox.showinfo("Success", "Book deleted successfully!")
+            messagebox.showinfo("Success", "Book deleted successfully!", parent = list_book)
             tree.delete(tree.focus())
             if len(sql_books.Database().Storage()) == 0:
                 btn_book['state'] = 'disabled'
             else:
                 btn_book['state'] = 'normal'
         else:
-            messagebox.showerror("Error", "Customer not deleted!")
+            messagebox.showerror("Error", "Customer not deleted!", parent = list_book)
 
     tree.pack()
     btn_refresh = tk.Button(list_book, text="Refresh", width=23, command=lambda: list_all())
@@ -609,16 +610,14 @@ def book_list():
         # Prevent resizing
         search_inter.resizable(False, False)
 
-
-
         def Search_book(id, title, genre, author, target, publisher, price, quantity):
             data = func.check_price_quantity_format(price, quantity)
             if data == False:
-                messagebox.showerror("Error", "Invalid Price or Quantity format!")
+                messagebox.showerror("Error", "Invalid Price or Quantity format!", parent = search_inter)
             elif func.Searchall_book(id, title, genre, author, target, publisher, data[0], data[1], data[2], data[3]) == False:
-                messagebox.showerror("Error", "Something went wrong\nPlease try again!")
+                messagebox.showerror("Error", "Something went wrong\nPlease try again!", parent = search_inter)
             elif len(func.Searchall_book(id, title, genre, author, target, publisher, data[0], data[1], data[2], data[3]))==0:
-                messagebox.showinfo("","0 results found!")
+                messagebox.showinfo("","0 results found!", parent = search_inter)
             else:
                 db = func.Searchall_book(id, title, genre, author, target, publisher, data[0], data[1], data[2], data[3])
                 tree.delete(*tree.get_children())
@@ -639,12 +638,13 @@ def book_list():
         #Mode book cmd
         def mod_book_func():
             if sql_books.Database().Validate(book_id.get(), book_title.get(), book_author.get(), 2) == True:
-                messagebox.showerror("Error", "Book with modfied info is already exist!\nPlease try again!")
+                messagebox.showerror("Error", "Book with modfied info is already exist!\nPlease try again!", parent = book)
             elif (func.validate_price_quatity(book_price.get(), book_quantity.get())==False):
-                messagebox.showerror("Error", "Invalid Price or Quantity!")
+                messagebox.showerror("Error", "Invalid Price or Quantity!", parent = book)
             else:
                 sql_books.Database().Update(book_title.get(), book_genre.get(),book_author.get(),book_target.get(),book_pub.get(),book_price.get(),book_quantity.get(),book_id.get())
-                messagebox.showinfo("OK", "Book Info Modded!")
+                messagebox.showinfo("OK", "Book Info Modded!", parent = book)
+                book.destroy()
 
         #Labels
         lbl_book = tk.Label(master = frm_book, text = 'Modify Book Info', font = ("Arial", 25, "bold"), justify = "center")
@@ -687,7 +687,7 @@ def book_list():
         
         #Save info cmd
         def save_book():
-            cf = tk.messagebox.askyesno("Save", "Update this book info?")
+            cf = messagebox.askyesno("Save", "Update this book info?", parent = book)
             if cf == True:
                 mod_book_func()
                 
@@ -802,11 +802,14 @@ def sell_book_func():
     btn_exit.place(x=302, y=470)
 
     def sell_book():
-        print("Sell book")
+        ask = messagebox.askyesno("Sell Book", "Are you sure you want to sell this book?", parent=sell)
+        if ask == True:
+            messagebox.showinfo("Sell Book", "Book sold successfully!", parent=sell)
+            sell.destroy()
+        else:
+            pass
         
     
-
-
 def exit_verify():
         # Verify if the user wants to exit the program
         box = messagebox.askquestion("Exit", "Are you sure you want to exit?")

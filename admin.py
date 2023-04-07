@@ -86,16 +86,16 @@ def modify_store():
     def modify_store_func():
         # If function modify_store returns False, show error message
         if fu.check_phone(store_phone.get()) == False:
-            messagebox.showerror("Error", "Invalid phone number!\nPlease try again!", parent=box)
+            messagebox.showerror("Error", "Invalid phone number!\nPlease try again!", parent=store)
         elif fu.check_email(store_email.get()) == False:
-            messagebox.showerror("Error", "Invalid email type!\nPlease try again!", parent=box)
+            messagebox.showerror("Error", "Invalid email type!\nPlease try again!", parent=store)
         elif fu.input_store_info(store_id.get(), store_name.get(), store_address.get(), store_phone.get(), store_email.get()) == False:
-            messagebox.showerror("Error", "Store info is not modified!", parent=box)
+            messagebox.showerror("Error", "Store info is not modified!", parent=store)
         elif fu.input_store_info(store_id.get(), store_name.get(), store_address.get(), store_phone.get(), store_email.get()) == True:
-        # Verify if the staff info is saved
+        # Verify if the store info is saved
             btn_add_customer['state'] = 'normal'
             btn_add_staff['state'] = 'normal'
-            messagebox.showinfo("Success", "Store info modified successfully!\nPress OK to continue.", parent=box)
+            messagebox.showinfo("Success", "Store info modified successfully!\nPress OK to continue.", parent=store)
             store.destroy()
 
 # Create a new window for creating staff info [DONE]
@@ -169,13 +169,13 @@ def add_staff():
     # Define a function for saving staff info
     def add_staff_func(st_ID, st_pwd, st_name, st_dob, st_address, st_phone, st_email):
         if fu.check_dob(st_dob) == False:
-            messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!", parent=box)
+            messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!", parent=staff)
         elif fu.check_phone(st_phone) == False:
-            messagebox.showerror("Error", "Invalid phone number!\nPlease try again!", parent=box)
+            messagebox.showerror("Error", "Invalid phone number!\nPlease try again!", parent=staff)
         elif fu.check_email(st_email) == False:
-            messagebox.showerror("Error", "Invalid email type!\nPlease try again!", parent=box) 
+            messagebox.showerror("Error", "Invalid email type!\nPlease try again!", parent=staff) 
         elif sql_staff.Database().Validate(st_ID, st_phone, st_email, 1) == True:
-            messagebox.showerror("Error", "ID or Phone or Email is already exists!\nPlease try again!", parent=box)
+            messagebox.showerror("Error", "ID or Phone or Email is already exists!\nPlease try again!", parent=staff)
         else:
             if fu.add_staff(st_ID, st_pwd, st_name, st_dob, st_address, st_phone, st_email) == True:
                 messagebox.showinfo("Success", "Staff info saved successfully!\nPress 'OK' to continue", parent=box)
@@ -186,7 +186,7 @@ def add_staff():
                     btn_staff['state'] = 'normal'
                 staff.destroy()
             elif fu.add_staff(st_ID, st_pwd, st_name, st_dob, st_address, st_phone, st_email) == False:
-                messagebox.showerror("Error", "Staff info failed to save!\nPlease check again!", parent=box)
+                messagebox.showerror("Error", "Staff info failed to save!\nPlease check again!", parent=staff)
 
 
 # CUSTOMER SECTION
@@ -257,16 +257,16 @@ def add_customer():
     # Define a function for saving customer info
     def add_customer_func(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email):
         if fu.check_dob(cu_dob) == False:
-            messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!", parent=box)
+            messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!", parent=customer)
         elif fu.check_phone(cu_phone) == False:
-            messagebox.showerror("Error", "Invalid phone number!\nPlease try again!", parent=box)
+            messagebox.showerror("Error", "Invalid phone number!\nPlease try again!", parent=customer)
         elif fu.check_email(cu_email) == False:
-            messagebox.showerror("Error", "Invalid email type!\nPlease try again!", parent=box)
+            messagebox.showerror("Error", "Invalid email type!\nPlease try again!", parent=customer)
         elif sql_customers.Database().Validate(cu_ID, cu_phone, cu_email, 1) == True:
-            messagebox.showerror("Error", "ID or Phone or Email info is already exists!\nPlease try again!", parent=box)
+            messagebox.showerror("Error", "ID or Phone or Email info is already exists!\nPlease try again!", parent=customer)
         else:
             if fu.add_customer(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email) == True:
-                messagebox.showinfo("Success", "Customer info saved successfully!\nPress 'OK' to continue", parent=box)
+                messagebox.showinfo("Success", "Customer info saved successfully!\nPress 'OK' to continue", parent=customer)
                 # Close the window
                 if len(sql_customers.Database().Storage()) == 0:
                     btn_customer['state'] = 'disabled'
@@ -274,7 +274,7 @@ def add_customer():
                     btn_customer['state'] = 'normal'
                 customer.destroy()
             elif fu.add_customer(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email) == False:
-                messagebox.showerror("Error", "Customer info failed to save!\nPlease check again!", parent=box)
+                messagebox.showerror("Error", "Customer info failed to save!\nPlease check again!", parent=customer)
 
 #Staff_list window
 def staff_list():
@@ -356,7 +356,7 @@ def staff_list():
             del_ID = tree.item(tree.focus())['values'][6][1:]
         except:
             return
-        cf = tk.messagebox.askyesno("Delete", "Are you sure you want to delete this staff?")
+        cf = messagebox.askyesno("Delete", "Are you sure you want to delete this staff?", parent=list_staff)
         if cf == True:
             delete_staff_func(del_ID)
 
@@ -436,9 +436,9 @@ def staff_list():
 
         def Search_staff(id, name, dob, address, phone, email):
             if fu.Searchall_staff(id, name, dob, address, phone, email) == False:
-                messagebox.showerror("Error", "Something went wrong\nPlease try again!", parent=box)
+                messagebox.showerror("Error", "Something went wrong\nPlease try again!", parent=list_staff)
             elif len(fu.Searchall_staff(id, name, dob, address, phone, email))==0:
-                messagebox.showinfo("","0 results found!", parent=box)
+                messagebox.showinfo("","0 results found!", parent=list_staff)
             else:
                 db = fu.Searchall_staff(id, name, dob, address, phone, email)
                 tree.delete(*tree.get_children())
@@ -448,14 +448,14 @@ def staff_list():
 
     def delete_staff_func(id):
         if fu.remove_staff(id) == True:
-            messagebox.showinfo("Success", "Staff deleted successfully!", parent=box)
+            messagebox.showinfo("Success", "Staff deleted successfully!", parent=list_staff)
             tree.delete(tree.focus())
             if len(sql_staff.Database().Storage()) == 0:
                 btn_staff['state'] = 'disabled'
             else:
                 btn_staff['state'] = 'normal'
         else:
-            messagebox.showerror("Error", "Staff not deleted!", parent=box)
+            messagebox.showerror("Error", "Staff not deleted!", parent=list_staff)
 
     def modify_staff():
         try:
@@ -546,16 +546,16 @@ def staff_list():
     # Define a function for saving staff info
     def modify_staff_func():
         if fu.check_dob(st_dob.get()) == False:
-            messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!", parent=box)
+            messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!", parent=list_staff)
         elif fu.check_phone(st_phone.get()) == False:
-            messagebox.showerror("Error", "Invalid phone number!\nPlease try again!", parent=box)
+            messagebox.showerror("Error", "Invalid phone number!\nPlease try again!", parent=list_staff)
         elif fu.check_email(st_email.get()) == False:
-            messagebox.showerror("Error", "Invalid email type!\nPlease try again!", parent=box)
+            messagebox.showerror("Error", "Invalid email type!\nPlease try again!", parent=list_staff)
         elif sql_staff.Database().Validate(st_ID.get(), st_phone.get(), st_email.get(), 2) == True:
-            messagebox.showerror("Error", "Phone or Email info is already exists!\nPlease try again!", parent=box)
+            messagebox.showerror("Error", "Phone or Email info is already exists!\nPlease try again!", parent=list_staff)
         else:
             sql_staff.Database().Update(st_pwd.get(), st_name.get(), st_dob.get(), st_address.get(), st_phone.get(), st_email.get(), st_ID.get())
-            messagebox.showinfo("Success", "Staff info saved!\nPlease refresh the page to see the changes!", parent=box)
+            messagebox.showinfo("Success", "Staff info saved!\nPlease refresh the page to see the changes!", parent=list_staff)
 
 
     # btn_refresh.pack()
@@ -641,20 +641,20 @@ def customer_list():
             del_ID = tree.item(tree.focus())['values'][6][1:]
         except:
             return
-        cf = tk.messagebox.askyesno("Delete", "Are you sure you want to delete this customer?")
+        cf = messagebox.askyesno("Delete", "Are you sure you want to delete this customer?", parent=list_customer)
         if cf == True:
             delete_customer_func(del_ID)
 
     def delete_customer_func(id):
         if fu.remove_customer(id) == True:
-            messagebox.showinfo("Success", "Customer deleted successfully!", parent=box)
+            messagebox.showinfo("Success", "Customer deleted successfully!", parent=list_customer)
             tree.delete(tree.focus())
             if len(sql_customers.Database().Storage()) == 0:
                 btn_customer['state'] = 'disabled'
             else:
                 btn_customer['state'] = 'normal'
         else:
-            messagebox.showerror("Error", "Customer not deleted!", parent=box)
+            messagebox.showerror("Error", "Customer not deleted!", parent=list_customer)
 
     # Add button frame
     button_frame = tk.LabelFrame(list_customer, text = "Functions")
@@ -732,9 +732,9 @@ def customer_list():
 
         def Search_customer(id, name, dob, address, phone, email):
             if fu.Searchall_customer(id, name, dob, address, phone, email) == False:
-                messagebox.showerror("Error", "Something went wrong\nPlease try again!", parent=box)
+                messagebox.showerror("Error", "Something went wrong\nPlease try again!", parent=list_customer)
             elif len(fu.Searchall_customer(id, name, dob, address, phone, email))==0:
-                messagebox.showinfo("","0 results found!", parent=box)
+                messagebox.showinfo("","0 results found!", parent=list_customer)
             else:
                 db = fu.Searchall_customer(id, name, dob, address, phone, email)
                 tree.delete(*tree.get_children())
@@ -773,10 +773,10 @@ def customer_list():
         cus_phone = tk.StringVar()
         cus_email = tk.StringVar()
 
-        # Get staff list
+        # Get customer list
         cus_ID.set(id)
 
-        # Get staff info and set to entry boxes after selecting staff
+        # Get customer info and set to entry boxes after selecting customer
         db = sql_customers.Database().Search(id)
         cus_ID.set(db[0][0])
         cus_name.set(db[0][1])
@@ -794,7 +794,7 @@ def customer_list():
 
         # Create buttons
         def save_cf():
-            cf = tk.messagebox.askyesno("Save", "Are you sure you want to overide this staff info?")
+            cf = messagebox.askyesno("Save", "Are you sure you want to overide this customer info?", parent=customer)
             if cf == True:
                 modify_customer_func()
         
@@ -823,20 +823,21 @@ def customer_list():
         # Prevent the user from resizing the window
         customer.resizable(False, False)
 
-    # Define a function for saving staff info
-    def modify_customer_func():
-        if fu.check_dob(cus_dob.get()) == False:
-            messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!", parent=box)
-        elif fu.check_phone(cus_phone.get()) == False:
-            messagebox.showerror("Error", "Invalid phone number!\nPlease try again!", parent=box)
-        elif fu.check_email(cus_email.get()) == False:
-            messagebox.showerror("Error", "Invalid email type!\nPlease try again!", parent=box)
-        elif sql_customers.Database().Validate(cus_ID.get(), cus_phone.get(), cus_email.get(), 2) == True:
-            messagebox.showerror("Error", "Phone or Email info is already exists!\nPlease try again!", parent=box)
-        else:
-            sql_customers.Database().Update(cus_name.get(), cus_dob.get(), cus_address.get(), cus_phone.get(), cus_email.get(), cus_ID.get())
-            messagebox.showinfo("Success", "Staff info saved!\nPlease refresh the page to see the changes!", parent=box)
-    
+        # Define a function for saving customer info
+        def modify_customer_func():
+            if fu.check_dob(cus_dob.get()) == False:
+                messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!", parent=customer)
+            elif fu.check_phone(cus_phone.get()) == False:
+                messagebox.showerror("Error", "Invalid phone number!\nPlease try again!", parent=customer)
+            elif fu.check_email(cus_email.get()) == False:
+                messagebox.showerror("Error", "Invalid email type!\nPlease try again!", parent=customer)
+            elif sql_customers.Database().Validate(cus_ID.get(), cus_phone.get(), cus_email.get(), 2) == True:
+                messagebox.showerror("Error", "Phone or Email info is already exists!\nPlease try again!", parent=customer)
+            else:
+                sql_customers.Database().Update(cus_name.get(), cus_dob.get(), cus_address.get(), cus_phone.get(), cus_email.get(), cus_ID.get())
+                messagebox.showinfo("Success", "Customer info saved!\nPlease refresh the page to see the changes!", parent=customer)
+                customer.destroy()
+
     # btn_refresh.pack()
     # btn_search.pack()
     # btn_delete.pack()
@@ -845,9 +846,9 @@ def customer_list():
 
 def exit_verify():
         # Verify if the user wants to exit the program
-        box = messagebox.askquestion("Exit", "Are you sure you want to exit?")
+        box = messagebox.askquestion("Exit", "Are you sure you want to exit?", parent=admin)
         if box == "yes":
-            messagebox.showinfo("Exit", "Thank you for using the program!\n© 2023 - BI12 - ICT Team 17")
+            messagebox.showinfo("Exit", "Thank you for using the program!\n© 2023 - BI12 - ICT Team 17", parent=admin)
             admin.quit()
         else:
             pass
