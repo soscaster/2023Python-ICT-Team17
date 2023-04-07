@@ -585,7 +585,7 @@ def staff_list():
 
         # Create buttons
         def save_cf():
-            cf = tk.messagebox.askyesno("Save", "Are you sure you want to overide this staff info?")
+            cf = messagebox.askyesno("Save", "Are you sure you want to overide this staff info?", parent=staff)
             if cf == True:
                 modify_staff_func()
         btn_save = tk.Button(staff_frame, text="Save", width=21, bg='#0052cc', fg='#ffffff', command=lambda: save_cf())
@@ -615,19 +615,20 @@ def staff_list():
         # Prevent the user from resizing the window
         staff.resizable(False, False)
 
-    # Define a function for saving staff info
-    def modify_staff_func():
-        if fu.check_dob(st_dob.get()) == False:
-            messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!", parent=list_staff)
-        elif fu.check_phone(st_phone.get()) == False:
-            messagebox.showerror("Error", "Invalid phone number!\nPlease try again!", parent=list_staff)
-        elif fu.check_email(st_email.get()) == False:
-            messagebox.showerror("Error", "Invalid email type!\nPlease try again!", parent=list_staff)
-        elif sql_staff.Database().Validate(st_ID.get(), st_phone.get(), st_email.get(), 2) == True:
-            messagebox.showerror("Error", "Phone or Email info is already exists!\nPlease try again!", parent=list_staff)
-        else:
-            sql_staff.Database().Update(st_pwd.get(), st_name.get(), st_dob.get(), st_address.get(), st_phone.get(), st_email.get(), st_ID.get())
-            messagebox.showinfo("Success", "Staff info saved!\nPlease refresh the page to see the changes!", parent=list_staff)
+        # Define a function for saving staff info
+        def modify_staff_func():
+            if fu.check_dob(st_dob.get()) == False:
+                messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!", parent=staff)
+            elif fu.check_phone(st_phone.get()) == False:
+                messagebox.showerror("Error", "Invalid phone number!\nPlease try again!", parent=staff)
+            elif fu.check_email(st_email.get()) == False:
+                messagebox.showerror("Error", "Invalid email type!\nPlease try again!", parent=staff)
+            elif sql_staff.Database().Validate(st_ID.get(), st_phone.get(), st_email.get(), 2) == True:
+                messagebox.showerror("Error", "Phone or Email info is already exists!\nPlease try again!", parent=staff)
+            else:
+                sql_staff.Database().Update(st_pwd.get(), st_name.get(), st_dob.get(), st_address.get(), st_phone.get(), st_email.get(), st_ID.get())
+                messagebox.showinfo("Success", "Staff info saved!\nPlease refresh the page to see the changes!", parent=staff)
+                staff.destroy()
 
 
     # btn_refresh.pack()
