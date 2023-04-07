@@ -503,7 +503,7 @@ def add_book():
     btn_exit['font'] = btn_font
 
     # Style for all
-    lbl_book.place(x=450, y=60)
+    lbl_book.place(x=440, y=60)
     lbl_book_id.place(x=360, y=110)
     ent_book_id.place(x=360, y=140)
     lbl_book_title.place(x=360, y=170)
@@ -523,7 +523,7 @@ def add_book():
     btn_exit.place(x=100, y=610)
     btn_save.place(x=460, y=610)
     
-    
+
 #Book List window
 def book_list():
     clear()

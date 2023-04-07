@@ -358,12 +358,18 @@ def staff_list():
 
     clear()
     list_staff = tk.Toplevel(admin)
-
     list_staff.title("Staff List")
+    list_staff.geometry("1100x500")
+    list_staff.resizable(False,False)
+
+    lbl_img = tk.Label(list_staff, image = imglist)
+    lbl_img.place(x=0, y=0)
+    lbl_title = tk.Label(list_staff, text="Staff List", font=("Arial", 25, 'bold'), justify="center", bg='white', fg='#318bd2')
+    lbl_title.place(x=470, y=40)
 
     # Create tree view frame
     tree_frame = tk.Frame(list_staff)
-    tree_frame.pack(pady=20,padx=20)
+    tree_frame.place(x=70, y=90)
 
     # Create scrollbar
     tree_scroll = tk.Scrollbar(tree_frame)
@@ -371,7 +377,6 @@ def staff_list():
 
     # Create treeview
     tree = ttk.Treeview(tree_frame,yscrollcommand=tree_scroll.set)
-
     # Pack to screen
     tree.pack()
 
@@ -425,20 +430,23 @@ def staff_list():
             delete_staff_func(del_ID)
 
     # Add button frame
-    button_frame = tk.LabelFrame(list_staff,text="Functions")
-    button_frame.pack(fill="x",expand='yes',padx=20,pady=20)
 
-    btn_refresh = tk.Button(button_frame, text="Refresh", width=23, command=lambda: list_all())
-    btn_search = tk.Button(button_frame, text="Search", width=23, command=lambda: Search_interface())
-    btn_delete = tk.Button(button_frame, text="Delete", width=23, command=lambda: del_cf())
-    btn_update = tk.Button(button_frame, text="Update", width=23, command=lambda: modify_staff())
-    btn_exit = tk.Button(button_frame, text="Exit", width=23, command=list_staff.destroy)
+    btn_refresh = tk.Button(list_staff, text="Refresh", width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=lambda: list_all())
+    btn_refresh['font'] = ['Arial', '15', 'bold']
+    btn_search = tk.Button(list_staff, text="Search", width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=lambda: Search_interface())
+    btn_search['font'] = ['Arial', '15', 'bold']
+    btn_delete = tk.Button(list_staff, text="Delete", width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=lambda: del_cf())
+    btn_delete['font'] = ['Arial', '15', 'bold']
+    btn_update = tk.Button(list_staff, text="Update", width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=lambda: modify_staff())
+    btn_update['font'] = ['Arial', '15', 'bold']
+    btn_exit = tk.Button(list_staff, text="Exit", width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=list_staff.destroy)
+    btn_exit['font'] = ['Arial', '15', 'bold']
 
-    btn_refresh.grid(row=0, column=0, padx=10, pady=10)
-    btn_search.grid(row=0, column=1, padx=10, pady=10)
-    btn_delete.grid(row=0, column=2, padx=10, pady=10)
-    btn_update.grid(row=0, column=3, padx=10, pady=10)
-    btn_exit.grid(row=0, column=4, padx=10, pady=10)
+    btn_refresh.place(x=72, y=390)
+    btn_search.place(x=267, y=390)
+    btn_delete.place(x=462, y=390)
+    btn_update.place(x=657, y=390)
+    btn_exit.place(x=852, y=390)
 
     def Search_interface():
         search_inter = tk.Toplevel(list_staff)
@@ -936,6 +944,7 @@ if os.path.exists("bookstore.db"):
     imgstore = tk.PhotoImage(file="img/store.png")
     imgstaff = tk.PhotoImage(file="img/staff.png")
     imgcus= tk.PhotoImage(file="img/cus.png")
+    imglist = tk.PhotoImage(file="img/list.png")
     # Fit the image to the buttons
     m_st = tk.PhotoImage(file="img/icons/m_st.png")
     img_mst = m_st.subsample(2, 2)
