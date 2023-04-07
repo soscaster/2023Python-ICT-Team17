@@ -3,6 +3,7 @@ sys.dont_write_bytecode = True
 import tkinter as tk
 from tkinter import messagebox, ttk, font as tkfont
 import os
+import zipfile
 clear = lambda: os.system('clear')
 from domains import sql_staff
 from domains import sql_store
@@ -910,82 +911,99 @@ def exit_verify():
         # Verify if the user wants to exit the program
         box = messagebox.askquestion("Exit", "Are you sure you want to exit?", parent=admin)
         if box == "yes":
+            # Find the bookstore.db file and then zip it
+            with open("bookstore.dat", "wb") as outfile:
+                with zipfile.ZipFile(outfile, "w") as zipf:
+                    for file in os.listdir():
+                        if file.endswith(".db"):
+                            zipf.write(file)
+            if os.path.exists("bookstore.db"):
+                os.remove("bookstore.db")
+            print("Compress files successfully!")
             messagebox.showinfo("Exit", "Thank you for using the program!\n© 2023 - BI12 - ICT Team 17", parent=admin)
             admin.quit()
         else:
             pass
 
-# First window
+if os.path.exists("bookstore.db"):
+    # First window
 
-admin = tk.Tk()
-admin.title("BSMS Beta - Logged in as Administrator")
-admin.geometry("800x600")
+    admin = tk.Tk()
+    admin.title("BSMS Beta - Logged in as Administrator")
+    admin.geometry("800x600")
 
-imgbg = tk.PhotoImage(file="img/main.png")
-imgstore = tk.PhotoImage(file="img/store.png")
-imgstaff = tk.PhotoImage(file="img/staff.png")
-imgcus= tk.PhotoImage(file="img/cus.png")
-# Fit the image to the buttons
-m_st = tk.PhotoImage(file="img/icons/m_st.png")
-img_mst = m_st.subsample(2, 2)
-mod_s = tk.PhotoImage(file="img/icons/m_s.png")
-img_m_s = mod_s.subsample(2, 2)
-mod_c = tk.PhotoImage(file="img/icons/m_c.png")
-img_m_c = mod_c.subsample(2, 2)
-add_c = tk.PhotoImage(file="img/icons/a_c.png")
-img_a_c = add_c.subsample(2, 2)
-add_s = tk.PhotoImage(file="img/icons/a_s.png")
-img_a_s = add_s.subsample(2, 2)
-ex = tk.PhotoImage(file="img/icons/exit.png")
-img_e = ex.subsample(2, 2)
-img_e2 = ex.subsample(3, 3)
-save = tk.PhotoImage(file="img/icons/save.png")
-img_save = save.subsample(3, 3)
+    imgbg = tk.PhotoImage(file="img/main.png")
+    imgstore = tk.PhotoImage(file="img/store.png")
+    imgstaff = tk.PhotoImage(file="img/staff.png")
+    imgcus= tk.PhotoImage(file="img/cus.png")
+    # Fit the image to the buttons
+    m_st = tk.PhotoImage(file="img/icons/m_st.png")
+    img_mst = m_st.subsample(2, 2)
+    mod_s = tk.PhotoImage(file="img/icons/m_s.png")
+    img_m_s = mod_s.subsample(2, 2)
+    mod_c = tk.PhotoImage(file="img/icons/m_c.png")
+    img_m_c = mod_c.subsample(2, 2)
+    add_c = tk.PhotoImage(file="img/icons/a_c.png")
+    img_a_c = add_c.subsample(2, 2)
+    add_s = tk.PhotoImage(file="img/icons/a_s.png")
+    img_a_s = add_s.subsample(2, 2)
+    ex = tk.PhotoImage(file="img/icons/exit.png")
+    img_e = ex.subsample(2, 2)
+    img_e2 = ex.subsample(3, 3)
+    save = tk.PhotoImage(file="img/icons/save.png")
+    img_save = save.subsample(3, 3)
 
-lbl_hihi = tk.Label(image=imgbg)
-lbl_hihi.place(x=0, y=0)
+    lbl_hihi = tk.Label(image=imgbg)
+    lbl_hihi.place(x=0, y=0)
 
-# Create widgets
-btn_font = tkfont.Font(family="Arial", size=15)
+    # Create widgets
+    btn_font = tkfont.Font(family="Arial", size=15)
 
-# Create labels
-lbl_welcome = tk.Label(text="Welcome to\nBook Store Management System", font=("Arial", 25, 'bold'), justify="center", bg='white', fg='#318bd2')
-lb_cpr = tk.Label(admin, text="© 2023 - BI12 - ICT Team 17\nVersion BETA", font=("Arial", 6), bg='#73a2c7', justify="right", fg='white')
+    # Create labels
+    lbl_welcome = tk.Label(text="Welcome to\nBook Store Management System", font=("Arial", 25, 'bold'), justify="center", bg='white', fg='#318bd2')
+    lb_cpr = tk.Label(admin, text="© 2023 - BI12 - ICT Team 17\nVersion BETA", font=("Arial", 6), bg='#73a2c7', justify="right", fg='white')
 
-# Create buttons
-btn_store = tk.Button(image= img_mst, text="Modify Store Info",compound = 'left', width=495, height=50, bg='#0052cc', fg='#ffffff', command=modify_store)
-btn_store['font'] = btn_font
-btn_add_staff = tk.Button(image=img_a_s,text="Add Staff",compound = 'left', width=231, height=50, bg='#00ab1c', fg='#ffffff', command=add_staff)
-btn_add_staff['font'] = btn_font
-btn_staff = tk.Button(image=img_m_s,text="Staff List", compound = 'left', width=231, height=50, bg='#00ab1c', fg='#ffffff', command=staff_list)
-btn_staff['font'] = btn_font
-# Confirm if the staff data table exists or not
-if len(sql_staff.Database().Storage()) == 0:
-    btn_staff.config(state="disabled")
-btn_add_customer = tk.Button(image=img_a_c,text="Add Customer", compound = 'left', width=231, height=50, bg='#ab4d00', fg='#ffffff', command=add_customer)
-btn_add_customer['font'] = btn_font
-# Confirm if the store data table exists or not
-if len(sql_store.Database().Storage()) == 0:
-    btn_add_staff.config(state="disabled")
-    btn_add_customer.config(state="disabled")
-btn_customer = tk.Button(image=img_m_c,text="Customer List", compound = 'left', width=231, height=50, bg='#ab4d00', fg='#ffffff', command=customer_list)
-btn_customer['font'] = btn_font
-# Confirm if the customer data table exists or not
-if len(sql_customers.Database().Storage()) == 0:
-    btn_customer.config(state="disabled")
-btn_exit = tk.Button(image=img_e, text="Exit", compound= 'left', width=495, height=50, command=exit_verify, bg='#570b0b', fg='#ffffff')
-btn_exit['font'] = btn_font
+    # Create buttons
+    btn_store = tk.Button(image= img_mst, text="Modify Store Info",compound = 'left', width=495, height=50, bg='#0052cc', fg='#ffffff', command=modify_store)
+    btn_store['font'] = btn_font
+    btn_add_staff = tk.Button(image=img_a_s,text="Add Staff",compound = 'left', width=231, height=50, bg='#00ab1c', fg='#ffffff', command=add_staff)
+    btn_add_staff['font'] = btn_font
+    btn_staff = tk.Button(image=img_m_s,text="Staff List", compound = 'left', width=231, height=50, bg='#00ab1c', fg='#ffffff', command=staff_list)
+    btn_staff['font'] = btn_font
+    # Confirm if the staff data table exists or not
+    if len(sql_staff.Database().Storage()) == 0:
+        btn_staff.config(state="disabled")
+    btn_add_customer = tk.Button(image=img_a_c,text="Add Customer", compound = 'left', width=231, height=50, bg='#ab4d00', fg='#ffffff', command=add_customer)
+    btn_add_customer['font'] = btn_font
+    # Confirm if the store data table exists or not
+    if len(sql_store.Database().Storage()) == 0:
+        btn_add_staff.config(state="disabled")
+        btn_add_customer.config(state="disabled")
+    btn_customer = tk.Button(image=img_m_c,text="Customer List", compound = 'left', width=231, height=50, bg='#ab4d00', fg='#ffffff', command=customer_list)
+    btn_customer['font'] = btn_font
+    # Confirm if the customer data table exists or not
+    if len(sql_customers.Database().Storage()) == 0:
+        btn_customer.config(state="disabled")
+    btn_exit = tk.Button(image=img_e, text="Exit", compound= 'left', width=495, height=50, command=exit_verify, bg='#570b0b', fg='#ffffff')
+    btn_exit['font'] = btn_font
 
-# Style labels, entry boxes and buttons
-lbl_welcome.place(x=143, y=95)
-btn_store.place(x=143, y=195)
-btn_add_staff.place(x=143, y=275)
-btn_staff.place(x=407, y=275)
-btn_add_customer.place(x=143, y=355)
-btn_customer.place(x=407, y=355)
-btn_exit.place(x=143, y=435)
-lb_cpr.place(x=690, y=573)
+    # Style labels, entry boxes and buttons
+    lbl_welcome.place(x=143, y=95)
+    btn_store.place(x=143, y=195)
+    btn_add_staff.place(x=143, y=275)
+    btn_staff.place(x=407, y=275)
+    btn_add_customer.place(x=143, y=355)
+    btn_customer.place(x=407, y=355)
+    btn_exit.place(x=143, y=435)
+    lb_cpr.place(x=690, y=573)
 
-# Prevent resizing
-admin.resizable(False, False)
-admin.mainloop()
+    # Prevent resizing
+    admin.resizable(False, False)
+    admin.mainloop()
+
+else:
+    # Messagebox to inform the user that the program is not installed
+    admin = tk.Tk()
+    admin.withdraw()
+    messagebox.showerror("Error", "The program is not running properly!\n\nPlease run from the program RUNME first!", parent=admin)
+    admin.quit()

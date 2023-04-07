@@ -4,6 +4,7 @@ import tkinter as tk
 from tkinter import messagebox, ttk, font as tkfont
 import process_checker as func
 import os
+import zipfile
 clear = lambda: os.system('clear')
 from domains import sql_session
 from domains import sql_customers
@@ -836,85 +837,99 @@ def exit_verify():
         # Verify if the user wants to exit the program
         box = messagebox.askquestion("Exit", "Are you sure you want to exit?")
         if box == "yes":
+            # Find the bookstore.db file and then zip it
+            with open("bookstore.dat", "wb") as outfile:
+                with zipfile.ZipFile(outfile, "w") as zipf:
+                    for file in os.listdir():
+                        if file.endswith(".db"):
+                            zipf.write(file)
+            if os.path.exists("bookstore.db"):
+                os.remove("bookstore.db")
+            print("Compress files successfully!")
             messagebox.showinfo("Exit", "Thank you for using the program!\n© 2023 - BI12 - ICT Team 17")
             window.quit()
         else:
             pass
 
-window = tk.Tk()
-window.geometry("800x600")
+if os.path.exists("bookstore.db"):
+    window = tk.Tk()
+    window.geometry("800x600")
 
-imgbg = tk.PhotoImage(file="img/main.png")
-imgsell = tk.PhotoImage(file="img/sell.png")
-imgcus= tk.PhotoImage(file="img/cus.png")
-# Fit the image to the buttons
-mod_c = tk.PhotoImage(file="img/icons/m_c.png")
-img_m_c = mod_c.subsample(2, 2)
-add_c = tk.PhotoImage(file="img/icons/a_c.png")
-img_a_c = add_c.subsample(2, 2)
-mod_b = tk.PhotoImage(file="img/icons/m_b.png")
-img_m_b = mod_b.subsample(2, 2)
-add_b = tk.PhotoImage(file="img/icons/a_b.png")
-img_a_b = add_b.subsample(2, 2)
-sell = tk.PhotoImage(file="img/icons/s_b.png")
-sell_b = sell.subsample(2, 2)
-ex = tk.PhotoImage(file="img/icons/exit.png")
-img_e = ex.subsample(2, 2)
-img_e2 = ex.subsample(3, 3)
-save = tk.PhotoImage(file="img/icons/save.png")
-img_save = save.subsample(3, 3)
+    imgbg = tk.PhotoImage(file="img/main.png")
+    imgsell = tk.PhotoImage(file="img/sell.png")
+    imgcus= tk.PhotoImage(file="img/cus.png")
+    # Fit the image to the buttons
+    mod_c = tk.PhotoImage(file="img/icons/m_c.png")
+    img_m_c = mod_c.subsample(2, 2)
+    add_c = tk.PhotoImage(file="img/icons/a_c.png")
+    img_a_c = add_c.subsample(2, 2)
+    mod_b = tk.PhotoImage(file="img/icons/m_b.png")
+    img_m_b = mod_b.subsample(2, 2)
+    add_b = tk.PhotoImage(file="img/icons/a_b.png")
+    img_a_b = add_b.subsample(2, 2)
+    sell = tk.PhotoImage(file="img/icons/s_b.png")
+    sell_b = sell.subsample(2, 2)
+    ex = tk.PhotoImage(file="img/icons/exit.png")
+    img_e = ex.subsample(2, 2)
+    img_e2 = ex.subsample(3, 3)
+    save = tk.PhotoImage(file="img/icons/save.png")
+    img_save = save.subsample(3, 3)
 
-lbl_hihi = tk.Label(image=imgbg)
-lbl_hihi.place(x=0, y=0)
+    lbl_hihi = tk.Label(image=imgbg)
+    lbl_hihi.place(x=0, y=0)
 
-btn_font = tkfont.Font(family="Arial", size=15)
+    btn_font = tkfont.Font(family="Arial", size=15)
 
-if len(sql_session.Session().Storage()) == 0:
-    session_id = "Guest"
-    session_name = "Guest"
+    if len(sql_session.Session().Storage()) == 0:
+        session_id = "Guest"
+        session_name = "Guest"
+    else:
+        session_get = sql_session.Session().Print()
+        session_id = session_get[1]
+        session_name = session_get[2]
+
+    window.title(f"BSMS Beta - Logged in as staff: {session_id} - {session_name}")
+    lbl_session = tk.Label(master=window, text='Welcome, ' + session_id +' - '+ session_name, font=("Arial", 13, "bold"), bg='#73a2c7', justify="left", fg='white')
+    lbl_welcome = tk.Label(master=window, text="Book Store Management System\n(Staff Edition)", font=("Arial", 25, 'bold'), justify="center", bg='white', fg='#318bd2')
+    lb_cpr = tk.Label(window, text="© 2023 - BI12 - ICT Team 17\nVersion BETA", font=("Arial", 6), bg='#73a2c7', justify="right", fg='white')
+
+    btn_add_book = tk.Button(image=img_a_b,text="Add Book",compound = 'left', width=231, height=50, bg='#00ab1c', fg='#ffffff', command=add_book)
+    btn_add_book['font'] = btn_font
+    btn_book = tk.Button(image=img_a_b,text="Manage Book List",compound = 'left', width=231, height=50, bg='#00ab1c', fg='#ffffff', command = book_list)
+    btn_book['font'] = btn_font
+    btn_add_customer = tk.Button(image=img_a_c,text="Add Customer", compound = 'left', width=231, height=50, bg='#ab4d00', fg='#ffffff', command = add_customer)
+    btn_add_customer['font'] = btn_font
+    btn_customer = tk.Button(image=img_m_c,text="Customer List", compound = 'left', width=231, height=50, bg='#ab4d00', fg='#ffffff', command = customer_list)
+    btn_customer['font'] = btn_font
+    btn_sell_book = tk.Button(image= sell_b, text="Sell Book",compound = 'left', width=495, height=50, bg='#0052cc', fg='#ffffff', command = sell_book_func)
+    btn_sell_book['font'] = btn_font
+    if len(sql_books.Database().Storage()) == 0:
+        btn_book.config(state="disabled")
+    if len(sql_customers.Database().Storage()) == 0:
+        btn_customer.config(state="disabled")
+    btn_cut = tk.Button(image=img_e, text="Exit", compound= 'left', width=495, height=50, bg='#570b0b', fg='#ffffff', command = exit_verify)
+    btn_cut['font'] = btn_font
+    if len(sql_store.Database().Storage()) == 0:
+        btn_add_book.config(state="disabled")
+        btn_add_customer.config(state="disabled")
+        btn_sell_book.config(state="disabled")
+    if len(sql_books.Database().Storage()) == 0 or len(sql_customers.Database().Storage()) == 0:
+        btn_sell_book.config(state="disabled")
+
+    lbl_welcome.place(x=143, y=95)
+    btn_add_book.place(x=143, y=195)
+    btn_book.place(x=407, y=195)
+    btn_add_customer.place(x=143, y=275)
+    btn_customer.place(x=407, y=275)
+    btn_sell_book.place(x=143, y=355)
+    btn_cut.place(x=143, y=435)
+    lbl_session.place(x=5, y=5)
+    lb_cpr.place(x=690, y=573)
+
+    window.mainloop()
 else:
-    session_get = sql_session.Session().Print()
-    session_id = session_get[1]
-    session_name = session_get[2]
-
-window.title(f"BSMS Beta - Logged in as staff: {session_id} - {session_name}")
-lbl_session = tk.Label(master=window, text='Welcome, ' + session_id +' - '+ session_name, font=("Arial", 13, "bold"), bg='#73a2c7', justify="left", fg='white')
-lbl_welcome = tk.Label(master=window, text="Book Store Management System\n(Staff Edition)", font=("Arial", 25, 'bold'), justify="center", bg='white', fg='#318bd2')
-lb_cpr = tk.Label(window, text="© 2023 - BI12 - ICT Team 17\nVersion BETA", font=("Arial", 6), bg='#73a2c7', justify="right", fg='white')
-
-btn_add_book = tk.Button(image=img_a_b,text="Add Book",compound = 'left', width=231, height=50, bg='#00ab1c', fg='#ffffff', command=add_book)
-btn_add_book['font'] = btn_font
-btn_book = tk.Button(image=img_a_b,text="Manage Book List",compound = 'left', width=231, height=50, bg='#00ab1c', fg='#ffffff', command = book_list)
-btn_book['font'] = btn_font
-btn_add_customer = tk.Button(image=img_a_c,text="Add Customer", compound = 'left', width=231, height=50, bg='#ab4d00', fg='#ffffff', command = add_customer)
-btn_add_customer['font'] = btn_font
-btn_customer = tk.Button(image=img_m_c,text="Customer List", compound = 'left', width=231, height=50, bg='#ab4d00', fg='#ffffff', command = customer_list)
-btn_customer['font'] = btn_font
-btn_sell_book = tk.Button(image= sell_b, text="Sell Book",compound = 'left', width=495, height=50, bg='#0052cc', fg='#ffffff', command = sell_book_func)
-btn_sell_book['font'] = btn_font
-if len(sql_books.Database().Storage()) == 0:
-    btn_book.config(state="disabled")
-if len(sql_customers.Database().Storage()) == 0:
-    btn_customer.config(state="disabled")
-btn_cut = tk.Button(image=img_e, text="Exit", compound= 'left', width=495, height=50, bg='#570b0b', fg='#ffffff', command = exit_verify)
-btn_cut['font'] = btn_font
-if len(sql_store.Database().Storage()) == 0:
-    btn_add_book.config(state="disabled")
-    btn_add_customer.config(state="disabled")
-    btn_sell_book.config(state="disabled")
-if len(sql_books.Database().Storage()) == 0 or len(sql_customers.Database().Storage()) == 0:
-    btn_sell_book.config(state="disabled")
-
-lbl_welcome.place(x=143, y=95)
-btn_add_book.place(x=143, y=195)
-btn_book.place(x=407, y=195)
-btn_add_customer.place(x=143, y=275)
-btn_customer.place(x=407, y=275)
-btn_sell_book.place(x=143, y=355)
-btn_cut.place(x=143, y=435)
-lbl_session.place(x=5, y=5)
-lb_cpr.place(x=690, y=573)
-
-window.mainloop()
-
-#need verify before saving to db
+    # Messagebox to inform the user that the program is not installed
+    admin = tk.Tk()
+    admin.withdraw()
+    messagebox.showerror("Error", "The program is not running properly!\n\nPlease run from the program RUNME first!", parent=admin)
+    admin.quit()

@@ -3,6 +3,8 @@ sys.dont_write_bytecode = True
 import tkinter as tk
 import subprocess
 import datetime
+import zipfile
+import os
 from tkinter import messagebox, font as tkfont
 from domains import sql_session
 from domains import sql_store
@@ -83,6 +85,15 @@ box_pwd.place(x=415, y=340)
 lb_cpr.place(x=690, y=3)
 
 def runme(t: tk.Tk, event=None):
+    # Extract the database file
+    if os.path.exists("bookstore.dat"):
+        with open("bookstore.dat", "rb") as f:
+            with zipfile.ZipFile(f, "r") as zip_ref:
+                    zip_ref.extractall()
+        if os.path.exists("bookstore.dat"):
+            os.remove("bookstore.dat")
+    else:
+        pass
     log = sqlite3.connect("bookstore.db")
     cur = log.cursor()
     cur.execute("CREATE TABLE IF NOT EXISTS staff (id PRIMARYKEY text, password text, name text, dob text, address text, phone text, email text)")
