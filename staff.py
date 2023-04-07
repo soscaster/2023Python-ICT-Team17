@@ -14,25 +14,29 @@ from domains import sql_store
 
 # Create a new window for creating customer info [DONE]
 def add_customer():
+    clear()
     # Create a new window
     customer = tk.Toplevel(window)
     customer.title("Add New Customer Info")
-    customer_frame = tk.Frame(customer)
+    customer.geometry("900x700")
+    customer.resizable(False, False)
 
     # Create widgets
     btn_font = tkfont.Font(family="Arial", size=15)
+    lbl_img = tk.Label(customer, image=imgcus)
+    lbl_img.place(x=0, y=0)
 
     # Create labels
-    lbl_customer = tk.Label(customer_frame, text="Add New Customer Info", font=("Arial", 20, 'bold'), justify="center")
-    lbl_customer_id = tk.Label(customer_frame, text="Customer ID", font=("Arial", 15))
-    lbl_customer_name = tk.Label(customer_frame, text="Customer Name", font=("Arial", 15))
-    lbl_customer_dob = tk.Label(customer_frame, text="Customer DOB (dd/mm/yyyy)", font=("Arial", 15))
-    lbl_customer_address = tk.Label(customer_frame, text="Customer Address", font=("Arial", 15))
-    lbl_customer_phone = tk.Label(customer_frame, text="Customer Phone (10 digits)", font=("Arial", 15))
-    lbl_customer_email = tk.Label(customer_frame, text="Customer Email", font=("Arial", 15))
+    lbl_customer = tk.Label(customer, text="Add New Customer Info", font=("Arial", 23, 'bold'), justify="center", bg='white', fg='#318bd2')
+    lbl_customer_id = tk.Label(customer, text="Customer ID", font=("Arial", 15), bg='white', fg='#318bd2')
+    lbl_customer_name = tk.Label(customer, text="Customer Name", font=("Arial", 15), bg='white', fg='#318bd2')
+    lbl_customer_dob = tk.Label(customer, text="Customer DOB (dd/mm/yyyy)", font=("Arial", 15), bg='white', fg='#318bd2')
+    lbl_customer_address = tk.Label(customer, text="Customer Address", font=("Arial", 15), bg='white', fg='#318bd2')
+    lbl_customer_phone = tk.Label(customer, text="Customer Phone (10 digits)", font=("Arial", 15), bg='white', fg='#318bd2')
+    lbl_customer_email = tk.Label(customer, text="Customer Email", font=("Arial", 15), bg='white', fg='#318bd2')
 
     # Create entry boxes   
-    #global cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email 
+    global cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email 
     cu_ID = tk.StringVar()
     cu_name = tk.StringVar()
     cu_dob = tk.StringVar()
@@ -40,39 +44,57 @@ def add_customer():
     cu_phone = tk.StringVar()
     cu_email = tk.StringVar()
 
-    ent_customer_id = tk.Entry(customer_frame, width=30, textvariable=cu_ID, font=("Arial", 15))
-    ent_customer_name = tk.Entry(customer_frame, width=30, textvariable=cu_name, font=("Arial", 15))
-    ent_customer_dob = tk.Entry(customer_frame, width=30, textvariable=cu_dob, font=("Arial", 15))
-    ent_customer_address = tk.Entry(customer_frame, width=30, textvariable=cu_address, font=("Arial", 15))
-    ent_customer_phone = tk.Entry(customer_frame, width=30, textvariable=cu_phone, font=("Arial", 15))
-    ent_customer_email = tk.Entry(customer_frame, width=30, textvariable=cu_email, font=("Arial", 15))
+    ent_customer_id = tk.Entry(customer, width=43, textvariable=cu_ID, font=("Arial", 13), relief='flat', borderwidth=0, fg='firebrick1', highlightthickness=0, justify="left")
+    ent_customer_name = tk.Entry(customer, width=43, textvariable=cu_name, font=("Arial", 13), relief='flat', borderwidth=0, fg='firebrick1', highlightthickness=0, justify="left")
+    ent_customer_dob = tk.Entry(customer, width=43, textvariable=cu_dob, font=("Arial", 13), relief='flat', borderwidth=0, fg='firebrick1', highlightthickness=0, justify="left")
+    ent_customer_address = tk.Entry(customer, width=43, textvariable=cu_address, font=("Arial", 13), relief='flat', borderwidth=0, fg='firebrick1', highlightthickness=0, justify="left")
+    ent_customer_phone = tk.Entry(customer, width=43, textvariable=cu_phone, font=("Arial", 13), relief='flat', borderwidth=0, fg='firebrick1', highlightthickness=0, justify="left")
+    ent_customer_email = tk.Entry(customer, width=43, textvariable=cu_email, font=("Arial", 13), relief='flat', borderwidth=0, fg='firebrick1', highlightthickness=0, justify="left")
+
+    # Enter event for entry boxess
+    ent_customer_id.bind("<Return>", lambda event: ent_customer_name.focus())
+    ent_customer_name.bind("<Return>", lambda event: ent_customer_dob.focus())
+    ent_customer_dob.bind("<Return>", lambda event: ent_customer_address.focus())
+    ent_customer_address.bind("<Return>", lambda event: ent_customer_phone.focus())
+    ent_customer_phone.bind("<Return>", lambda event: ent_customer_email.focus())
+    ent_customer_email.bind("<Return>", lambda event: add_customer_func(cu_ID.get(), cu_name.get(), cu_dob.get(), cu_address.get(), cu_phone.get(), cu_email.get()))
+
+    # Create lines for entry boxes
+    line_customer_id = tk.Canvas(customer, width=433, height=2, bg='firebrick1', highlightthickness=0)
+    line_customer_id.place(x=370, y=214)
+    line_customer_name = tk.Canvas(customer, width=433, height=2, bg='firebrick1', highlightthickness=0)  
+    line_customer_name.place(x=370, y=274)
+    line_customer_dob = tk.Canvas(customer, width=433, height=2, bg='firebrick1', highlightthickness=0)
+    line_customer_dob.place(x=370, y=334)
+    line_customer_address = tk.Canvas(customer, width=433, height=2, bg='firebrick1', highlightthickness=0)
+    line_customer_address.place(x=370, y=394)
+    line_customer_phone = tk.Canvas(customer, width=433, height=2, bg='firebrick1', highlightthickness=0)
+    line_customer_phone.place(x=370, y=454)
+    line_customer_email = tk.Canvas(customer, width=433, height=2, bg='firebrick1', highlightthickness=0)
+    line_customer_email.place(x=370, y=514)
 
     # Create buttons
-    btn_save = tk.Button(customer_frame, text="Save", width=21, bg='#0052cc', fg='#ffffff', command=lambda: add_customer_func(cu_ID.get(), cu_name.get(), cu_dob.get(), cu_address.get(), cu_phone.get(), cu_email.get()))
+    btn_save = tk.Button(customer, image = img_save, text="Save", compound = 'left', width=320, height = 25, bg='#0052cc', fg='#ffffff', bd=0, activebackground='firebrick1', highlightthickness=0, command=lambda: add_customer_func(cu_ID.get(), cu_name.get(), cu_dob.get(), cu_address.get(), cu_phone.get(), cu_email.get()))
     btn_save['font'] = btn_font
-    btn_exit = tk.Button(customer_frame, text="Exit", width=21, command=customer.destroy, bg='#fc0303', fg='#ffffff')
+    btn_exit = tk.Button(customer, image = img_e2, text="Exit", compound = 'left', width=320, height = 25, bd=0, activebackground='firebrick1', highlightthickness=0, command=customer.destroy, bg='#0052cc', fg='#ffffff')
     btn_exit['font'] = btn_font
 
     # Style labels, entry boxes and buttons
-    customer_frame.grid(row=0, column=0, sticky="nsew")
-    lbl_customer.grid(row=0, column=0, columnspan=2, padx= 15, pady=15, sticky="nsew")
-    lbl_customer_id.grid(row=1, column=0, padx= 15, pady=5, sticky="nsew")
-    lbl_customer_name.grid(row=2, column=0, padx= 15, pady=5, sticky="nsew")
-    lbl_customer_dob.grid(row=3, column=0, padx= 15, pady=5, sticky="nsew")
-    lbl_customer_address.grid(row=4, column=0, padx= 15, pady=5, sticky="nsew")
-    lbl_customer_phone.grid(row=5, column=0, padx= 15, pady=5, sticky="nsew")
-    lbl_customer_email.grid(row=6, column=0, padx= 15, pady=5, sticky="nsew")
-    ent_customer_id.grid(row=1, column=1, padx= 15, pady=5, sticky="nsew")
-    ent_customer_name.grid(row=2, column=1, padx= 15, pady=5, sticky="nsew")
-    ent_customer_dob.grid(row=3, column=1, padx= 15, pady=5, sticky="nsew")
-    ent_customer_address.grid(row=4, column=1, padx= 15, pady=5, sticky="nsew")
-    ent_customer_phone.grid(row=5, column=1, padx= 15, pady=5, sticky="nsew")
-    ent_customer_email.grid(row=6, column=1, padx= 15, pady=5, sticky="nsew")
-    btn_exit.grid(row=7, column=0, padx= 15, pady=5, sticky="nsew")
-    btn_save.grid(row=7, column=1, padx= 15, pady=5, sticky="nsew")
-    
-    # Prevent resizing
-    customer.resizable(False, False)
+    lbl_customer.place(x=410, y=90)
+    lbl_customer_id.place(x=370, y=160)
+    ent_customer_id.place(x=370, y=190)
+    lbl_customer_name.place(x=370, y=220)
+    ent_customer_name.place(x=370, y=250)
+    lbl_customer_dob.place(x=370, y=280)
+    ent_customer_dob.place(x=370, y=310)
+    lbl_customer_address.place(x=370, y=340)
+    ent_customer_address.place(x=370, y=370)
+    lbl_customer_phone.place(x=370, y=400)
+    ent_customer_phone.place(x=370, y=430)
+    lbl_customer_email.place(x=370, y=460)
+    ent_customer_email.place(x=370, y=490)
+    btn_exit.place(x=100, y=580)
+    btn_save.place(x=460, y=580)
 
     # Define a function for saving customer info
     def add_customer_func(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email):
@@ -824,6 +846,7 @@ window.geometry("800x600")
 
 imgbg = tk.PhotoImage(file="img/main.png")
 imgsell = tk.PhotoImage(file="img/sell.png")
+imgcus= tk.PhotoImage(file="img/cus.png")
 # Fit the image to the buttons
 mod_c = tk.PhotoImage(file="img/icons/m_c.png")
 img_m_c = mod_c.subsample(2, 2)
@@ -837,6 +860,9 @@ sell = tk.PhotoImage(file="img/icons/s_b.png")
 sell_b = sell.subsample(2, 2)
 ex = tk.PhotoImage(file="img/icons/exit.png")
 img_e = ex.subsample(2, 2)
+img_e2 = ex.subsample(3, 3)
+save = tk.PhotoImage(file="img/icons/save.png")
+img_save = save.subsample(3, 3)
 
 lbl_hihi = tk.Label(image=imgbg)
 lbl_hihi.place(x=0, y=0)
