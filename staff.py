@@ -408,7 +408,8 @@ def customer_list():
 def add_book():
     book = tk.Toplevel(window)
     book.title("Add New Book")
-    frm_book = tk.Frame(book) 
+    book.geometry("900x700")
+    book.resizable(False, False)
     
     #Add book cmd
     def add_book_func(book_id, book_title, book_genre, book_author, book_target, book_pub, book_price, book_quantity):
@@ -431,16 +432,21 @@ def add_book():
             elif func.add_book(book_id, book_title, book_genre, book_author, book_target, book_pub, book_price, book_quantity)==False:
                 messagebox.showerror("Error", "Book info failed to save!\nPlease check again!", parent=book)
 
-    #Labels
-    lbl_book = tk.Label(master = frm_book, text = 'Add New Book Info', font = ("Arial", 25, "bold"), justify = "center")
-    lbl_book_id = tk.Label(master = frm_book, text = 'Book ID', font = ("Arial", 15))
-    lbl_book_title = tk.Label(master = frm_book, text = 'Title', font = ("Arial", 15))
-    lbl_book_genre = tk.Label(master = frm_book, text = 'Genre', font = ("Arial", 15))
-    lbl_book_author = tk.Label(master = frm_book, text = 'Author', font = ("Arial", 15))
-    lbl_book_target = tk.Label(master = frm_book, text = 'Target Audience', font = ("Arial", 15))
-    lbl_book_pub = tk.Label(master = frm_book, text = 'Publisher', font = ("Arial", 15))
-    lbl_book_price = tk.Label(master = frm_book, text = 'Price (VND)', font = ("Arial", 15))
-    lbl_book_quantity = tk.Label(master = frm_book, text = 'Stock', font = ("Arial", 15))
+    # Widgets
+    btn_font = tkfont.Font(family = "Arial", size = 15)
+    lbl_img = tk.Label(master = book, image = imgbook)
+    lbl_img.place(x = 0, y = 0)
+
+    # Labels
+    lbl_book = tk.Label(master = book, text = 'Add New Book Info', font = ("Arial", 23, "bold"), justify = "center", bg='white', fg='#318bd2')
+    lbl_book_id = tk.Label(master = book, text = 'Book ID', font = ("Arial", 15), bg='white', fg='#318bd2')
+    lbl_book_title = tk.Label(master = book, text = 'Title', font = ("Arial", 15), bg='white', fg='#318bd2')
+    lbl_book_genre = tk.Label(master = book, text = 'Genre', font = ("Arial", 15), bg='white', fg='#318bd2')
+    lbl_book_author = tk.Label(master = book, text = 'Author', font = ("Arial", 15), bg='white', fg='#318bd2')
+    lbl_book_target = tk.Label(master = book, text = 'Target Audience', font = ("Arial", 15), bg='white', fg='#318bd2')
+    lbl_book_pub = tk.Label(master = book, text = 'Publisher', font = ("Arial", 15), bg='white', fg='#318bd2')
+    lbl_book_price = tk.Label(master = book, text = 'Price (VND)', font = ("Arial", 15), bg='white', fg='#318bd2')
+    lbl_book_quantity = tk.Label(master = book, text = 'Stock', font = ("Arial", 15), bg='white', fg='#318bd2')
     
     #Define entry boxes var
     book_id = tk.StringVar()
@@ -453,47 +459,70 @@ def add_book():
     book_quantity = tk.StringVar()
     
     #Entry boxes
-    ent_book_id = tk.Entry(master = frm_book, width = 30, textvariable = book_id, font = ("Arial", 15))
-    ent_book_title = tk.Entry(master = frm_book, width = 30, textvariable = book_title, font = ("Arial", 15))
-    ent_book_genre = tk.Entry(master = frm_book, width = 30, textvariable = book_genre, font = ("Arial", 15))
-    ent_book_author = tk.Entry(master = frm_book, width = 30, textvariable = book_author, font = ("Arial", 15))
-    ent_book_target = tk.Entry(master = frm_book, width = 30, textvariable = book_target, font = ("Arial", 15))
-    ent_book_pub = tk.Entry(master = frm_book, width = 30, textvariable = book_pub, font = ("Arial", 15))
-    ent_book_price = tk.Entry(master = frm_book, width = 30, textvariable = book_price, font = ("Arial", 15))
-    ent_book_quantity = tk.Entry(master = frm_book, width = 30, textvariable = book_quantity, font = ("Arial", 15))
+    ent_book_id = tk.Entry(master = book, width = 43, textvariable = book_id, font = ("Arial", 13), relief='flat', borderwidth=0, fg='firebrick1', highlightthickness=0, justify="left")
+    ent_book_title = tk.Entry(master = book, width = 43, textvariable = book_title, font = ("Arial", 13), relief='flat', borderwidth=0, fg='firebrick1', highlightthickness=0, justify="left")
+    ent_book_genre = tk.Entry(master = book, width = 43, textvariable = book_genre, font = ("Arial", 13), relief='flat', borderwidth=0, fg='firebrick1', highlightthickness=0, justify="left")
+    ent_book_author = tk.Entry(master = book, width = 43, textvariable = book_author, font = ("Arial", 13), relief='flat', borderwidth=0, fg='firebrick1', highlightthickness=0, justify="left")
+    ent_book_target = tk.Entry(master = book, width = 43, textvariable = book_target, font = ("Arial", 13), relief='flat', borderwidth=0, fg='firebrick1', highlightthickness=0, justify="left")
+    ent_book_pub = tk.Entry(master = book, width = 43, textvariable = book_pub, font = ("Arial", 13), relief='flat', borderwidth=0, fg='firebrick1', highlightthickness=0, justify="left")
+    ent_book_price = tk.Entry(master = book, width = 43, textvariable = book_price, font = ("Arial", 13), relief='flat', borderwidth=0, fg='firebrick1', highlightthickness=0, justify="left")
+    ent_book_quantity = tk.Entry(master = book, width = 43, textvariable = book_quantity, font = ("Arial", 13), relief='flat', borderwidth=0, fg='firebrick1', highlightthickness=0, justify="left")
     
+    # Enter event for entry boxes
+    ent_book_id.bind("<Return>", lambda event: ent_book_title.focus())
+    ent_book_title.bind("<Return>", lambda event: ent_book_genre.focus())
+    ent_book_genre.bind("<Return>", lambda event: ent_book_author.focus())
+    ent_book_author.bind("<Return>", lambda event: ent_book_target.focus())
+    ent_book_target.bind("<Return>", lambda event: ent_book_pub.focus())
+    ent_book_pub.bind("<Return>", lambda event: ent_book_price.focus())
+    ent_book_price.bind("<Return>", lambda event: ent_book_quantity.focus())
+    ent_book_quantity.bind("<Return>", lambda event: add_book_func(book_id.get(), book_title.get(), book_genre.get(), book_author.get(), book_target.get(), book_pub.get(), book_price.get(), book_quantity.get()))
+
+    # Create lines for entry boxes
+    line_book_id = tk.Canvas(book, width=433, height=2, bg='firebrick1', highlightthickness=0)
+    line_book_id.place(x=360, y=164)
+    line_book_title = tk.Canvas(book, width=433, height=2, bg='firebrick1', highlightthickness=0)
+    line_book_title.place(x=360, y=224)
+    line_book_genre = tk.Canvas(book, width=433, height=2, bg='firebrick1', highlightthickness=0)
+    line_book_genre.place(x=360, y=284)
+    line_book_author = tk.Canvas(book, width=433, height=2, bg='firebrick1', highlightthickness=0)
+    line_book_author.place(x=360, y=344)
+    line_book_target = tk.Canvas(book, width=433, height=2, bg='firebrick1', highlightthickness=0)
+    line_book_target.place(x=360, y=404)
+    line_book_pub = tk.Canvas(book, width=433, height=2, bg='firebrick1', highlightthickness=0)
+    line_book_pub.place(x=360, y=464)
+    line_book_price = tk.Canvas(book, width=433, height=2, bg='firebrick1', highlightthickness=0)
+    line_book_price.place(x=360, y=524)
+    line_book_quantity = tk.Canvas(book, width=433, height=2, bg='firebrick1', highlightthickness=0)
+    line_book_quantity.place(x=360, y=584)
+
+    # Add save cmd
+    btn_save = tk.Button(book, image = img_save, text = "Save", compound = 'left', width=320, height = 25, bg='#0052cc', fg='#ffffff', bd=0, activebackground='firebrick1', highlightthickness=0,  command = lambda: add_book_func(book_id.get(), book_title.get(), book_genre.get(), book_author.get(), book_target.get(), book_pub.get(), book_price.get(), book_quantity.get()))
+    btn_save['font'] = btn_font
+    btn_exit = tk.Button(book, image = img_e2, text = "Exit", compound = 'left', width=320, height = 25, bg='#0052cc', fg='#ffffff', bd=0, activebackground='firebrick1', highlightthickness=0, command = book.destroy)
+    btn_exit['font'] = btn_font
+
+    # Style for all
+    lbl_book.place(x=450, y=60)
+    lbl_book_id.place(x=360, y=110)
+    ent_book_id.place(x=360, y=140)
+    lbl_book_title.place(x=360, y=170)
+    ent_book_title.place(x=360, y=200)
+    lbl_book_genre.place(x=360, y=230)
+    ent_book_genre.place(x=360, y=260)
+    lbl_book_author.place(x=360, y=290)
+    ent_book_author.place(x=360, y=320)
+    lbl_book_target.place(x=360, y=350)
+    ent_book_target.place(x=360, y=380)
+    lbl_book_pub.place(x=360, y=410)
+    ent_book_pub.place(x=360, y=440)
+    lbl_book_price.place(x=360, y=470)
+    ent_book_price.place(x=360, y=500)
+    lbl_book_quantity.place(x=360, y=530)
+    ent_book_quantity.place(x=360, y=560)
+    btn_exit.place(x=100, y=610)
+    btn_save.place(x=460, y=610)
     
-    #Add save cmd
-    btn_save = tk.Button(master = frm_book, text = "Save", width = 21, font = ("Arial", 15),  command = lambda: add_book_func(book_id.get(), book_title.get(), book_genre.get(), book_author.get(), book_target.get(), book_pub.get(), book_price.get(), book_quantity.get()))
-    btn_exit = tk.Button(master = frm_book, text = "Exit", width = 21, font = ("Arial", 15), command = book.destroy)
-    
-    #Grid layout
-    frm_book.grid(row = 0, column = 0, sticky = "nsew")
-    lbl_book.grid(row = 0, column = 0, columnspan = 2, padx = 15, pady = 5, sticky = "nsew")
-    lbl_book_id.grid(row = 1, column = 0, padx = 15, pady = 5, sticky = "nsew")
-    lbl_book_title.grid(row = 2, column = 0, padx = 15, pady = 5, sticky = "nsew")
-    lbl_book_genre.grid(row = 3, column = 0, padx = 15, pady = 5, sticky = "nsew")
-    lbl_book_author.grid(row = 4, column = 0, padx = 15, pady = 5, sticky = "nsew")
-    lbl_book_target.grid(row = 5, column = 0, padx = 15, pady = 5, sticky = "nsew")
-    lbl_book_pub.grid(row = 6, column = 0, padx = 15, pady = 5, sticky = "nsew")
-    lbl_book_price.grid(row = 7, column = 0, padx = 15, pady = 5, sticky = "nsew")
-    lbl_book_quantity.grid(row = 8, column = 0, padx = 15, pady = 5, sticky = "nsew")
-    ent_book_id.grid(row = 1, column = 1, padx = 15, pady = 5, sticky = "nsew")
-    ent_book_title.grid(row = 2, column = 1, padx = 15, pady = 5, sticky = "nsew")
-    ent_book_genre.grid(row = 3, column = 1, padx = 15, pady = 5, sticky = "nsew")
-    ent_book_author.grid(row = 4, column = 1, padx = 15, pady = 5, sticky = "nsew")
-    ent_book_target.grid(row = 5, column = 1, padx = 15, pady = 5, sticky = "nsew")
-    ent_book_pub.grid(row = 6, column = 1, padx = 15, pady = 5, sticky = "nsew")
-    ent_book_price.grid(row = 7, column = 1, padx = 15, pady = 5, sticky = "nsew")
-    ent_book_quantity.grid(row = 8, column = 1, padx = 15, pady = 5, sticky = "nsew")
-    btn_save.grid(row = 9, column = 1, padx = 15, pady = 5, sticky = "nsew")
-    btn_exit.grid(row = 9, column = 0, padx = 15, pady = 5, sticky = "nsew")
-    book.rowconfigure(0, weight=1, minsize=50)
-    book.columnconfigure(0, weight=1, minsize=75)
-    for i in range(10):
-        frm_book.rowconfigure(i, weight=1, minsize=50)
-    for i in range(2):  
-        frm_book.columnconfigure(i, weight=1, minsize=75) 
     
 #Book List window
 def book_list():
@@ -854,8 +883,10 @@ def exit_verify():
 if os.path.exists("bookstore.db"):
     window = tk.Tk()
     window.geometry("800x600")
+    window.protocol("WM_DELETE_WINDOW", exit_verify)
 
     imgbg = tk.PhotoImage(file="img/main.png")
+    imgbook = tk.PhotoImage(file="img/book.png")
     imgsell = tk.PhotoImage(file="img/sell.png")
     imgcus= tk.PhotoImage(file="img/cus.png")
     # Fit the image to the buttons

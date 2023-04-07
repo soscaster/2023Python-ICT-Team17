@@ -183,7 +183,6 @@ def add_staff():
     line_staff_email = tk.Canvas(staff, width=433, height=2, bg='firebrick1', highlightthickness=0)
     line_staff_email.place(x=360, y=554)
 
-
     # Create buttons
     btn_save = tk.Button(staff, image=img_save, text="Save", compound = 'left', width=320, height = 25, bg='#0052cc', fg='#ffffff', bd=0, activebackground='firebrick1', highlightthickness=0, command=lambda: add_staff_func(st_ID.get(), st_pwd.get(), st_name.get(), st_dob.get(), st_address.get(), st_phone.get(), st_email.get()))
     btn_save['font'] = btn_font
@@ -931,6 +930,7 @@ if os.path.exists("bookstore.db"):
     admin = tk.Tk()
     admin.title("BSMS Beta - Logged in as Administrator")
     admin.geometry("800x600")
+    admin.protocol("WM_DELETE_WINDOW", exit_verify)
 
     imgbg = tk.PhotoImage(file="img/main.png")
     imgstore = tk.PhotoImage(file="img/store.png")

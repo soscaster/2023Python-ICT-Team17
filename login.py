@@ -34,6 +34,7 @@ login = tk.Tk()
 login.title("BSMS Beta - Login")
 login.geometry("800x600")
 login.resizable(False, False)
+login.protocol("WM_DELETE_WINDOW", exit_verify)
 
 # Create widgets
 btn_font = tkfont.Font(family="Arial", size=15)
