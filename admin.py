@@ -15,18 +15,21 @@ def modify_store():
     # Create a new window
     store = tk.Toplevel(admin)
     store.title("Modify Store Info")
-    store_frame = tk.Frame(store)
+    store.geometry("800x600")
+    store.resizable(False, False)
 
     # Create widgets
     btn_font = tkfont.Font(family="Arial", size=15)
+    lbl_img = tk.Label(store, image = imgstore)
+    lbl_img.place(x=0, y=0)
 
     # Create labels
-    lbl_store = tk.Label(store_frame, text="Modify Store Info", font=("Arial", 20, 'bold'), justify="center")
-    lbl_store_id = tk.Label(store_frame, text="Store ID", font=("Arial", 15))
-    lbl_store_name = tk.Label(store_frame, text="Store Name", font=("Arial", 15))
-    lbl_store_address = tk.Label(store_frame, text="Store Address", font=("Arial", 15))
-    lbl_store_phone = tk.Label(store_frame, text="Store Phone (10 digits)", font=("Arial", 15))
-    lbl_store_email = tk.Label(store_frame, text="Store Email", font=("Arial", 15))
+    lbl_store = tk.Label(store, text="Modify Store Info", font=("Arial", 23, 'bold'), justify="center", bg='white', fg='#318bd2')
+    lbl_store_id = tk.Label(store, text="Store ID", font=("Arial", 15), bg='white', fg='#318bd2')
+    lbl_store_name = tk.Label(store, text="Store Name", font=("Arial", 15), bg='white', fg='#318bd2')
+    lbl_store_address = tk.Label(store, text="Store Address", font=("Arial", 15), bg='white', fg='#318bd2')
+    lbl_store_phone = tk.Label(store, text="Store Phone (10 digits)", font=("Arial", 15), bg='white', fg='#318bd2')
+    lbl_store_email = tk.Label(store, text="Store Email", font=("Arial", 15), bg='white', fg='#318bd2')
 
     # Create entry boxes
     global store_id, store_name, store_address, store_phone, store_email
@@ -51,37 +54,51 @@ def modify_store():
         store_phone.set(db[0][3])
         store_email.set(db[0][4])
 
-    ent_store_id = tk.Entry(store_frame, width=30, textvariable=store_id, font=("Arial", 15))
-    ent_store_name = tk.Entry(store_frame, width=30, textvariable= store_name, font=("Arial", 15))
-    ent_store_address = tk.Entry(store_frame, width=30, textvariable= store_address, font=("Arial", 15))
-    ent_store_phone = tk.Entry(store_frame, width=30, textvariable= store_phone, font=("Arial", 15))
-    ent_store_email = tk.Entry(store_frame, width=30, textvariable= store_email, font=("Arial", 15))
+    ent_store_id = tk.Entry(store, width=37, textvariable=store_id, font=("Arial", 13), relief='flat', borderwidth=0, fg='firebrick1', highlightthickness=0, justify="left")
+    ent_store_name = tk.Entry(store, width=37, textvariable= store_name, font=("Arial", 13), relief='flat', borderwidth=0, fg='firebrick1', highlightthickness=0, justify="left")
+    ent_store_address = tk.Entry(store, width=37, textvariable= store_address, font=("Arial", 13), relief='flat', borderwidth=0, fg='firebrick1', highlightthickness=0, justify="left")
+    ent_store_phone = tk.Entry(store, width=37, textvariable= store_phone, font=("Arial", 13), relief='flat', borderwidth=0, fg='firebrick1', highlightthickness=0, justify="left")
+    ent_store_email = tk.Entry(store, width=37, textvariable= store_email, font=("Arial", 13), relief='flat', borderwidth=0, fg='firebrick1', highlightthickness=0, justify="left")
+
+    # Enter event for entry boxes
+    ent_store_id.bind("<Return>", lambda event: ent_store_name.focus())
+    ent_store_name.bind("<Return>", lambda event: ent_store_address.focus())
+    ent_store_address.bind("<Return>", lambda event: ent_store_phone.focus())
+    ent_store_phone.bind("<Return>", lambda event: ent_store_email.focus())
+    ent_store_email.bind("<Return>", lambda event: modify_store_func())
+
+    # Create lines for entry box
+    line_id = tk.Canvas(store, width=373, height=2, bg='firebrick1', highlightthickness=0)
+    line_id.place(x=340, y=179)
+    line_name = tk.Canvas(store, width=373, height=2, bg='firebrick1', highlightthickness=0)
+    line_name.place(x=340, y=239)
+    line_address = tk.Canvas(store, width=373, height=2, bg='firebrick1', highlightthickness=0)
+    line_address.place(x=340, y=299)
+    line_phone = tk.Canvas(store, width=373, height=2, bg='firebrick1', highlightthickness=0)
+    line_phone.place(x=340, y=359)
+    line_email = tk.Canvas(store, width=373, height=2, bg='firebrick1', highlightthickness=0)
+    line_email.place(x=340, y=419)
 
     # Create buttons
-    btn_save = tk.Button(store_frame, text="Save", width=21, bg='#0052cc', fg='#ffffff', command = lambda: modify_store_func())
+    btn_save = tk.Button(store, image=img_save, text="Save", compound = 'left', width=350, height = 25, bg='#318bd2', bd=0, activebackground='firebrick1', highlightthickness=0, command=lambda: modify_store_func())
     btn_save['font'] = btn_font
-    btn_exit = tk.Button(store_frame, text="Exit", width=21, command=store.destroy, bg='#fc0303', fg='#ffffff')
+    btn_exit = tk.Button(store, image=img_e2, text="Exit", compound = 'left', width=350, height = 25, bg='#318bd2', bd=0, activebackground='firebrick1', highlightthickness=0, command=store.destroy)
     btn_exit['font'] = btn_font
 
     # Style labels, entry boxes and buttons
-    store_frame.grid(row=0, column=0, sticky="nsew")
-    lbl_store.grid(row=0, column=0, columnspan=2, padx= 15, pady=15, sticky="nsew")
-    lbl_store_id.grid(row=1, column=0, padx= 15, pady=5, sticky="nsew")
-    lbl_store_name.grid(row=2, column=0, padx= 15, pady=5, sticky="nsew")
-    lbl_store_address.grid(row=3, column=0, padx= 15, pady=5, sticky="nsew")
-    lbl_store_phone.grid(row=4, column=0, padx= 15, pady=5, sticky="nsew")
-    lbl_store_email.grid(row=5, column=0, padx= 15, pady=5, sticky="nsew")
-    ent_store_id.grid(row=1, column=1, padx= 15, pady=5, sticky="nsew")
-    ent_store_name.grid(row=2, column=1, padx= 15, pady=5, sticky="nsew")
-    ent_store_address.grid(row=3, column=1, padx= 15, pady=5, sticky="nsew")
-    ent_store_phone.grid(row=4, column=1, padx= 15, pady=5, sticky="nsew")
-    ent_store_email.grid(row=5, column=1, padx= 15, pady=5, sticky="nsew")
-    btn_exit.grid(row=6, column=0, padx= 15, pady=5, sticky="nsew")
-    btn_save.grid(row=6, column=1, padx= 15, pady=5, sticky="nsew")
-
-
-    # Prevent resizing
-    store.resizable(False, False)
+    lbl_store.place(x=400, y=80)
+    lbl_store_id.place(x=340, y=125)
+    ent_store_id.place(x=340, y=155)
+    lbl_store_name.place(x=340, y=185)
+    ent_store_name.place(x=340, y=215)
+    lbl_store_address.place(x=340, y=245)
+    ent_store_address.place(x=340, y=275)
+    lbl_store_phone.place(x=340, y=305)
+    ent_store_phone.place(x=340, y=335)
+    lbl_store_email.place(x=340, y=365)
+    ent_store_email.place(x=340, y=395)
+    btn_save.place(x=340, y=440)
+    btn_exit.place(x=340, y=490)
 
     def modify_store_func():
         # If function modify_store returns False, show error message
@@ -178,7 +195,7 @@ def add_staff():
             messagebox.showerror("Error", "ID or Phone or Email is already exists!\nPlease try again!", parent=staff)
         else:
             if fu.add_staff(st_ID, st_pwd, st_name, st_dob, st_address, st_phone, st_email) == True:
-                messagebox.showinfo("Success", "Staff info saved successfully!\nPress 'OK' to continue", parent=box)
+                messagebox.showinfo("Success", "Staff info saved successfully!\nPress 'OK' to continue", parent=staff)
                 # Close the window
                 if len(sql_staff.Database().Storage()) == 0:
                     btn_staff['state'] = 'disabled'
@@ -859,10 +876,8 @@ admin = tk.Tk()
 admin.title("BSMS Beta - Logged in as Administrator")
 admin.geometry("800x600")
 
-box = tk.Toplevel(admin)
-box.withdraw()
-
 imgbg = tk.PhotoImage(file="img/main.png")
+imgstore = tk.PhotoImage(file="img/store.png")
 # Fit the image to the buttons
 m_st = tk.PhotoImage(file="img/icons/m_st.png")
 img_mst = m_st.subsample(2, 2)
@@ -876,6 +891,9 @@ add_s = tk.PhotoImage(file="img/icons/a_s.png")
 img_a_s = add_s.subsample(2, 2)
 ex = tk.PhotoImage(file="img/icons/exit.png")
 img_e = ex.subsample(2, 2)
+img_e2 = ex.subsample(3, 3)
+save = tk.PhotoImage(file="img/icons/save.png")
+img_save = save.subsample(3, 3)
 
 lbl_hihi = tk.Label(image=imgbg)
 lbl_hihi.place(x=0, y=0)

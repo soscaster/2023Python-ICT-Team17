@@ -822,9 +822,6 @@ def exit_verify():
 window = tk.Tk()
 window.geometry("800x600")
 
-box = tk.Toplevel(window)
-box.withdraw()
-
 imgbg = tk.PhotoImage(file="img/main.png")
 imgsell = tk.PhotoImage(file="img/sell.png")
 # Fit the image to the buttons
