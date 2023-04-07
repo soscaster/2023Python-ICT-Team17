@@ -931,5 +931,5 @@ else:
     # Messagebox to inform the user that the program is not installed
     admin = tk.Tk()
     admin.withdraw()
-    messagebox.showerror("Error", "The program is not running properly!\n\nPlease run from the program RUNME first!", parent=admin)
+    messagebox.showerror("Error", "The program is not running properly!\n\nPlease run from the program 'LOGIN.PY' first!", parent=admin)
     admin.quit()
