@@ -151,12 +151,18 @@ def customer_list():
 
     clear()
     list_customer = tk.Toplevel(window)
-
     list_customer.title("Customer List")
+    list_customer.geometry("1100x500")
+    list_customer.resizable(False,False)
+
+    lbl_img = tk.Label(list_customer, image = imglist)
+    lbl_img.place(x=0, y=0)
+    lbl_title = tk.Label(list_customer, text="Customer List", font=("Arial", 25, 'bold'), justify="center", bg='white', fg='#318bd2')
+    lbl_title.place(x=440, y=40)
 
     # Create tree view frame
     frm = tk.Frame(list_customer)
-    frm.pack(pady=20, padx=30)
+    frm.place(x=70, y=90)
 
     # Create scrollbar
     tree_scroll = tk.Scrollbar(frm)
@@ -164,14 +170,11 @@ def customer_list():
 
     # Create tree view
     tree = ttk.Treeview(frm, yscrollcommand=tree_scroll.set)
-
     tree.pack()
 
     # Configure scrollbar
     tree_scroll.config(command=tree.yview)
     tree['show']='headings'
-
-    list_customer.resizable(False,False)
 
     # Define number of columns
     tree["columns"] = ("ID", "Name", "Date of Birth", "Address", "Phone", "Email")
@@ -208,36 +211,39 @@ def customer_list():
             del_ID = tree.item(tree.focus())['values'][6][1:]
         except:
             return
-        cf = messagebox.askyesno("Delete", "Are you sure you want to delete this customer?", parent = list_customer)
+        cf = messagebox.askyesno("Delete", "Are you sure you want to delete this customer?", parent=list_customer)
         if cf == True:
             delete_customer_func(del_ID)
 
     def delete_customer_func(id):
         if func.remove_customer(id) == True:
-            messagebox.showinfo("Success", "Customer deleted successfully!", parent = list_customer)
+            messagebox.showinfo("Success", "Customer deleted successfully!", parent=list_customer)
             tree.delete(tree.focus())
             if len(sql_customers.Database().Storage()) == 0:
                 btn_customer['state'] = 'disabled'
             else:
                 btn_customer['state'] = 'normal'
         else:
-            messagebox.showerror("Error", "Customer not deleted!", parent = list_customer)
+            messagebox.showerror("Error", "Customer not deleted!", parent=list_customer)
 
-    # Add button frame
-    button_frame = tk.LabelFrame(list_customer, text = "Functions")
-    button_frame.pack(fill="x", expand="yes", padx=20, pady=20)
+    # Add button frames
 
-    btn_refresh = tk.Button(button_frame, text="Refresh", width=23, command=lambda: list_all())
-    btn_search = tk.Button(button_frame, text="Search", width=23, command=lambda: Search_interface())
-    btn_delete = tk.Button(button_frame, text="Delete", width=23, command=lambda: del_cf())
-    btn_update = tk.Button(button_frame, text="Update", width=23, command=lambda: modify_customer())
-    btn_exit = tk.Button(button_frame, text="Exit", width=23, command=list_customer.destroy)
+    btn_refresh = tk.Button(list_customer, text="Refresh", width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=lambda: list_all())
+    btn_refresh['font'] = ['Arial', '15', 'bold']
+    btn_search = tk.Button(list_customer, text="Search", width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=lambda: Search_interface())
+    btn_search['font'] = ['Arial', '15', 'bold']
+    btn_delete = tk.Button(list_customer, text="Delete", width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=lambda: del_cf())
+    btn_delete['font'] = ['Arial', '15', 'bold']
+    btn_update = tk.Button(list_customer, text="Update", width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=lambda: modify_customer())
+    btn_update['font'] = ['Arial', '15', 'bold']
+    btn_exit = tk.Button(list_customer, text="Exit", width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=list_customer.destroy)
+    btn_exit['font'] = ['Arial', '15', 'bold']
 
-    btn_refresh.grid(row=0, column=0, padx=10, pady=10)
-    btn_search.grid(row=0, column=1, padx=10, pady=10)
-    btn_delete.grid(row=0, column=2, padx=10, pady=10)
-    btn_update.grid(row=0, column=3, padx=10, pady=10)
-    btn_exit.grid(row=0, column=4, padx=10, pady=10)
+    btn_refresh.place(x=72, y=390)
+    btn_search.place(x=267, y=390)
+    btn_delete.place(x=462, y=390)
+    btn_update.place(x=657, y=390)
+    btn_exit.place(x=852, y=390)
 
     def Search_interface():
         search_inter = tk.Toplevel(list_customer)
@@ -299,9 +305,9 @@ def customer_list():
 
         def Search_customer(id, name, dob, address, phone, email):
             if func.Searchall_customer(id, name, dob, address, phone, email) == False:
-                messagebox.showerror("Error", "Something went wrong\nPlease try again!", parent = search_inter)
+                messagebox.showerror("Error", "Something went wrong\nPlease try again!", parent=list_customer)
             elif len(func.Searchall_customer(id, name, dob, address, phone, email))==0:
-                messagebox.showinfo("","0 results found!", parent = search_inter)
+                messagebox.showinfo("","0 results found!", parent=list_customer)
             else:
                 db = func.Searchall_customer(id, name, dob, address, phone, email)
                 tree.delete(*tree.get_children())
@@ -361,7 +367,7 @@ def customer_list():
 
         # Create buttons
         def save_cf():
-            cf = messagebox.askyesno("Save", "Are you sure you want to overide this customer info?", parent= customer)
+            cf = messagebox.askyesno("Save", "Are you sure you want to overide this customer info?", parent=customer)
             if cf == True:
                 modify_customer_func()
         
@@ -392,21 +398,21 @@ def customer_list():
 
         # Define a function for saving customer info
         def modify_customer_func():
-            if func.check_if_empty(cu_ID.get()) == False:
+            if func.check_if_empty(cus_ID.get()) == False:
                 messagebox.showerror("Error","Customer ID cannot be empty!", parent=customer)
-            elif func.check_if_empty(cu_name.get()) == False:
+            elif func.check_if_empty(cus_name.get()) == False:
                 messagebox.showerror("Error","Customer name cannot be empty!", parent=customer)
-            elif func.check_if_empty(cu_dob.get()) == False:
+            elif func.check_if_empty(cus_dob.get()) == False:
                 messagebox.showerror("Error","Customer date of birth cannot be empty!", parent=customer)
-            elif func.check_dob(cu_dob.get()) == False:
+            elif func.check_dob(cus_dob.get()) == False:
                 messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!", parent=customer)
-            elif func.check_if_empty(cu_phone.get()) == False:
+            elif func.check_if_empty(cus_phone.get()) == False:
                 messagebox.showerror("Error","Customer phone number cannot be empty!", parent=customer)
-            elif func.check_phone(cu_phone.get()) == False:
+            elif func.check_phone(cus_phone.get()) == False:
                 messagebox.showerror("Error", "Invalid phone number!\nPlease try again!", parent=customer)
-            elif func.check_if_empty(cu_email.get()) == False:
+            elif func.check_if_empty(cus_email.get()) == False:
                 messagebox.showerror("Error","Customer e-mail address cannot be empty!", parent=customer)
-            elif func.check_email(cu_email.get()) == False:
+            elif func.check_email(cus_email.get()) == False:
                 messagebox.showerror("Error", "Invalid e-mail type!\nPlease try again!", parent=customer)
             elif sql_customers.Database().Validate(cus_ID.get(), cus_phone.get(), cus_email.get(), 2) == True:
                 messagebox.showerror("Error", "Phone or Email info is already exists!\nPlease try again!", parent=customer)
@@ -414,12 +420,6 @@ def customer_list():
                 sql_customers.Database().Update(cus_name.get(), cus_dob.get(), cus_address.get(), cus_phone.get(), cus_email.get(), cus_ID.get())
                 messagebox.showinfo("Success", "Customer info saved!\nPlease refresh the page to see the changes!", parent=customer)
                 customer.destroy()
-    
-    # btn_refresh.pack()
-    # btn_search.pack()
-    # btn_delete.pack()
-    # btn_update.pack()
-    # btn_exit.pack()
             
 #End customer section
 
@@ -943,6 +943,7 @@ if os.path.exists("bookstore.db"):
     imgbook = tk.PhotoImage(file="img/book.png")
     imgsell = tk.PhotoImage(file="img/sell.png")
     imgcus= tk.PhotoImage(file="img/cus.png")
+    imglist = tk.PhotoImage(file="img/list.png")
     # Fit the image to the buttons
     mod_c = tk.PhotoImage(file="img/icons/m_c.png")
     img_m_c = mod_c.subsample(2, 2)

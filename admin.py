@@ -940,21 +940,21 @@ def customer_list():
 
         # Define a function for saving customer info
         def modify_customer_func():
-            if fu.check_if_empty(cu_ID.get()) == False:
+            if fu.check_if_empty(cus_ID.get()) == False:
                 messagebox.showerror("Error","Customer ID cannot be empty!", parent=customer)
-            elif fu.check_if_empty(cu_name.get()) == False:
+            elif fu.check_if_empty(cus_name.get()) == False:
                 messagebox.showerror("Error","Customer name cannot be empty!", parent=customer)
-            elif fu.check_if_empty(cu_dob.get()) == False:
+            elif fu.check_if_empty(cus_dob.get()) == False:
                 messagebox.showerror("Error","Customer date of birth cannot be empty!", parent=customer)
-            elif fu.check_dob(cu_dob.get()) == False:
+            elif fu.check_dob(cus_dob.get()) == False:
                 messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!", parent=customer)
-            elif fu.check_if_empty(cu_phone.get()) == False:
+            elif fu.check_if_empty(cus_phone.get()) == False:
                 messagebox.showerror("Error","Customer phone number cannot be empty!", parent=customer)
-            elif fu.check_phone(cu_phone.get()) == False:
+            elif fu.check_phone(cus_phone.get()) == False:
                 messagebox.showerror("Error", "Invalid phone number!\nPlease try again!", parent=customer)
-            elif fu.check_if_empty(cu_email.get()) == False:
+            elif fu.check_if_empty(cus_email.get()) == False:
                 messagebox.showerror("Error","Customer e-mail address cannot be empty!", parent=customer)
-            elif fu.check_email(cu_email.get()) == False:
+            elif fu.check_email(cus_email.get()) == False:
                 messagebox.showerror("Error", "Invalid e-mail type!\nPlease try again!", parent=customer)
             elif sql_customers.Database().Validate(cus_ID.get(), cus_phone.get(), cus_email.get(), 2) == True:
                 messagebox.showerror("Error", "Phone or Email info is already exists!\nPlease try again!", parent=customer)
