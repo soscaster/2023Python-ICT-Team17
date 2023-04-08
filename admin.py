@@ -698,7 +698,7 @@ def customer_list():
     list_customer.resizable(False,False)
 
     lbl_img = tk.Label(list_customer, image = imglist)
-    lbl_img.place(x=0, y=0)
+    lbl_img.place(x=0, y=0) 
     lbl_title = tk.Label(list_customer, text="Customer List", font=("Arial", 25, 'bold'), justify="center", bg='white', fg='#318bd2')
     lbl_title.place(x=440, y=40)
 
@@ -744,7 +744,11 @@ def customer_list():
         tree.delete(*tree.get_children())
         db = sql_customers.Database().Storage()
         for i in range(0,len(db)):
-            tree.insert('', i, iid= None, values = (db[i][0],db[i][1],db[i][2],db[i][3],db[i][4],db[i][5],">"+db[i][0]))
+            if i % 2 == 0:
+                tree.insert('', i, iid= None, values = (db[i][0],db[i][1],db[i][2],db[i][3],db[i][4],db[i][5],">"+db[i][0]),tags='even_row')
+            else:
+                tree.insert('', i, iid= None, values = (db[i][0],db[i][1],db[i][2],db[i][3],db[i][4],db[i][5],">"+db[i][0]),tags='odd_row')
+                
     list_all()
 
     def del_cf():

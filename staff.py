@@ -202,7 +202,11 @@ def customer_list():
         tree.delete(*tree.get_children())
         db = sql_customers.Database().Storage()
         for i in range(0,len(db)):
-            tree.insert('', i, iid= None, values = (db[i][0],db[i][1],db[i][2],db[i][3],db[i][4],db[i][5],">"+db[i][0]))
+            if i % 2 == 0:
+                tree.insert('', i, iid= None, values = (db[i][0],db[i][1],db[i][2],db[i][3],db[i][4],db[i][5],">"+db[i][0]),tags='even_row')
+            else:
+                tree.insert('', i, iid= None, values = (db[i][0],db[i][1],db[i][2],db[i][3],db[i][4],db[i][5],">"+db[i][0]),tags='odd_row')
+                
     list_all()
 
     def del_cf():
@@ -630,7 +634,10 @@ def book_list():
         tree.delete(*tree.get_children())
         db = sql_books.Database().Storage()
         for i in range(0,len(db)):
-            tree.insert('', i, iid= None, values = (db[i][0],db[i][1],db[i][2],db[i][3],db[i][4],db[i][5],db[i][6],db[i][7],">"+db[i][0]))
+            if i % 2 == 0:
+                tree.insert('', i, iid= None, values = (db[i][0],db[i][1],db[i][2],db[i][3],db[i][4],db[i][5],db[i][6],db[i][7],">"+db[i][0]),tags='even_row')
+            else:
+                tree.insert('', i, iid= None, values = (db[i][0],db[i][1],db[i][2],db[i][3],db[i][4],db[i][5],db[i][6],db[i][7],">"+db[i][0]),tags='odd_row')
     list_all()
 
     def del_cf():
