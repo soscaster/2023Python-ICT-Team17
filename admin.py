@@ -415,8 +415,6 @@ def staff_list():
 
     tree['show']='headings'
 
-    list_staff.resizable(False,False)
-
     # Define number of columns
     tree["columns"] = ("ID", "Name", "Date of Birth", "Address", "Phone", "Email")
     #Assign the width,minwidth and anchor to the respective columns 
@@ -459,7 +457,7 @@ def staff_list():
         if cf == True:
             delete_staff_func(del_ID)
 
-    # Add button frame
+    # Add button frames
 
     btn_refresh = tk.Button(list_staff, text="Refresh", width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=lambda: list_all())
     btn_refresh['font'] = ['Arial', '15', 'bold']
@@ -695,12 +693,18 @@ def customer_list():
 
     clear()
     list_customer = tk.Toplevel(admin)
-
     list_customer.title("Customer List")
+    list_customer.geometry("1100x500")
+    list_customer.resizable(False,False)
+
+    lbl_img = tk.Label(list_customer, image = imglist)
+    lbl_img.place(x=0, y=0)
+    lbl_title = tk.Label(list_customer, text="Customer List", font=("Arial", 25, 'bold'), justify="center", bg='white', fg='#318bd2')
+    lbl_title.place(x=440, y=40)
 
     # Create tree view frame
     frm = tk.Frame(list_customer)
-    frm.pack(pady=20, padx=20)
+    frm.place(x=70, y=90)
 
     # Create scrollbar
     tree_scroll = tk.Scrollbar(frm)
@@ -708,14 +712,11 @@ def customer_list():
 
     # Create tree view
     tree = ttk.Treeview(frm, yscrollcommand=tree_scroll.set)
-
     tree.pack()
 
     # Configure scrollbar
     tree_scroll.config(command=tree.yview)
     tree['show']='headings'
-
-    list_customer.resizable(False,False)
 
     # Define number of columns
     tree["columns"] = ("ID", "Name", "Date of Birth", "Address", "Phone", "Email")
@@ -767,21 +768,24 @@ def customer_list():
         else:
             messagebox.showerror("Error", "Customer not deleted!", parent=list_customer)
 
-    # Add button frame
-    button_frame = tk.LabelFrame(list_customer, text = "Functions")
-    button_frame.pack(fill="x", expand="yes", padx=20, pady=20)
+    # Add button frames
 
-    btn_refresh = tk.Button(button_frame, text="Refresh", width=23, command=lambda: list_all())
-    btn_search = tk.Button(button_frame, text="Search", width=23, command=lambda: Search_interface())
-    btn_delete = tk.Button(button_frame, text="Delete", width=23, command=lambda: del_cf())
-    btn_update = tk.Button(button_frame, text="Update", width=23, command=lambda: modify_customer())
-    btn_exit = tk.Button(button_frame, text="Exit", width=23, command=list_customer.destroy)
+    btn_refresh = tk.Button(list_customer, text="Refresh", width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=lambda: list_all())
+    btn_refresh['font'] = ['Arial', '15', 'bold']
+    btn_search = tk.Button(list_customer, text="Search", width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=lambda: Search_interface())
+    btn_search['font'] = ['Arial', '15', 'bold']
+    btn_delete = tk.Button(list_customer, text="Delete", width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=lambda: del_cf())
+    btn_delete['font'] = ['Arial', '15', 'bold']
+    btn_update = tk.Button(list_customer, text="Update", width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=lambda: modify_customer())
+    btn_update['font'] = ['Arial', '15', 'bold']
+    btn_exit = tk.Button(list_customer, text="Exit", width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=list_customer.destroy)
+    btn_exit['font'] = ['Arial', '15', 'bold']
 
-    btn_refresh.grid(row=0, column=0, padx=10, pady=10)
-    btn_search.grid(row=0, column=1, padx=10, pady=10)
-    btn_delete.grid(row=0, column=2, padx=10, pady=10)
-    btn_update.grid(row=0, column=3, padx=10, pady=10)
-    btn_exit.grid(row=0, column=4, padx=10, pady=10)
+    btn_refresh.place(x=72, y=390)
+    btn_search.place(x=267, y=390)
+    btn_delete.place(x=462, y=390)
+    btn_update.place(x=657, y=390)
+    btn_exit.place(x=852, y=390)
 
     def Search_interface():
         search_inter = tk.Toplevel(list_customer)
