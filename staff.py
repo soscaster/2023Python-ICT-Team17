@@ -5,11 +5,13 @@ from tkinter import messagebox, ttk, font as tkfont
 import process_checker as func
 import os
 import zipfile
+import datetime
 clear = lambda: os.system('clear')
 from domains import sql_session
 from domains import sql_customers
 from domains import sql_books
 from domains import sql_store
+from domains import sql_sell
 
 # CUSTOMER SECTION
 
@@ -949,15 +951,197 @@ def sell_book_func():
     btn_sell_cf.place(x=302, y=420)
     btn_exit.place(x=302, y=470)
 
+    # Sell book function
+    def exec_sell():
+        if func.check_if_empty(box_quantity.get()) == False:
+            messagebox.showerror("Error", "Please enter a quantity!", parent=sell)
+            return
+        else:
+            try:
+                book_id = book_title.get().split(" - ")[0]
+                book_tit = book_title.get().split(" - ")[1]
+                customer_id = customer.get().split(" - ")[0]
+                customer_name = customer.get().split(" - ")[1]
+                session_get = sql_session.Session().Print()
+                session_id = session_get[1]
+                session_name = session_get[2]
+                quantity = box_quantity.get()
+                print(f"{book_id} - {book_tit} - {quantity} - {customer_id} - {customer_name} - {session_id} - {session_name}")
+                func.add_sell(book_id, book_tit, quantity, customer_id, customer_name, session_id, session_name)
+                messagebox.showinfo("Success", "Book sold successfully!", parent=sell)
+                if len(sql_sell.Sell().Storage()) != 0:
+                    btn_list.config(state="normal")
+                sell.destroy()
+            except Exception as e:
+                print(e)
+                messagebox.showerror("Error", "Please check again\nMaybe select a book and a customer", parent=sell)
+                return
+
     def sell_book():
         ask = messagebox.askyesno("Sell Book", "Are you sure you want to sell this book?", parent=sell)
         if ask == True:
-            messagebox.showinfo("Sell Book", "Book sold successfully!", parent=sell)
-            sell.destroy()
+            exec_sell()
         else:
             pass
-        
+
+#Sale List window
+def sale_list():
+    # Configure style for table
+    style = ttk.Style()
+    style.theme_use("default")
+    style.configure ("Treeview",
+        background="#D3D3D3",
+        foreground="black",
+        rowheight=25,
+        fieldbackground="silver"
+        )
     
+    # Change color of selected record
+    style.map('Treeview',background=[('selected','#347083')])
+
+    list_sale = tk.Toplevel(window)
+    list_sale.title("Sale List")
+    list_sale.geometry("1100x500")
+    list_sale.resizable(False,False)
+
+    lbl_img = tk.Label(list_sale, image = imglist)
+    lbl_img.place(x=0, y=0)
+    lbl_title = tk.Label(list_sale, text="Sale List", font=("Arial", 25, 'bold'), justify="center", bg='white', fg='#318bd2')
+    lbl_title.place(x=470, y=40)
+
+    # Create frame for treeview
+    tree_frame = tk.Frame(list_sale)
+    tree_frame.place(x=70, y=90)
+
+    # Create scrollbar
+    tree_scroll = tk.Scrollbar(tree_frame)
+    tree_scroll.pack(side='right',fill="y")
+
+    tree = ttk.Treeview(tree_frame, yscrollcommand=tree_scroll.set)
+    tree.pack()
+
+    # Configure scrollbar
+    tree_scroll.config(command=tree.yview)
+    tree['show']='headings'
+
+    # Define number of columns
+    tree["columns"] = ("No.", "Book ID", "Book Title", "Quantity", "Customer ID", "Customer Name", "Staff ID", "Staff Name", "Date & Time")
+    #Assign the width,minwidth and anchor to the respective columns 
+    tree.column ("No.", width=50, minwidth=20,anchor=tk.CENTER)
+    tree.column ("Book ID", width=80, minwidth=50,anchor=tk.CENTER)
+    tree.column ("Book Title", width=155, minwidth=100,anchor=tk.CENTER)
+    tree.column ("Quantity", width=65, minwidth=20,anchor=tk.CENTER)
+    tree.column ("Customer ID", width=80, minwidth=50,anchor=tk.CENTER)
+    tree.column ("Customer Name", width=155, minwidth=100,anchor=tk.CENTER)
+    tree.column ("Staff ID", width=80, minwidth=50,anchor=tk.CENTER)
+    tree.column ("Staff Name", width=155, minwidth=100,anchor=tk.CENTER)
+    tree.column ("Date & Time", width=130, minwidth=100,anchor=tk.CENTER)
+
+    #Assign the heading names to the respective columns 
+    tree.heading ("No.", text="No.", anchor=tk.CENTER)
+    tree.heading ("Book ID", text="Book ID", anchor=tk.CENTER)
+    tree.heading ("Book Title", text="Book Title", anchor=tk.CENTER)
+    tree.heading ("Quantity", text="Quantity", anchor=tk.CENTER)
+    tree.heading ("Customer ID", text="Customer ID", anchor=tk.CENTER)
+    tree.heading ("Customer Name", text="Customer Name", anchor=tk.CENTER)
+    tree.heading ("Staff ID", text="Staff ID", anchor=tk.CENTER)
+    tree.heading ("Staff Name", text="Staff Name", anchor=tk.CENTER)
+    tree.heading ("Date & Time", text="Date & Time", anchor=tk.CENTER)
+
+    # Color for odd and even row
+    tree.tag_configure('even_row',background='white')
+    tree.tag_configure('odd_row',background='lightblue')
+
+    def list_all():
+        tree.delete(*tree.get_children())
+        db = sql_sell.Sell().Storage()
+        for i in range(0,len(db)):
+            if i % 2 == 0:
+                tree.insert('', i, iid= None, values = (db[i][0],db[i][1],db[i][2],db[i][3],db[i][4],db[i][5],db[i][6],db[i][7],db[i][8],">"+db[i][0]),tags='even_row')
+            else:
+                tree.insert('', i, iid= None, values = (db[i][0],db[i][1],db[i][2],db[i][3],db[i][4],db[i][5],db[i][6],db[i][7],db[i][8],">"+db[1][0]),tags='odd_row')
+    list_all()
+
+    btn_refresh = tk.Button(list_sale, text="Refresh",  width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=lambda: list_all())
+    btn_refresh['font'] = ['Arial', '15', 'bold']
+    btn_search1 = tk.Button(list_sale, text="Search", width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=lambda: Search_interface())
+    btn_search1['font'] = ['Arial', '15', 'bold']
+    btn_exit = tk.Button(list_sale, text="Exit", width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=list_sale.destroy)
+    btn_exit['font'] = ['Arial', '15', 'bold']
+
+    btn_refresh.place(x=72, y=390)
+    btn_search1.place(x=267, y=390)
+    btn_exit.place(x=852, y=390)
+
+    def Search_interface():
+        search_inter = tk.Toplevel(list_sale)
+        frm = tk.Frame(search_inter)
+        # Create widgets
+        btn_font = tkfont.Font(family="Arial", size=15)
+
+        # Create labels
+        lbl_book = tk.Label(frm, text="Search Book", font=("Arial", 20, 'bold'), justify="center")
+        lbl_book_id = tk.Label(frm, text="Book ID", font=("Arial", 15))
+        lbl_book_title = tk.Label(frm, text="Book Title", font=("Arial", 15))
+        lbl_book_genre = tk.Label(frm, text="Book Genre", font=("Arial", 15))
+        lbl_book_author = tk.Label(frm, text="Book Author", font=("Arial", 15))
+        lbl_book_target = tk.Label(frm, text="Book Target", font=("Arial", 15))
+        lbl_book_publisher = tk.Label(frm, text="Book Publisher", font=("Arial", 15))
+        lbl_book_price = tk.Label(frm, text="Book Price (Format: ?-?)", font=("Arial", 15))
+        lbl_book_quantity = tk.Label(frm, text="Book Quantity (Format: ?-?)", font=("Arial", 15))
+
+
+        # Create entry boxes   
+        global id, title, genre, author, target, publisher, price, quantity
+        id = tk.StringVar()
+        title = tk.StringVar()
+        genre = tk.StringVar()
+        author = tk.StringVar()
+        target = tk.StringVar()
+        publisher = tk.StringVar()
+        price = tk.StringVar()
+        quantity = tk.StringVar()
+
+        ent_book_id = tk.Entry(frm, width=30, textvariable=id, font=("Arial", 15))
+        ent_book_title = tk.Entry(frm, width=30, textvariable=title, font=("Arial", 15))
+        ent_book_genre = tk.Entry(frm, width=30, textvariable=genre, font=("Arial", 15))
+        ent_book_author = tk.Entry(frm, width=30, textvariable=author, font=("Arial", 15))
+        ent_book_target = tk.Entry(frm, width=30, textvariable=target, font=("Arial", 15))
+        ent_book_publisher = tk.Entry(frm, width=30, textvariable=publisher, font=("Arial", 15))
+        ent_book_price = tk.Entry(frm, width=30, textvariable=price, font=("Arial", 15))
+        ent_book_quantity = tk.Entry(frm, width=30, textvariable=quantity, font=("Arial", 15))
+
+        # # Create buttons
+        # btn_search = tk.Button(frm, text="Search", width=21, bg='#0052cc', fg='#ffffff', command=lambda: Search_book(id.get(), title.get(), genre.get(), author.get(), target.get(), publisher.get(), price.get(), quantity.get()))
+        # btn_search['font'] = btn_font
+        btn_exit = tk.Button(frm, text="Exit", width=21, command=search_inter.destroy, bg='#fc0303', fg='#ffffff')
+        btn_exit['font'] = btn_font
+
+        # Style labels, entry boxes and buttons
+        frm.grid(row=0, column=0, sticky="nsew")
+        lbl_book.grid(row=0, column=0, columnspan=2, padx= 15, pady=15, sticky="nsew")
+        lbl_book_id.grid(row=1, column=0, padx= 15, pady=5, sticky="nsew")
+        lbl_book_title.grid(row=3, column=0, padx= 15, pady=5, sticky="nsew")
+        lbl_book_genre.grid(row=4, column=0, padx= 15, pady=5, sticky="nsew")
+        lbl_book_author.grid(row=5, column=0, padx= 15, pady=5, sticky="nsew")
+        lbl_book_target.grid(row=6, column=0, padx= 15, pady=5, sticky="nsew")
+        lbl_book_publisher.grid(row=7, column=0, padx= 15, pady=5, sticky="nsew")
+        lbl_book_price.grid(row=8, column=0, padx= 15, pady=5, sticky="nsew")
+        lbl_book_quantity.grid(row=9, column=0, padx= 15, pady=5, sticky="nsew") 
+        ent_book_id.grid(row=1, column=1, padx= 15, pady=5, sticky="nsew")
+        ent_book_title.grid(row=3, column=1, padx= 15, pady=5, sticky="nsew")
+        ent_book_genre.grid(row=4, column=1, padx= 15, pady=5, sticky="nsew")
+        ent_book_author.grid(row=5, column=1, padx= 15, pady=5, sticky="nsew")
+        ent_book_target.grid(row=6, column=1, padx= 15, pady=5, sticky="nsew")
+        ent_book_publisher.grid(row=7, column=1, padx= 15, pady=5, sticky="nsew")
+        ent_book_price.grid(row=8, column=1, padx= 15, pady=5, sticky="nsew")
+        ent_book_quantity.grid(row=9, column=1, padx= 15, pady=5, sticky="nsew")
+        btn_exit.grid(row=10, column=0, padx= 15, pady=5, sticky="nsew")
+        # btn_search.grid(row=10, column=1, padx= 15, pady=5, sticky="nsew")
+        
+        # Prevent resizing
+        search_inter.resizable(False, False)
+
 def exit_verify():
         # Verify if the user wants to exit the program
         box = messagebox.askquestion("Exit", "Are you sure you want to exit?")
@@ -980,6 +1164,7 @@ if os.path.exists("bookstore.db"):
     window = tk.Tk()
     window.geometry("800x600")
     window.protocol("WM_DELETE_WINDOW", exit_verify)
+    
 
     imgbg = tk.PhotoImage(file="img/main.png")
     imgbook = tk.PhotoImage(file="img/book.png")
@@ -997,6 +1182,8 @@ if os.path.exists("bookstore.db"):
     img_a_b = add_b.subsample(2, 2)
     sell = tk.PhotoImage(file="img/icons/s_b.png")
     sell_b = sell.subsample(2, 2)
+    book_sale = tk.PhotoImage(file="img/icons/b_s.png")
+    img_b_s = book_sale.subsample(2, 2)
     ex = tk.PhotoImage(file="img/icons/exit.png")
     img_e = ex.subsample(2, 2)
     img_e2 = ex.subsample(3, 3)
@@ -1017,6 +1204,7 @@ if os.path.exists("bookstore.db"):
         session_name = session_get[2]
 
     window.title(f"BSMS Beta - Logged in as staff: {session_id} - {session_name}")
+    window.resizable(False, False)
     lbl_session = tk.Label(master=window, text='Welcome, ' + session_id +' - '+ session_name, font=("Arial", 13, "bold"), bg='#73a2c7', justify="left", fg='white')
     lbl_welcome = tk.Label(master=window, text="Book Store Management System\n(Staff Edition)", font=("Arial", 25, 'bold'), justify="center", bg='white', fg='#318bd2')
     lb_cpr = tk.Label(window, text="© 2023 - BI12 - ICT Team 17\nVersion BETA", font=("Arial", 6), bg='#73a2c7', justify="right", fg='white')
@@ -1029,8 +1217,12 @@ if os.path.exists("bookstore.db"):
     btn_add_customer['font'] = btn_font
     btn_customer = tk.Button(image=img_m_c,text="Customer List", compound = 'left', width=231, height=50, bg='#ab4d00', fg='#ffffff', command = customer_list)
     btn_customer['font'] = btn_font
-    btn_sell_book = tk.Button(image= sell_b, text="Sell Book",compound = 'left', width=495, height=50, bg='#0052cc', fg='#ffffff', command = sell_book_func)
+    btn_sell_book = tk.Button(image= sell_b, text="Sell Book",compound = 'left', width=231, height=50, bg='#0052cc', fg='#ffffff', command = sell_book_func)
     btn_sell_book['font'] = btn_font
+    btn_list = tk.Button(image=img_b_s, text="Sale List",compound = 'left', width=231, height=50, bg='#0052cc', fg='#ffffff', command = sale_list)
+    btn_list['font'] = btn_font
+    if len(sql_sell.Sell().Storage()) == 0:
+        btn_list.config(state="disabled")
     if len(sql_books.Database().Storage()) == 0:
         btn_book.config(state="disabled")
     if len(sql_customers.Database().Storage()) == 0:
@@ -1050,6 +1242,7 @@ if os.path.exists("bookstore.db"):
     btn_add_customer.place(x=143, y=275)
     btn_customer.place(x=407, y=275)
     btn_sell_book.place(x=143, y=355)
+    btn_list.place(x=407, y=355)
     btn_cut.place(x=143, y=435)
     lbl_session.place(x=5, y=5)
     lb_cpr.place(x=690, y=573)

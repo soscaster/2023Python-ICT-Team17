@@ -3,6 +3,7 @@ from domains import sql_staff
 from domains import sql_books
 from domains import sql_store
 from domains import sql_customers
+from domains import sql_sell
 
 import re
 
@@ -51,6 +52,13 @@ def input_store_info(id,name,address,phone,email):
 def add_customer(id, name, dob, address, phone, email):
     try:
         sql_customers.Database().Insert(id, name, dob, address, phone, email)
+        return True
+    except:
+        return False
+    
+def add_sell(book_id, book_title, quantity, cus_id, cus_name, staff_id, staff_name):
+    try:
+        sql_sell.Sell().Insert(book_id, book_title, quantity, cus_id, cus_name, staff_id, staff_name)
         return True
     except:
         return False
