@@ -562,25 +562,53 @@ def add_book():
 
 #Book List window
 def book_list():
-    clear()
+    # Configure style for table
+    style = ttk.Style()
+    style.theme_use("default")
+    style.configure ("Treeview",
+        background="#D3D3D3",
+        foreground="black",
+        rowheight=25,
+        fieldbackground="silver"
+        )
+    
+    # Change color of selected record
+    style.map('Treeview',background=[('selected','#347083')])
+
     list_book = tk.Toplevel(window)
-
     list_book.title("Book List")
-    frm = tk.Frame(list_book)
-    tree = ttk.Treeview(list_book)
-    tree['show']='headings'
-
+    list_book.geometry("1100x500")
     list_book.resizable(False,False)
+
+    lbl_img = tk.Label(list_book, image = imglist)
+    lbl_img.place(x=0, y=0)
+    lbl_title = tk.Label(list_book, text="Book List", font=("Arial", 25, 'bold'), justify="center", bg='white', fg='#318bd2')
+    lbl_title.place(x=470, y=40)
+
+    # Create frame for treeview
+    tree_frame = tk.Frame(list_book)
+    tree_frame.place(x=70, y=90)
+
+    # Create scrollbar
+    tree_scroll = tk.Scrollbar(tree_frame)
+    tree_scroll.pack(side='right',fill="y")
+
+    tree = ttk.Treeview(tree_frame, yscrollcommand=tree_scroll.set)
+    tree.pack()
+
+    # Configure scrollbar
+    tree_scroll.config(command=tree.yview)
+    tree['show']='headings'
 
     # Define number of columns
     tree["columns"] = ("ID", "Title", "Genre", "Author", "Target", "Publisher", "Price", "Quantity")
     #Assign the width,minwidth and anchor to the respective columns 
-    tree.column ("ID", width=100, minwidth=50,anchor=tk.CENTER) 
-    tree.column ("Title", width=200, minwidth=100,anchor=tk.CENTER) 
-    tree.column ("Genre", width=250, minwidth=150,anchor=tk.CENTER) 
-    tree.column ("Author", width=200, minwidth=100, anchor=tk .CENTER) 
-    tree.column ("Target", width=250, minwidth=150, anchor=tk .CENTER) 
-    tree.column ("Publisher", width=250, minwidth=150, anchor=tk.CENTER)
+    tree.column ("ID", width=50, minwidth=20,anchor=tk.CENTER) 
+    tree.column ("Title", width=150, minwidth=100,anchor=tk.CENTER) 
+    tree.column ("Genre", width=100, minwidth=50,anchor=tk.CENTER) 
+    tree.column ("Author", width=150, minwidth=100, anchor=tk .CENTER) 
+    tree.column ("Target", width=100, minwidth=50, anchor=tk .CENTER) 
+    tree.column ("Publisher", width=150, minwidth=100, anchor=tk.CENTER)
     tree.column ("Price", width=150, minwidth=100, anchor=tk .CENTER) 
     tree.column ("Quantity", width=100, minwidth=50, anchor=tk.CENTER)
 
@@ -592,7 +620,11 @@ def book_list():
     tree.heading ("Target", text="Target", anchor=tk.CENTER)
     tree.heading ("Publisher", text="Publisher", anchor=tk.CENTER) 
     tree.heading ("Price", text="Price", anchor=tk.CENTER)
-    tree.heading ("Quantity", text="Quantity", anchor=tk.CENTER) 
+    tree.heading ("Quantity", text="Quantity", anchor=tk.CENTER)
+
+    # Color for odd and even row
+    tree.tag_configure('even_row',background='white')
+    tree.tag_configure('odd_row',background='lightblue')
 
     def list_all():
         tree.delete(*tree.get_children())
@@ -622,12 +654,22 @@ def book_list():
         else:
             messagebox.showerror("Error", "Customer not deleted!", parent = list_book)
 
-    tree.pack()
-    btn_refresh = tk.Button(list_book, text="Refresh", width=23, command=lambda: list_all())
-    btn_search = tk.Button(list_book, text="Search", width=23, command=lambda: Search_interface())
-    btn_delete = tk.Button(list_book, text="Delete", width=23, command=lambda: del_cf())
-    btn_update = tk.Button(list_book, text="Update", width=23, command=lambda: mod_book())
-    btn_exit = tk.Button(list_book, text="Exit", width=23, command=list_book.destroy)
+    btn_refresh = tk.Button(list_book, text="Refresh",  width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=lambda: list_all())
+    btn_refresh['font'] = ['Arial', '15', 'bold']
+    btn_search = tk.Button(list_book, text="Search", width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=lambda: Search_interface())
+    btn_search['font'] = ['Arial', '15', 'bold']
+    btn_delete = tk.Button(list_book, text="Delete", width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=lambda: del_cf())
+    btn_delete['font'] = ['Arial', '15', 'bold']
+    btn_update = tk.Button(list_book, text="Update", width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=lambda: mod_book())
+    btn_update['font'] = ['Arial', '15', 'bold']
+    btn_exit = tk.Button(list_book, text="Exit", width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=list_book.destroy)
+    btn_exit['font'] = ['Arial', '15', 'bold']
+
+    btn_refresh.place(x=72, y=390)
+    btn_search.place(x=267, y=390)
+    btn_delete.place(x=462, y=390)
+    btn_update.place(x=657, y=390)
+    btn_exit.place(x=852, y=390)
 
     def Search_interface():
         search_inter = tk.Toplevel(list_book)
@@ -825,14 +867,7 @@ def book_list():
         for i in range(10):
             frm_book.rowconfigure(i, weight=1, minsize=50)
         for i in range(2):  
-            frm_book.columnconfigure(i, weight=1, minsize=75)      
-
-
-    btn_refresh.pack()
-    btn_search.pack()
-    btn_delete.pack()
-    btn_update.pack()
-    btn_exit.pack()
+            frm_book.columnconfigure(i, weight=1, minsize=75)
 
 # -------------------------
 # SELL BOOK FUNC
