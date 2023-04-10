@@ -912,7 +912,8 @@ def sell_book_func():
         for i in get_book:
             if book_title.get() == i[0] + " - " + i[1] + " - " + str(i[2]):
                 book_quantity = str(i[2])
-                lb_available.config(text=f"Quantity: {book_quantity}\nPlease notice!")
+                book_id = i[0]
+                lb_available.config(text=f"ID: {book_id} - Quantity: {book_quantity}\nPlease notice!")
     drop_book = tk.OptionMenu(sell, book_title, *book_list, command=change_dropdown)
     drop_book.config(width=40, height=2, font=("Arial", 12), bg='white', fg='firebrick1', activebackground='firebrick1', activeforeground='white', highlightthickness=0)
     drop_book["menu"].config(bg='white', fg='firebrick1', activebackground='firebrick1', activeforeground='white')
@@ -951,7 +952,7 @@ def sell_book_func():
     # Style labels, entry boxes and buttons
     lb_title.place(x=420, y=90)
     lb_book.place(x=300, y=150)
-    lb_available.place(x=615, y=140)
+    lb_available.place(x=600, y=140)
     drop_book.place(x=300, y=180)
     lb_customer.place(x=300, y=240)
     drop_customer.place(x=300, y=270)
@@ -967,9 +968,10 @@ def sell_book_func():
             return
         else:
             book_quantity = book_title.get().split(" - ")[2]
-            if int(box_quantity.get()) > int(book_quantity):
+            if func.check_book_quantity(int(book_quantity)) == False:
+                messagebox.showerror("Error","Out of stock!", parent=sell)
+            elif int(box_quantity.get()) > int(book_quantity):
                 messagebox.showerror("Error", "Inputed quantity is greater than available!\nPlease try again.", parent=sell)
-                return
             else:
                 try:
                     book_id = book_title.get().split(" - ")[0]

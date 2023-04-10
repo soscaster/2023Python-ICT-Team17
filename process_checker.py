@@ -204,3 +204,7 @@ def check_if_empty(data):
         return True
     else:
         return False
+
+def check_book_quantity(data):
+    if data == 0:
+        return False
