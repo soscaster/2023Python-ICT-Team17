@@ -897,6 +897,8 @@ def sell_book_func():
     lb_book = tk.Label(sell, text="Book Title", font=("Arial", 15), bg='white', fg='#318bd2')
     lb_customer = tk.Label(sell, text="Customer", font=("Arial", 15), bg='white', fg='#318bd2')
     lb_quantity = tk.Label(sell, text="Quantity", font=("Arial", 15), bg='white', fg='#318bd2')
+    # Create a label to display the selected book quantity
+    lb_available = tk.Label(sell, font=("Arial", 10), bg='white', fg='#318bd2', justify="right")
 
     # Create dropdown menu for book title
     get_data_b = sql_books.Database()
@@ -905,10 +907,16 @@ def sell_book_func():
     book_title.set("Select Book")
     book_list = []
     for i in get_book:
-        book_list.append(i[0] + " - " + i[1])
-    drop_book = tk.OptionMenu(sell, book_title, *book_list)
+        book_list.append(i[0] + " - " + i[1] + " - " + str(i[2]))
+    def change_dropdown(*args):
+        for i in get_book:
+            if book_title.get() == i[0] + " - " + i[1] + " - " + str(i[2]):
+                book_quantity = str(i[2])
+                lb_available.config(text=f"Quantity: {book_quantity}\nPlease notice!")
+    drop_book = tk.OptionMenu(sell, book_title, *book_list, command=change_dropdown)
     drop_book.config(width=40, height=2, font=("Arial", 12), bg='white', fg='firebrick1', activebackground='firebrick1', activeforeground='white', highlightthickness=0)
     drop_book["menu"].config(bg='white', fg='firebrick1', activebackground='firebrick1', activeforeground='white')
+
     
     # Create dropdown menu for customer
     get_data_c = sql_customers.Database()
@@ -943,6 +951,7 @@ def sell_book_func():
     # Style labels, entry boxes and buttons
     lb_title.place(x=420, y=90)
     lb_book.place(x=300, y=150)
+    lb_available.place(x=615, y=140)
     drop_book.place(x=300, y=180)
     lb_customer.place(x=300, y=240)
     drop_customer.place(x=300, y=270)
@@ -957,25 +966,31 @@ def sell_book_func():
             messagebox.showerror("Error", "Please enter a quantity!", parent=sell)
             return
         else:
-            try:
-                book_id = book_title.get().split(" - ")[0]
-                book_tit = book_title.get().split(" - ")[1]
-                customer_id = customer.get().split(" - ")[0]
-                customer_name = customer.get().split(" - ")[1]
-                session_get = sql_session.Session().Print()
-                session_id = session_get[1]
-                session_name = session_get[2]
-                quantity = box_quantity.get()
-                print(f"{book_id} - {book_tit} - {quantity} - {customer_id} - {customer_name} - {session_id} - {session_name}")
-                func.add_sell(book_id, book_tit, quantity, customer_id, customer_name, session_id, session_name)
-                messagebox.showinfo("Success", "Book sold successfully!", parent=sell)
-                if len(sql_sell.Sell().Storage()) != 0:
-                    btn_list.config(state="normal")
-                sell.destroy()
-            except Exception as e:
-                print(e)
-                messagebox.showerror("Error", "Please check again\nMaybe select a book and a customer", parent=sell)
+            book_quantity = book_title.get().split(" - ")[2]
+            if int(box_quantity.get()) > int(book_quantity):
+                messagebox.showerror("Error", "Inputed quantity is greater than available!\nPlease try again.", parent=sell)
                 return
+            else:
+                try:
+                    book_id = book_title.get().split(" - ")[0]
+                    book_tit = book_title.get().split(" - ")[1]
+                    customer_id = customer.get().split(" - ")[0]
+                    customer_name = customer.get().split(" - ")[1]
+                    session_get = sql_session.Session().Print()
+                    session_id = session_get[1]
+                    session_name = session_get[2]
+                    quantity = int(box_quantity.get())
+                    print(f"{book_id} - {book_tit} - {str(quantity)} - {customer_id} - {customer_name} - {session_id} - {session_name}")
+                    func.add_sell(book_id, book_tit, quantity, customer_id, customer_name, session_id, session_name)
+                    func.update_quantity(book_id, quantity)
+                    messagebox.showinfo("Success", "SOLD!", parent = sell)
+                    if len(sql_sell.Sell().Storage()) != 0:
+                        btn_list.config(state="normal")
+                    sell.destroy()
+                except Exception as e:
+                    print(e)
+                    messagebox.showerror("Error", "Please check again\nMaybe select a book and a customer", parent=sell)
+                    return
 
     def sell_book():
         ask = messagebox.askyesno("Sell Book", "Are you sure you want to sell this book?", parent=sell)

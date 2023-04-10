@@ -62,6 +62,13 @@ def add_sell(book_id, book_title, quantity, cus_id, cus_name, staff_id, staff_na
         return True
     except:
         return False
+    
+def update_quantity(book_id, quantity):
+    try:
+        sql_books.Database().Sell(book_id, quantity)
+        return True
+    except:
+        return False
 
 def Search_staff(id):
     try:
