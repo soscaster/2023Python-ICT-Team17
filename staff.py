@@ -792,7 +792,7 @@ def book_list():
                 messagebox.showerror("Error","Customer e-mail address cannot be empty!", parent=book)
             elif func.check_if_empty(book_price.get()) == False:
                     messagebox.showerror("Error", "Book price cannot be empty!\nAre you giving them away?!", parent=book)
-            elif func.check_if_empty(book_quantity) == False:
+            elif func.check_if_empty(book_quantity.get()) == False:
                 messagebox.showerror("Error", "Quantity cannot be empty!", parent=book)
             elif sql_books.Database().Validate(book_id.get(), book_title.get(), book_author.get(), 2) == True:
                 messagebox.showerror("Error", "Book with modfied info is already exist!\nPlease try again!", parent = book)
