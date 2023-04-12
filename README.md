@@ -1,5 +1,5 @@
 # Advanced Programming With Python - Group Project
-## Topic 28. Book Store Information Management System (e.g. Tien Phong bookstore)
+## Topic 28. Book Store Information Management System (e.g. Tien Phong bookstore) 
 
 ## 📝 Description
 This project is a book store information management system. It is a GUI-friendly application that allows admins and staffs to manage the book store's information. The application is written in Python 3 and uses the Tkinter library for the GUI. The application is also connected to a SQLite database to store the information.
@@ -12,6 +12,7 @@ This project is a book store information management system. It is a GUI-friendly
 - [x] Manage books
 - [x] Manage customers
 - [x] Manage employees
+- [x] Sell books and generate invoices
 
 ## 📝 How to run
 - [x] Clone the repository
