@@ -45,7 +45,7 @@ class Database:
         return records
     
     def GetBooks(self):
-        self.dbCursor.execute("SELECT id, title, quantity FROM books")
+        self.dbCursor.execute("SELECT id, title, quantity, price FROM books")
         records = self.dbCursor.fetchall()
         return records
     

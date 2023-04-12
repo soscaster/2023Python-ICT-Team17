@@ -6,6 +6,7 @@ import process_checker as func
 import os
 import zipfile
 import datetime
+from reportlab.pdfgen import canvas
 clear = lambda: os.system('clear')
 from domains import sql_session
 from domains import sql_customers
@@ -907,13 +908,13 @@ def sell_book_func():
     book_title.set("Select Book")
     book_list = []
     for i in get_book:
-        book_list.append(i[0] + " - " + i[1] + " - " + str(i[2]))
+        book_list.append(i[0] + " - " + i[1] + " - " + str(i[2]) + " - " + str(i[3]))
     def change_dropdown(*args):
         for i in get_book:
-            if book_title.get() == i[0] + " - " + i[1] + " - " + str(i[2]):
+            if book_title.get() == i[0] + " - " + i[1] + " - " + str(i[2]) + " - " + str(i[3]):
                 book_quantity = str(i[2])
                 book_id = i[0]
-                lb_available.config(text=f"ID: {book_id} - Quantity: {book_quantity}\nPlease notice!")
+                lb_available.config(text=f"ID: {book_id} - Quantity: {book_quantity}\nPlease notice!", justify="right")
     drop_book = tk.OptionMenu(sell, book_title, *book_list, command=change_dropdown)
     drop_book.config(width=40, height=2, font=("Arial", 12), bg='white', fg='firebrick1', activebackground='firebrick1', activeforeground='white', highlightthickness=0)
     drop_book["menu"].config(bg='white', fg='firebrick1', activebackground='firebrick1', activeforeground='white')
@@ -976,23 +977,103 @@ def sell_book_func():
                 try:
                     book_id = book_title.get().split(" - ")[0]
                     book_tit = book_title.get().split(" - ")[1]
+                    book_price = book_title.get().split(" - ")[3]
                     customer_id = customer.get().split(" - ")[0]
                     customer_name = customer.get().split(" - ")[1]
                     session_get = sql_session.Session().Print()
                     session_id = session_get[1]
                     session_name = session_get[2]
                     quantity = int(box_quantity.get())
-                    print(f"{book_id} - {book_tit} - {str(quantity)} - {customer_id} - {customer_name} - {session_id} - {session_name}")
-                    func.add_sell(book_id, book_tit, quantity, customer_id, customer_name, session_id, session_name)
+                    print(f"{book_id} - {book_tit} - {str(book_price)} - {str(quantity)} - {customer_id} - {customer_name} - {session_id} - {session_name}")
+                    func.add_sell(book_id, book_tit, book_price, quantity, customer_id, customer_name, session_id, session_name)
                     func.update_quantity(book_id, quantity)
-                    messagebox.showinfo("Success", "SOLD!", parent = sell)
                     if len(sql_sell.Sell().Storage()) != 0:
                         btn_list.config(state="normal")
+                    ask = messagebox.askyesno("Success", "SOLD!\nDo you want to generate the invoice?", parent = sell)
+                    if ask == True:
+                        invoice()
+                        messagebox.showinfo("Success", "Done!\nFile saved at the 'invoice' folder.", parent = sell)
                     sell.destroy()
                 except Exception as e:
                     print(e)
                     messagebox.showerror("Error", "Please check again\nMaybe select a book and a customer", parent=sell)
                     return
+    # Print 
+    def invoice():
+        # Set the os.path to save the pdf invoice file
+        time = str(datetime.datetime.now().strftime("%d-%m-%Y_%H:%M:%S"))
+        try:
+            os.makedirs("invoice")
+        except FileExistsError:
+        # directory already exists
+            pass
+        canvas_name = f"invoice/HOADON_{time}.pdf"
+        c = canvas.Canvas(canvas_name, pagesize = (200, 250), bottomup= 0)
+        db = sql_store.Database().Storage()
+        
+        c.setFont("Times-Bold", 10)
+        c.setFillColorRGB(0, 0, 0)
+
+        c.line(70, 22, 180, 22)
+        c.line(5, 45, 195, 45)
+        c.line(15, 120, 185, 120)
+        c.line(35, 108, 35, 220)
+        c.line(105, 108, 105, 220)
+        c.line(135, 108, 135, 220)
+        c.line(155, 108, 155, 220)
+        c.line(15, 220, 185, 220)
+
+        c.translate(10, 40)
+        c.scale(1, -1)
+        c.drawImage(usth, 0, 0, width=50, height=30)
+
+        c.scale(1, -1)
+        c.translate(-10, -40)
+
+        c.setFont("Times-Bold", 10)
+        c.drawCentredString(125, 20, db[0][1])
+
+        c.setFont("Times-Bold", 5)
+        c.drawCentredString(125, 30, db[0][2])
+        c.drawCentredString(125, 36, db[0][3])
+        c.setFont("Times-Bold", 6)
+        c.drawCentredString(125, 42, db[0][4])
+
+        c.setFont("Times-Bold", 8)
+        c.setFillColorRGB(1, 0, 0)
+        c.drawCentredString(100, 55, "HOA DON / INVOICE")
+
+        c.setFont("Times-Bold", 5)
+        c.setFillColorRGB(0, 0, 0)
+        c.drawRightString(105, 70, "Ma hoa don / Invoice No. :")
+        c.drawString(110, 70, "XXXXXXX")
+
+        c.drawRightString(105, 80, "Xuat hoa don / Date & Time:")
+        c.drawString(110, 80, time.split("_")[0] + " - " + time.split("_")[1])
+
+        c.drawRightString(105, 90, "Ma khach hang / Customer ID :")
+        c.drawString(110, 90, customer.get().split(" - ")[0])
+
+        c.drawRightString(105, 100, "Ten khach hang / Customer Name :")
+        c.drawString(110, 100, customer.get().split(" - ")[1])
+
+        c.roundRect(15, 108, 170, 130, 10, stroke=1, fill=0)
+        c.setFillColorRGB(1, 0, 0)
+        c.drawCentredString(25, 118, "No.")
+        c.drawCentredString(70, 118, "Book Title")
+        c.drawCentredString(120, 118, "Price")
+        c.drawCentredString(145, 118, "Qty.")
+        c.drawCentredString(169, 118, "Total")
+
+        c.drawCentredString(25, 215, "1")
+        c.drawCentredString(70, 215, book_title.get().split(" - ")[1])
+        c.drawCentredString(120, 215, book_title.get().split(" - ")[3])
+        c.drawCentredString(145, 215, box_quantity.get())
+        c.drawCentredString(169, 215, str(int(box_quantity.get()) * int(book_title.get().split(" - ")[3])))
+
+        c.drawString(30, 230, f"Cam on quy khach da mua hang tai {db[0][1]}!")
+        c.showPage()
+        c.save()
 
     def sell_book():
         ask = messagebox.askyesno("Sell Book", "Are you sure you want to sell this book?", parent=sell)
@@ -1074,9 +1155,9 @@ def sale_list():
         db = sql_sell.Sell().Storage()
         for i in range(0,len(db)):
             if i % 2 == 0:
-                tree.insert('', i, iid= None, values = (db[i][0],db[i][1],db[i][2],db[i][3],db[i][4],db[i][5],db[i][6],db[i][7],db[i][8],">"+db[i][0]),tags='even_row')
+                tree.insert('', i, iid= None, values = (db[i][0],db[i][1],db[i][3],db[i][4],db[i][5],db[i][6],db[i][7],db[i][8],db[i][9]),tags='even_row')
             else:
-                tree.insert('', i, iid= None, values = (db[i][0],db[i][1],db[i][2],db[i][3],db[i][4],db[i][5],db[i][6],db[i][7],db[i][8],">"+db[1][0]),tags='odd_row')
+                tree.insert('', i, iid= None, values = (db[i][0],db[i][1],db[i][3],db[i][4],db[i][5],db[i][6],db[i][7],db[i][8],db[i][9]),tags='odd_row')
     list_all()
 
     btn_refresh = tk.Button(list_sale, text="Refresh",  width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=lambda: list_all())
@@ -1206,6 +1287,7 @@ if os.path.exists("bookstore.db"):
     img_e2 = ex.subsample(3, 3)
     save = tk.PhotoImage(file="img/icons/save.png")
     img_save = save.subsample(3, 3)
+    usth = os.path.abspath("img/USTH_Logo.png")
 
     lbl_hihi = tk.Label(image=imgbg)
     lbl_hihi.place(x=0, y=0)
