@@ -3,12 +3,17 @@ sys.dont_write_bytecode = True
 import tkinter as tk
 from tkinter import messagebox, ttk, font as tkfont
 import os
+import platform
 import zipfile
-clear = lambda: os.system('clear')
 from domains import sql_staff
 from domains import sql_store
 from domains import sql_customers
 import process_checker as fu
+
+if platform.system() == "Windows":
+    clear = lambda: os.system('cls')
+else:
+    clear = lambda: os.system('clear')
 
 # Create a new window for modifying store info [DONE]
 def modify_store():
