@@ -4,6 +4,7 @@ import tkinter as tk
 from tkinter import messagebox, ttk, font as tkfont
 import process_checker as func
 import os
+import platform
 import zipfile
 import datetime
 from reportlab.pdfgen import canvas
@@ -13,6 +14,11 @@ from domains import sql_customers
 from domains import sql_books
 from domains import sql_store
 from domains import sql_sell
+
+if platform.system() == "Windows":
+    clear = lambda: os.system('cls')
+else:
+    clear = lambda: os.system('clear')
 
 # CUSTOMER SECTION
 
