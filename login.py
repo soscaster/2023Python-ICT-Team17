@@ -90,7 +90,7 @@ def runme(t: tk.Tk, event=None):
     if os.path.exists("bookstore.dat"):
         with open("bookstore.dat", "rb") as f:
             with zipfile.ZipFile(f, "r") as zip_ref:
-                    zip_ref.extractall()
+                zip_ref.extractall()
         if os.path.exists("bookstore.dat"):
             os.remove("bookstore.dat")
     else:
@@ -117,17 +117,19 @@ def runme(t: tk.Tk, event=None):
         if len(sql_store.Database().Storage()) == 0:
             messagebox.showinfo(title="Store data error!", message="Store Information not found!\nPlease contact Administrator first!")
         t.destroy()
+        log.close()
         subprocess.call(["python3", "staff.py"])
-    # elif input_usr == "staff" and input_pwd == "staff":
+    # if input_usr == "staff" and input_pwd == "staff":
     #     messagebox.showinfo(title="Success", message="Login successful as staff")
     #     t.destroy()
-    #     subprocess.call(["python3", "staff.py"])
+    #     subprocess.call(["python", "staff.py"])
     elif input_usr == "admin" and input_pwd == "admin":
         id = "admin"
         name = "admin"
         sql_session.Session().Insert(id, name)
         messagebox.showinfo(title="Success", message=f"Login successful as:\nAdministrator\nLogin time: {time}")
         t.destroy()
+        log.close()
         subprocess.call(["python3", "admin.py"])
     elif input_usr == "vuminh" and input_pwd == "npc":
         id = "vuminh"
