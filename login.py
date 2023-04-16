@@ -118,7 +118,7 @@ def runme(t: tk.Tk, event=None):
             messagebox.showinfo(title="Store data error!", message="Store Information not found!\nPlease contact Administrator first!")
         t.destroy()
         log.close()
-        subprocess.call(["python", "staff.py"])
+        subprocess.call(["python3", "staff.py"])
     # if input_usr == "staff" and input_pwd == "staff":
     #     messagebox.showinfo(title="Success", message="Login successful as staff")
     #     t.destroy()
@@ -130,7 +130,7 @@ def runme(t: tk.Tk, event=None):
         messagebox.showinfo(title="Success", message=f"Login successful as:\nAdministrator\nLogin time: {time}")
         t.destroy()
         log.close()
-        subprocess.call(["python", "admin.py"])
+        subprocess.call(["python3", "admin.py"])
     elif input_usr == "vuminh" and input_pwd == "npc":
         id = "vuminh"
         name = "vuminh"
