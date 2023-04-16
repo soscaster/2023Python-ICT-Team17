@@ -445,7 +445,7 @@ def add_book():
         elif func.check_if_empty(book_title) == False:
             messagebox.showerror("Error","Book title cannot be empty!", parent=book)
         elif func.check_if_empty(book_genre) == False:
-            messagebox.showerror("Error","Gerne cannot be empty!", parent=book)
+            messagebox.showerror("Error","Genre cannot be empty!", parent=book)
         elif func.check_if_empty(book_author) == False:
             messagebox.showerror("Error", "Author name cannot be empty!", parent=book)
         elif func.check_if_empty(book_target) == False:
@@ -457,7 +457,7 @@ def add_book():
         elif func.check_if_empty(book_quantity) == False:
             messagebox.showerror("Error", "Quantity cannot be empty!", parent=book)
         elif (sql_books.Database().Validate(book_id, book_title, book_author, 1) == True):
-            messagebox.showerror("Error", "Book already exist!", parent=book)
+            messagebox.showerror("Error", "Book already exists!", parent=book)
         elif (func.validate_price_quatity(book_price, book_quantity)==False):
             messagebox.showerror("Error", "Invalid Price or Quantity!", parent=book)
         else:
@@ -662,7 +662,7 @@ def book_list():
             else:
                 btn_book['state'] = 'normal'
         else:
-            messagebox.showerror("Error", "Customer not deleted!", parent = list_book)
+            messagebox.showerror("Error", "Book not deleted!", parent = list_book)
 
     btn_refresh = tk.Button(list_book, text="Refresh",  width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=lambda: list_all())
     btn_refresh['font'] = ['Arial', '15', 'bold']
@@ -693,7 +693,7 @@ def book_list():
         lbl_book_title = tk.Label(frm, text="Book Title", font=("Arial", 15))
         lbl_book_genre = tk.Label(frm, text="Book Genre", font=("Arial", 15))
         lbl_book_author = tk.Label(frm, text="Book Author", font=("Arial", 15))
-        lbl_book_target = tk.Label(frm, text="Book Target", font=("Arial", 15))
+        lbl_book_target = tk.Label(frm, text="Target Audience", font=("Arial", 15))
         lbl_book_publisher = tk.Label(frm, text="Book Publisher", font=("Arial", 15))
         lbl_book_price = tk.Label(frm, text="Book Price (Format: ?-?)", font=("Arial", 15))
         lbl_book_quantity = tk.Label(frm, text="Book Quantity (Format: ?-?)", font=("Arial", 15))
@@ -782,7 +782,7 @@ def book_list():
             elif func.check_if_empty(book_title.get()) == False:
                 messagebox.showerror("Error","Book title cannot be empty!", parent=book)
             elif func.check_if_empty(book_genre.get()) == False:
-                messagebox.showerror("Error","Gerne cannot be empty!", parent=book)
+                messagebox.showerror("Error","Genre cannot be empty!", parent=book)
             elif func.check_if_empty(book_author.get()) == False:
                 messagebox.showerror("Error", "Author name cannot be empty!", parent=book)
             elif func.check_if_empty(book_target.get()) == False:
@@ -909,7 +909,7 @@ def sell_book_func():
     book_list = []
     for i in get_book:
         book_list.append(i[0] + " - " + i[1] + " - " + str(i[2]) + " - " + str(i[3]))
-    def change_dropdown(*args):
+    def change_dropdown():
         for i in get_book:
             if book_title.get() == i[0] + " - " + i[1] + " - " + str(i[2]) + " - " + str(i[3]):
                 book_quantity = str(i[2])
