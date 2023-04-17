@@ -915,7 +915,7 @@ def sell_book_func():
     book_list = []
     for i in get_book:
         book_list.append(i[0] + " - " + i[1] + " - " + str(i[2]) + " - " + str(i[3]))
-    def change_dropdown():
+    def change_dropdown(*args):
         for i in get_book:
             if book_title.get() == i[0] + " - " + i[1] + " - " + str(i[2]) + " - " + str(i[3]):
                 book_quantity = str(i[2])
