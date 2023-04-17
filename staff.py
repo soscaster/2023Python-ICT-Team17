@@ -7,6 +7,7 @@ import os
 import platform
 import zipfile
 import datetime
+import subprocess
 from reportlab.pdfgen import canvas
 clear = lambda: os.system('clear')
 from domains import sql_session
@@ -990,8 +991,10 @@ def sell_book_func():
                     session_id = session_get[1]
                     session_name = session_get[2]
                     quantity = int(box_quantity.get())
-                    print(f"{book_id} - {book_tit} - {str(book_price)} - {str(quantity)} - {customer_id} - {customer_name} - {session_id} - {session_name}")
-                    func.add_sell(book_id, book_tit, book_price, quantity, customer_id, customer_name, session_id, session_name)
+                    global time
+                    time = str(datetime.datetime.now().strftime("%d-%m-%Y_%Hh%Mp%S"))
+                    print(f"{book_id} - {book_tit} - {str(book_price)} - {str(quantity)} - {customer_id} - {customer_name} - {session_id} - {session_name} - {time}")
+                    func.add_sell(book_id, book_tit, book_price, quantity, customer_id, customer_name, session_id, session_name, time)
                     func.update_quantity(book_id, quantity)
                     if len(sql_sell.Sell().Storage()) != 0:
                         btn_list.config(state="normal")
@@ -1007,12 +1010,12 @@ def sell_book_func():
     # Print 
     def invoice():
         # Set the os.path to save the pdf invoice file
-        time = str(datetime.datetime.now().strftime("%d-%m-%Y_%H h %M p %S"))
         try:
             os.mkdir("invoice")
         except FileExistsError:
         # directory already exists
             pass
+        global canvas_name
         canvas_name = rf"invoice/HOADON_{time}.pdf"
         c = canvas.Canvas(canvas_name, pagesize = (200, 250), bottomup= 0)
         db = sql_store.Database().Storage()
@@ -1170,12 +1173,28 @@ def sale_list():
     btn_refresh['font'] = ['Arial', '15', 'bold']
     btn_search1 = tk.Button(list_sale, text="Search", width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=lambda: Search_interface())
     btn_search1['font'] = ['Arial', '15', 'bold']
+    btn_invoice = tk.Button(list_sale, text="Open the invoice", width=32, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=lambda: invoice())
+    btn_invoice['font'] = ['Arial', '15', 'bold']
     btn_exit = tk.Button(list_sale, text="Exit", width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=list_sale.destroy)
     btn_exit['font'] = ['Arial', '15', 'bold']
 
     btn_refresh.place(x=72, y=390)
     btn_search1.place(x=267, y=390)
+    btn_invoice.place(x=462, y=390)
     btn_exit.place(x=852, y=390)
+
+    def invoice():
+        try:
+            time = tree.item(tree.selection())['values'][8]
+            print(time)
+            if platform.system() == "Windows":
+                os.startfile(f"invoice/HOADON_{time}.pdf")
+            elif platform.system() == "Darwin":
+                subprocess.call(["open", f"invoice/HOADON_{time}.pdf"])
+            else:
+                subprocess.call(["xdg-open", f"invoice/HOADON_{time}.pdf"])
+        except Exception as e:
+            print(e)
 
     def Search_interface():
         search_inter = tk.Toplevel(list_sale)

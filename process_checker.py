@@ -56,9 +56,9 @@ def add_customer(id, name, dob, address, phone, email):
     except:
         return False
     
-def add_sell(book_id, book_title, price, quantity, cus_id, cus_name, staff_id, staff_name):
+def add_sell(book_id, book_title, price, quantity, cus_id, cus_name, staff_id, staff_name, time):
     try:
-        sql_sell.Sell().Insert(book_id, book_title, price, quantity, cus_id, cus_name, staff_id, staff_name)
+        sql_sell.Sell().Insert(book_id, book_title, price, quantity, cus_id, cus_name, staff_id, staff_name, time)
         return True
     except:
         return False
