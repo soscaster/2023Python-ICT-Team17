@@ -45,10 +45,17 @@ class Database:
         return records
     
     def GetBooks(self):
-        self.dbCursor.execute("SELECT id, title FROM books")
+        self.dbCursor.execute("SELECT id, title, quantity, price FROM books")
         records = self.dbCursor.fetchall()
         return records
-        
+    
+    def Sell(self, id, quantity):
+        self.dbCursor.execute("SELECT quantity FROM books WHERE id = ?", (id, ))
+        records = self.dbCursor.fetchone()
+        self.dbCursor.execute("UPDATE books SET quantity = quantity - %s WHERE id = ?" % quantity, (id, ))
+        self.dbConnection.commit()
+        return records
+
     def __close__(self):
         self.dbCursor.close()
         self.dbConnection.close()

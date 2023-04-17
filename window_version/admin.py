@@ -3,12 +3,17 @@ sys.dont_write_bytecode = True
 import tkinter as tk
 from tkinter import messagebox, ttk, font as tkfont
 import os
+import platform
 import zipfile
-clear = lambda: os.system('clear')
 from domains import sql_staff
 from domains import sql_store
 from domains import sql_customers
 import process_checker as fu
+
+if platform.system() == "Windows":
+    clear = lambda: os.system('cls')
+else:
+    clear = lambda: os.system('clear')
 
 # Create a new window for modifying store info [DONE]
 def modify_store():
@@ -103,8 +108,18 @@ def modify_store():
 
     def modify_store_func():
         # If function modify_store returns False, show error message
-        if fu.check_phone(store_phone.get()) == False:
+        if fu.check_if_empty(store_id.get()) == False:
+            messagebox.showerror("Error","Store ID cannot be empty!", parent=store)
+        elif fu.check_if_empty(store_name.get()) == False:
+            messagebox.showerror("Error","Store name cannot be empty!", parent=store)
+        elif fu.check_if_empty(store_address.get()) == False:
+            messagebox.showerror("Error","Store address cannot be empty!", parent=store)
+        elif fu.check_if_empty(store_phone.get()) == False:
+            messagebox.showerror("Error","Store phone number cannot be empty!", parent=store)
+        elif fu.check_phone(store_phone.get()) == False:
             messagebox.showerror("Error", "Invalid phone number!\nPlease try again!", parent=store)
+        elif fu.check_if_empty(store_email.get()) == False:
+            messagebox.showerror("Error","Store e-mail address cannot be empty", parent=store)
         elif fu.check_email(store_email.get()) == False:
             messagebox.showerror("Error", "Invalid email type!\nPlease try again!", parent=store)
         elif fu.input_store_info(store_id.get(), store_name.get(), store_address.get(), store_phone.get(), store_email.get()) == False:
@@ -210,12 +225,22 @@ def add_staff():
     
     # Define a function for saving staff info
     def add_staff_func(st_ID, st_pwd, st_name, st_dob, st_address, st_phone, st_email):
-        if fu.check_dob(st_dob) == False:
+        if fu.check_if_empty(st_ID) == False:
+            messagebox.showerror("Error", "Staff ID cannot be empty!", parent=staff)
+        elif fu.check_if_empty(st_pwd) == False:
+            messagebox.showerror("Error","Staff password cannot be empty!", parent=staff)
+        elif fu.check_if_empty(st_dob) == False:
+            messagebox.showerror("Error", "Staff date of birth cannot be empty!", parent=staff)
+        elif fu.check_dob(st_dob) == False:
             messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!", parent=staff)
+        elif fu.check_if_empty(st_phone) == False:
+            messagebox.showerror("Error","Staff phone number cannot be empty", parent=staff)        
         elif fu.check_phone(st_phone) == False:
             messagebox.showerror("Error", "Invalid phone number!\nPlease try again!", parent=staff)
+        elif fu.check_if_empty(st_email) == False:
+            messagebox.showerror("Error","Staff e-mail cannot be empty!", parent=staff)
         elif fu.check_email(st_email) == False:
-            messagebox.showerror("Error", "Invalid email type!\nPlease try again!", parent=staff) 
+            messagebox.showerror("Error", "Invalid e-mail type!\nPlease try again!", parent=staff) 
         elif sql_staff.Database().Validate(st_ID, st_phone, st_email, 1) == True:
             messagebox.showerror("Error", "ID or Phone or Email is already exists!\nPlease try again!", parent=staff)
         else:
@@ -320,12 +345,22 @@ def add_customer():
 
     # Define a function for saving customer info
     def add_customer_func(cu_ID, cu_name, cu_dob, cu_address, cu_phone, cu_email):
-        if fu.check_dob(cu_dob) == False:
+        if fu.check_if_empty(cu_ID) == False:
+            messagebox.showerror("Error","Customer ID cannot be empty!", parent=customer)
+        elif fu.check_if_empty(cu_name) == False:
+            messagebox.showerror("Error","Customer name cannot be empty!", parent=customer)
+        elif fu.check_if_empty(cu_dob) == False:
+            messagebox.showerror("Error","Customer date of birth cannot be empty!", parent=customer)
+        elif fu.check_dob(cu_dob) == False:
             messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!", parent=customer)
+        elif fu.check_if_empty(cu_phone) == False:
+            messagebox.showerror("Error","Customer phone number cannot be empty!", parent=customer)
         elif fu.check_phone(cu_phone) == False:
             messagebox.showerror("Error", "Invalid phone number!\nPlease try again!", parent=customer)
+        elif fu.check_if_empty(cu_email) == False:
+            messagebox.showerror("Error","Customer e-mail address cannot be empty!", parent=customer)
         elif fu.check_email(cu_email) == False:
-            messagebox.showerror("Error", "Invalid email type!\nPlease try again!", parent=customer)
+            messagebox.showerror("Error", "Invalid e-mail type!\nPlease try again!", parent=customer)
         elif sql_customers.Database().Validate(cu_ID, cu_phone, cu_email, 1) == True:
             messagebox.showerror("Error", "ID or Phone or Email info is already exists!\nPlease try again!", parent=customer)
         else:
@@ -385,8 +420,6 @@ def staff_list():
 
     tree['show']='headings'
 
-    list_staff.resizable(False,False)
-
     # Define number of columns
     tree["columns"] = ("ID", "Name", "Date of Birth", "Address", "Phone", "Email")
     #Assign the width,minwidth and anchor to the respective columns 
@@ -429,7 +462,7 @@ def staff_list():
         if cf == True:
             delete_staff_func(del_ID)
 
-    # Add button frame
+    # Add button frames
 
     btn_refresh = tk.Button(list_staff, text="Refresh", width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=lambda: list_all())
     btn_refresh['font'] = ['Arial', '15', 'bold']
@@ -617,12 +650,22 @@ def staff_list():
 
         # Define a function for saving staff info
         def modify_staff_func():
-            if fu.check_dob(st_dob.get()) == False:
+            if fu.check_if_empty(st_ID.get()) == False:
+                messagebox.showerror("Error", "Staff ID cannot be empty!", parent=staff)
+            elif fu.check_if_empty(st_pwd.get()) == False:
+                messagebox.showerror("Error","Staff password cannot be empty!", parent=staff)
+            elif fu.check_if_empty(st_dob.get()) == False:
+                messagebox.showerror("Error", "Staff date of birth cannot be empty!", parent=staff)
+            elif fu.check_dob(st_dob.get()) == False:
                 messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!", parent=staff)
+            elif fu.check_if_empty(st_phone.get()) == False:
+                messagebox.showerror("Error","Staff phone number cannot be empty", parent=staff)        
             elif fu.check_phone(st_phone.get()) == False:
                 messagebox.showerror("Error", "Invalid phone number!\nPlease try again!", parent=staff)
+            elif fu.check_if_empty(st_email.get()) == False:
+                messagebox.showerror("Error","Staff e-mail cannot be empty!", parent=staff)
             elif fu.check_email(st_email.get()) == False:
-                messagebox.showerror("Error", "Invalid email type!\nPlease try again!", parent=staff)
+                messagebox.showerror("Error", "Invalid e-mail type!\nPlease try again!", parent=staff)
             elif sql_staff.Database().Validate(st_ID.get(), st_phone.get(), st_email.get(), 2) == True:
                 messagebox.showerror("Error", "Phone or Email info is already exists!\nPlease try again!", parent=staff)
             else:
@@ -655,12 +698,18 @@ def customer_list():
 
     clear()
     list_customer = tk.Toplevel(admin)
-
     list_customer.title("Customer List")
+    list_customer.geometry("1100x500")
+    list_customer.resizable(False,False)
+
+    lbl_img = tk.Label(list_customer, image = imglist)
+    lbl_img.place(x=0, y=0) 
+    lbl_title = tk.Label(list_customer, text="Customer List", font=("Arial", 25, 'bold'), justify="center", bg='white', fg='#318bd2')
+    lbl_title.place(x=440, y=40)
 
     # Create tree view frame
     frm = tk.Frame(list_customer)
-    frm.pack(pady=20, padx=20)
+    frm.place(x=70, y=90)
 
     # Create scrollbar
     tree_scroll = tk.Scrollbar(frm)
@@ -668,14 +717,11 @@ def customer_list():
 
     # Create tree view
     tree = ttk.Treeview(frm, yscrollcommand=tree_scroll.set)
-
     tree.pack()
 
     # Configure scrollbar
     tree_scroll.config(command=tree.yview)
     tree['show']='headings'
-
-    list_customer.resizable(False,False)
 
     # Define number of columns
     tree["columns"] = ("ID", "Name", "Date of Birth", "Address", "Phone", "Email")
@@ -703,7 +749,11 @@ def customer_list():
         tree.delete(*tree.get_children())
         db = sql_customers.Database().Storage()
         for i in range(0,len(db)):
-            tree.insert('', i, iid= None, values = (db[i][0],db[i][1],db[i][2],db[i][3],db[i][4],db[i][5],">"+db[i][0]))
+            if i % 2 == 0:
+                tree.insert('', i, iid= None, values = (db[i][0],db[i][1],db[i][2],db[i][3],db[i][4],db[i][5],">"+db[i][0]),tags='even_row')
+            else:
+                tree.insert('', i, iid= None, values = (db[i][0],db[i][1],db[i][2],db[i][3],db[i][4],db[i][5],">"+db[i][0]),tags='odd_row')
+                
     list_all()
 
     def del_cf():
@@ -727,21 +777,24 @@ def customer_list():
         else:
             messagebox.showerror("Error", "Customer not deleted!", parent=list_customer)
 
-    # Add button frame
-    button_frame = tk.LabelFrame(list_customer, text = "Functions")
-    button_frame.pack(fill="x", expand="yes", padx=20, pady=20)
+    # Add button frames
 
-    btn_refresh = tk.Button(button_frame, text="Refresh", width=23, command=lambda: list_all())
-    btn_search = tk.Button(button_frame, text="Search", width=23, command=lambda: Search_interface())
-    btn_delete = tk.Button(button_frame, text="Delete", width=23, command=lambda: del_cf())
-    btn_update = tk.Button(button_frame, text="Update", width=23, command=lambda: modify_customer())
-    btn_exit = tk.Button(button_frame, text="Exit", width=23, command=list_customer.destroy)
+    btn_refresh = tk.Button(list_customer, text="Refresh", width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=lambda: list_all())
+    btn_refresh['font'] = ['Arial', '15', 'bold']
+    btn_search = tk.Button(list_customer, text="Search", width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=lambda: Search_interface())
+    btn_search['font'] = ['Arial', '15', 'bold']
+    btn_delete = tk.Button(list_customer, text="Delete", width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=lambda: del_cf())
+    btn_delete['font'] = ['Arial', '15', 'bold']
+    btn_update = tk.Button(list_customer, text="Update", width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=lambda: modify_customer())
+    btn_update['font'] = ['Arial', '15', 'bold']
+    btn_exit = tk.Button(list_customer, text="Exit", width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=list_customer.destroy)
+    btn_exit['font'] = ['Arial', '15', 'bold']
 
-    btn_refresh.grid(row=0, column=0, padx=10, pady=10)
-    btn_search.grid(row=0, column=1, padx=10, pady=10)
-    btn_delete.grid(row=0, column=2, padx=10, pady=10)
-    btn_update.grid(row=0, column=3, padx=10, pady=10)
-    btn_exit.grid(row=0, column=4, padx=10, pady=10)
+    btn_refresh.place(x=72, y=390)
+    btn_search.place(x=267, y=390)
+    btn_delete.place(x=462, y=390)
+    btn_update.place(x=657, y=390)
+    btn_exit.place(x=852, y=390)
 
     def Search_interface():
         search_inter = tk.Toplevel(list_customer)
@@ -896,12 +949,22 @@ def customer_list():
 
         # Define a function for saving customer info
         def modify_customer_func():
-            if fu.check_dob(cus_dob.get()) == False:
+            if fu.check_if_empty(cus_ID.get()) == False:
+                messagebox.showerror("Error","Customer ID cannot be empty!", parent=customer)
+            elif fu.check_if_empty(cus_name.get()) == False:
+                messagebox.showerror("Error","Customer name cannot be empty!", parent=customer)
+            elif fu.check_if_empty(cus_dob.get()) == False:
+                messagebox.showerror("Error","Customer date of birth cannot be empty!", parent=customer)
+            elif fu.check_dob(cus_dob.get()) == False:
                 messagebox.showerror("Error", "Invalid Date of Birth format!\nPlease try again!", parent=customer)
+            elif fu.check_if_empty(cus_phone.get()) == False:
+                messagebox.showerror("Error","Customer phone number cannot be empty!", parent=customer)
             elif fu.check_phone(cus_phone.get()) == False:
                 messagebox.showerror("Error", "Invalid phone number!\nPlease try again!", parent=customer)
+            elif fu.check_if_empty(cus_email.get()) == False:
+                messagebox.showerror("Error","Customer e-mail address cannot be empty!", parent=customer)
             elif fu.check_email(cus_email.get()) == False:
-                messagebox.showerror("Error", "Invalid email type!\nPlease try again!", parent=customer)
+                messagebox.showerror("Error", "Invalid e-mail type!\nPlease try again!", parent=customer)
             elif sql_customers.Database().Validate(cus_ID.get(), cus_phone.get(), cus_email.get(), 2) == True:
                 messagebox.showerror("Error", "Phone or Email info is already exists!\nPlease try again!", parent=customer)
             else:
@@ -919,6 +982,7 @@ def exit_verify():
         # Verify if the user wants to exit the program
         box = messagebox.askquestion("Exit", "Are you sure you want to exit?", parent=admin)
         if box == "yes":
+            print("Compress files successfully!")
             messagebox.showinfo("Exit", "Thank you for using the program!\n© 2023 - BI12 - ICT Team 17", parent=admin)
             admin.quit()
         else:

@@ -3,6 +3,7 @@ from domains import sql_staff
 from domains import sql_books
 from domains import sql_store
 from domains import sql_customers
+from domains import sql_sell
 
 import re
 
@@ -51,6 +52,20 @@ def input_store_info(id,name,address,phone,email):
 def add_customer(id, name, dob, address, phone, email):
     try:
         sql_customers.Database().Insert(id, name, dob, address, phone, email)
+        return True
+    except:
+        return False
+    
+def add_sell(book_id, book_title, price, quantity, cus_id, cus_name, staff_id, staff_name):
+    try:
+        sql_sell.Sell().Insert(book_id, book_title, price, quantity, cus_id, cus_name, staff_id, staff_name)
+        return True
+    except:
+        return False
+    
+def update_quantity(book_id, quantity):
+    try:
+        sql_books.Database().Sell(book_id, quantity)
         return True
     except:
         return False
@@ -182,5 +197,14 @@ def check_price_quantity_format(price, quantity):
         return False
 
 
-    
+# Check if information is empty or contain spaces
+def check_if_empty(data):
+    pattern = '^(.|\s)*\S(.|\s)*$'
+    if re.search(pattern,data):
+        return True
+    else:
+        return False
 
+def check_book_quantity(data):
+    if data == 0:
+        return False
