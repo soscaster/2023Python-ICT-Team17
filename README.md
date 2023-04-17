@@ -6,9 +6,8 @@ This project is a book store information management system. It is a GUI-friendly
 
 ## 📝 Requirements
 - [x] Python 3
-- [x] Unix-like OS (Linux, macOS, etc.) 
-`Windows was not fully functional since the "[WinError32]" error occurs when trying to delete a file that is being used by another process (delete bookstore.db).
-We've fixed that, but running the application on Windows is not recommended.`
+- [x] Unix-like OS (Linux, macOS, etc.)
+- Windows is not recommended since the "[WinError32]" error occurs when trying to delete a file that is being used by another process (delete bookstore.db).
 
 ## 📚 Features
 - [x] Manage books
