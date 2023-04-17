@@ -1007,13 +1007,13 @@ def sell_book_func():
     # Print 
     def invoice():
         # Set the os.path to save the pdf invoice file
-        time = str(datetime.datetime.now().strftime("%d-%m-%Y_%H:%M:%S"))
+        time = str(datetime.datetime.now().strftime("%d-%m-%Y_%H h %M p %S"))
         try:
-            os.makedirs("invoice")
+            os.mkdir("invoice")
         except FileExistsError:
         # directory already exists
             pass
-        canvas_name = f"invoice/HOADON_{time}.pdf"
+        canvas_name = rf"invoice/HOADON_{time}.pdf"
         c = canvas.Canvas(canvas_name, pagesize = (200, 250), bottomup= 0)
         db = sql_store.Database().Storage()
         
