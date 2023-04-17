@@ -147,7 +147,7 @@ def add_staff():
 
     # Create labels
     lbl_staff = tk.Label(staff, text="Add New Staff Info", font=("Arial", 23, 'bold'), justify="center", bg='white', fg='#318bd2')
-    lbl_staff_id = tk.Label(staff, text="Staff ID", font=("Arial", 15), bg='white', fg='#318bd2')
+    lbl_staff_id = tk.Label(staff, text="Staff ID/Username", font=("Arial", 15), bg='white', fg='#318bd2')
     lbl_staff_pwd = tk.Label(staff, text = "Staff Login Password", font=("Arial", 15), bg='white', fg='#318bd2')
     lbl_staff_name = tk.Label(staff, text="Staff Name", font=("Arial", 15), bg='white', fg='#318bd2')
     lbl_staff_dob = tk.Label(staff, text="Staff DOB (dd/mm/yyyy)", font=("Arial", 15), bg='white', fg='#318bd2')
@@ -226,7 +226,7 @@ def add_staff():
     # Define a function for saving staff info
     def add_staff_func(st_ID, st_pwd, st_name, st_dob, st_address, st_phone, st_email):
         if fu.check_if_empty(st_ID) == False:
-            messagebox.showerror("Error", "Staff ID cannot be empty!", parent=staff)
+            messagebox.showerror("Error", "Staff ID/Username cannot be empty!", parent=staff)
         elif fu.check_if_empty(st_pwd) == False:
             messagebox.showerror("Error","Staff password cannot be empty!", parent=staff)
         elif fu.check_if_empty(st_dob) == False:
@@ -489,7 +489,7 @@ def staff_list():
 
         # Create labels
         lbl_staff = tk.Label(frm, text="Search Staff", font=("Arial", 20, 'bold'), justify="center")
-        lbl_staff_id = tk.Label(frm, text="Staff ID", font=("Arial", 15))
+        lbl_staff_id = tk.Label(frm, text="Staff ID/Username", font=("Arial", 15))
         lbl_staff_name = tk.Label(frm, text="Staff Name", font=("Arial", 15))
         lbl_staff_dob = tk.Label(frm, text="Staff DOB", font=("Arial", 15))
         lbl_staff_address = tk.Label(frm, text="Staff Address", font=("Arial", 15))
@@ -651,7 +651,7 @@ def staff_list():
         # Define a function for saving staff info
         def modify_staff_func():
             if fu.check_if_empty(st_ID.get()) == False:
-                messagebox.showerror("Error", "Staff ID cannot be empty!", parent=staff)
+                messagebox.showerror("Error", "Staff ID/Username cannot be empty!", parent=staff)
             elif fu.check_if_empty(st_pwd.get()) == False:
                 messagebox.showerror("Error","Staff password cannot be empty!", parent=staff)
             elif fu.check_if_empty(st_dob.get()) == False:
