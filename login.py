@@ -5,6 +5,7 @@ import subprocess
 import datetime
 import zipfile
 import os
+import platform
 from tkinter import messagebox, font as tkfont
 from domains import sql_session
 from domains import sql_store
@@ -48,7 +49,7 @@ bg.place(x=0, y=0)
 
 # Create labels
 lb_title = tk.Label(login, text="Login to\nBook Store\nManagement System", font=("Arial", 23, 'bold'), justify="center", bg='white', fg='#318bd2')
-lb_usr = tk.Label(login, text="Username", font=("Arial", 15), bg='white', fg='#318bd2')
+lb_usr = tk.Label(login, text="ID/Username", font=("Arial", 15), bg='white', fg='#318bd2')
 lb_pwd = tk.Label(login, text="Password", font=("Arial", 15), bg='white', fg='#318bd2')
 lb_cpr = tk.Label(login, text="© 2023 - BI12 - ICT Team 17\nVersion BETA", font=("Arial", 6), bg='#73a2c7', justify="right", fg='white')
 
@@ -90,7 +91,7 @@ def runme(t: tk.Tk, event=None):
     if os.path.exists("bookstore.dat"):
         with open("bookstore.dat", "rb") as f:
             with zipfile.ZipFile(f, "r") as zip_ref:
-                    zip_ref.extractall()
+                zip_ref.extractall()
         if os.path.exists("bookstore.dat"):
             os.remove("bookstore.dat")
     else:
@@ -105,6 +106,13 @@ def runme(t: tk.Tk, event=None):
     input_pwd = box_pwd.get()
 
     time = str(datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S"))
+    if platform.system() == "Windows":
+        run_me = "python"
+    elif platform.system() == "Linux":
+        run_me = "python3"
+    else:
+        run_me = "python3"
+
 
 
     if data:
@@ -117,18 +125,16 @@ def runme(t: tk.Tk, event=None):
         if len(sql_store.Database().Storage()) == 0:
             messagebox.showinfo(title="Store data error!", message="Store Information not found!\nPlease contact Administrator first!")
         t.destroy()
-        subprocess.call(["python3", "staff.py"])
-    # elif input_usr == "staff" and input_pwd == "staff":
-    #     messagebox.showinfo(title="Success", message="Login successful as staff")
-    #     t.destroy()
-    #     subprocess.call(["python3", "staff.py"])
+        log.close()
+        subprocess.call([run_me, "staff.py"])
     elif input_usr == "admin" and input_pwd == "admin":
         id = "admin"
         name = "admin"
         sql_session.Session().Insert(id, name)
         messagebox.showinfo(title="Success", message=f"Login successful as:\nAdministrator\nLogin time: {time}")
         t.destroy()
-        subprocess.call(["python3", "admin.py"])
+        log.close()
+        subprocess.call([run_me, "admin.py"])
     elif input_usr == "vuminh" and input_pwd == "npc":
         id = "vuminh"
         name = "vuminh"

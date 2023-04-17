@@ -5,7 +5,6 @@ class Session:
     def __init__(self):
         self.dbConnection = sqlite3.connect("bookstore.db")
         self.dbCursor = self.dbConnection.cursor()
-        # Create table if not exists and set timezone to GMT +7
         self.dbCursor.execute("CREATE TABLE IF NOT EXISTS session (id int, usr_id text, usr_name text, time TIMESTAMP, PRIMARY KEY (id))")
 
     def Insert(self, usr_id, usr_name):
