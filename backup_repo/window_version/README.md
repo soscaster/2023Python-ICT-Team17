@@ -1,5 +1,24 @@
 # Advanced Programming With Python - Group Project
-## Topic 28. Book Store Information Management System (e.g. Tien Phong bookstore)
+## Topic 28. Book Store Information Management System (e.g. Tien Phong bookstore) 
+
+## 📝 Description
+This project is a book store information management system. It is a GUI-friendly application that allows admins and staffs to manage the book store's information. The application is written in Python 3 and uses the Tkinter library for the GUI. The application is also connected to a SQLite database to store the information.
+
+## 📝 Requirements
+- [x] Python 3
+- [x] Unix-like OS (Linux, macOS, etc.) 
+`Windows was not fully functional since the "[WinError32]" error occurs when trying to delete a file that is being used by another process (delete bookstore.db).
+We've fixed that, but running the application on Windows is not recommended.`
+
+## 📚 Features
+- [x] Manage books
+- [x] Manage customers
+- [x] Manage employees
+- [x] Sell books and generate invoices
+
+## 📝 How to run
+- [x] Clone the repository
+- [x] Run `python3 login.py` in the project's root directory
 
 # Members List of Team 17
 |Student ID| Name | Major | Email address|
