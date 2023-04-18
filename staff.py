@@ -906,7 +906,7 @@ def sell_book_func():
     lb_customer = tk.Label(sell, text="Customer", font=("Arial", 15), bg='white', fg='#318bd2')
     lb_quantity = tk.Label(sell, text="Quantity", font=("Arial", 15), bg='white', fg='#318bd2')
     # Create a label to display the selected book quantity
-    lb_available = tk.Label(sell, font=("Arial", 10), bg='white', fg='#318bd2', justify="right")
+    lb_available = tk.Label(sell, font=("Arial", 10), bg='white', fg='#318bd2', justify="left")
 
     # Create dropdown menu for book title
     get_data_b = sql_books.Database()
@@ -921,7 +921,7 @@ def sell_book_func():
             if book_title.get() == i[0] + " - " + i[1] + " - " + str(i[2]) + " - " + str(i[3]):
                 book_quantity = str(i[2])
                 book_id = i[0]
-                lb_available.config(text=f"ID: {book_id} - Quantity: {book_quantity}\nPlease notice!", justify="right")
+                lb_available.config(text=f"ID: {book_id} - Quantity: {book_quantity}\nPlease notice!")
     drop_book = tk.OptionMenu(sell, book_title, *book_list, command=change_dropdown)
     drop_book.config(width=40, height=2, font=("Arial", 12), bg='white', fg='firebrick1', activebackground='firebrick1', activeforeground='white', highlightthickness=0)
     drop_book["menu"].config(bg='white', fg='firebrick1', activebackground='firebrick1', activeforeground='white')
@@ -960,7 +960,7 @@ def sell_book_func():
     # Style labels, entry boxes and buttons
     lb_title.place(x=420, y=90)
     lb_book.place(x=300, y=150)
-    lb_available.place(x=600, y=140)
+    # lb_available.place(x=547, y=140)
     drop_book.place(x=300, y=180)
     lb_customer.place(x=300, y=240)
     drop_customer.place(x=300, y=270)
@@ -1055,8 +1055,9 @@ def sell_book_func():
         c.setFont("Times-Bold", 5)
         c.setFillColorRGB(0, 0, 0)
         c.drawRightString(105, 70, "Ma hoa don / Invoice No. :")
-        c.drawString(110, 70, "XXXXXXX")
-
+        # Count the number of invoices in the invoice folder
+        count = len(os.listdir("invoice"))
+        c.drawString(110, 70, f"{count+1}")
         c.drawRightString(105, 80, "Xuat hoa don / Date & Time:")
         c.drawString(110, 80, time.split("_")[0] + " - " + time.split("_")[1])
 
@@ -1081,6 +1082,8 @@ def sell_book_func():
         c.drawCentredString(169, 215, str(int(box_quantity.get()) * int(book_title.get().split(" - ")[3])))
 
         c.drawString(30, 230, f"Cam on quy khach da mua hang tai {db[0][1]}!")
+        c.setFont("Times-Bold", 3)
+        c.drawString(15, 245, f"(*) Currency: Vietnam Dong (VND)")
         c.showPage()
         c.save()
 
@@ -1164,9 +1167,9 @@ def sale_list():
         db = sql_sell.Sell().Storage()
         for i in range(0,len(db)):
             if i % 2 == 0:
-                tree.insert('', i, iid= None, values = (db[i][0],db[i][1],db[i][3],db[i][4],db[i][5],db[i][6],db[i][7],db[i][8],db[i][9]),tags='even_row')
+                tree.insert('', i, iid= None, values = (db[i][0],db[i][1],db[i][2],db[i][4],db[i][5],db[i][6],db[i][7],db[i][8],db[i][9]),tags='even_row')
             else:
-                tree.insert('', i, iid= None, values = (db[i][0],db[i][1],db[i][3],db[i][4],db[i][5],db[i][6],db[i][7],db[i][8],db[i][9]),tags='odd_row')
+                tree.insert('', i, iid= None, values = (db[i][0],db[i][1],db[i][2],db[i][4],db[i][5],db[i][6],db[i][7],db[i][8],db[i][9]),tags='odd_row')
     list_all()
 
     btn_refresh = tk.Button(list_sale, text="Refresh",  width=14, height=2, bg='#318bd2', fg='white', activebackground='firebrick1', highlightthickness=0, command=lambda: list_all())
@@ -1189,11 +1192,10 @@ def sale_list():
             print(time)
             if platform.system() == "Windows":
                 os.startfile(f"invoice/HOADON_{time}.pdf")
-            elif platform.system() == "Darwin":
-                subprocess.call(["open", f"invoice/HOADON_{time}.pdf"])
             else:
                 subprocess.call(["xdg-open", f"invoice/HOADON_{time}.pdf"])
         except Exception as e:
+            messagebox.showerror("Error", f"Invoice not found!\nIt may not available or deleted.\nYou can manually check at the 'invoice' folder.\n{e}", parent = list_sale)
             print(e)
 
     def Search_interface():
@@ -1312,7 +1314,7 @@ if os.path.exists("bookstore.db"):
     img_e2 = ex.subsample(3, 3)
     save = tk.PhotoImage(file="img/icons/save.png")
     img_save = save.subsample(3, 3)
-    usth = os.path.abspath("img/USTH_Logo.png")
+    usth = os.path.abspath("img/default.png")
 
     lbl_hihi = tk.Label(image=imgbg)
     lbl_hihi.place(x=0, y=0)
