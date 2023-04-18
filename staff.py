@@ -1195,7 +1195,7 @@ def sale_list():
             else:
                 messagebox.showerror("Error", "Invoice not found.\nIt may have been deleted.\nYou can manually search for the invoice in the invoice folder.")
         except Exception as e:
-            messagebox.showerror("Error", "Something was wrong.\nMaybe you didn't select any row.")
+            messagebox.showerror("Error", "Something was wrong.\nMaybe you didn't select any row.", parent = list_sale)
 
     def Search_interface():
         search_inter = tk.Toplevel(list_sale)
