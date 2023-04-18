@@ -1189,14 +1189,13 @@ def sale_list():
     def invoice():
         try:
             time = tree.item(tree.selection())['values'][8]
-            print(time)
-            if platform.system() == "Windows":
-                os.startfile(f"invoice/HOADON_{time}.pdf")
-            else:
+            check = os.path.exists(f"invoice/HOADON_{time}.pdf")
+            if check == True:
                 subprocess.call(["xdg-open", f"invoice/HOADON_{time}.pdf"])
+            else:
+                messagebox.showerror("Error", "Invoice not found.\nIt may have been deleted.\nYou can manually search for the invoice in the invoice folder.")
         except Exception as e:
-            messagebox.showerror("Error", f"Invoice not found!\nIt may not available or deleted.\nYou can manually check at the 'invoice' folder.\n{e}", parent = list_sale)
-            print(e)
+            messagebox.showerror("Error", "Something was wrong.\nMaybe you didn't select any row.")
 
     def Search_interface():
         search_inter = tk.Toplevel(list_sale)
